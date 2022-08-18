@@ -15,8 +15,8 @@ set(SOURCES
 	src/base64/base64.cxx
 	src/ft2232_boundary_scan/jtag_manager.cxx
 	entrypoint.cxx
-	meta_platform.cxx
-	meta_driver.cxx
+	# meta_platform.cxx
+	# meta_driver.cxx
 	src/meta_driver_group_info.cxx
 	src/meta_driver_FT2232_boundary_scan.cxx
 	src/meta_driver_FT2232_bsdl_loader.cxx
@@ -31,22 +31,22 @@ set(SOURCES
 	)
 
 #set(CMAKE_BUILD_RPATH "/usr/local/lib")
-
 # set extra libraries needed
 set(EXTRA_LIBS 
-	dl 
+	dl
 	ftd2xx 
 	pthread
 	boost_program_options
 	boost_filesystem
 	boost_system
+	/usr/share/panduza-cxx/libMetaplatform.so
 )
 
 # include mqtt libraries
 set(MQTT_LIBRARIES
 	paho-mqttpp3 
-	paho-mqtt3as 
-	paho-mqtt3c 
+	paho-mqtt3a # Put back mqtt3as when possible
+	paho-mqtt3c
 )
 
 # check for jsoncpp library
@@ -61,3 +61,5 @@ target_link_libraries(BoundaryScan PUBLIC ${EXTRA_LIBS} ${JSONCPP_LIBRARIES} ${M
 
 # add the binary tree to the search path for include files
 target_include_directories(BoundaryScan PUBLIC "${PROJECT_BINARY_DIR}")
+target_include_directories(BoundaryScan PUBLIC /panduza-cxx-platform/build/_deps/paho.mqtt.cpp-src/src)
+target_include_directories(BoundaryScan PUBLIC /panduza-cxx-platform/build/_deps/paho.mqtt.c-src/src)
