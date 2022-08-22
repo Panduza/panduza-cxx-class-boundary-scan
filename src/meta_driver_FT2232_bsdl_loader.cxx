@@ -92,7 +92,7 @@ void MetaDriverFT2232BsdlLoader::message_arrived(mqtt::const_message_ptr msg)
             payload["crc"] = crc32hex.str();
             
             // Send payloads to atts
-            publish(getBaseTopic() + "/Bsdl_File/atts/data", payload, 0, true);
+            publish(getBaseTopic() + "/Bsdl_File/atts/metadata", payload, 0, true);
             publish(getBaseTopic() + "/Bsdl_File/atts/content", parsedMsg, 0, true);
 
             // Get encoded message
