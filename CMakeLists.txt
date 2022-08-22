@@ -14,8 +14,6 @@ set(SOURCES
 	src/base64/base64.cxx
 	src/ft2232_boundary_scan/jtag_manager.cxx
 	entrypoint.cxx
-	# meta_platform.cxx
-	# meta_driver.cxx
 	src/meta_driver_group_info.cxx
 	src/meta_driver_FT2232_boundary_scan.cxx
 	src/meta_driver_FT2232_bsdl_loader.cxx
@@ -29,7 +27,6 @@ set(SOURCES
 	src/ft2232_boundary_scan/io.cxx
 	)
 
-#set(CMAKE_BUILD_RPATH "/usr/local/lib")
 # set extra libraries needed
 set(EXTRA_LIBS 
 	dl
