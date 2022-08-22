@@ -11,7 +11,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 # specify sources
 set(SOURCES 
-	src/loguru/loguru.cxx
+/panduza-cxx-platform/src/loguru/loguru.cxx
 	src/base64/base64.cxx
 	src/ft2232_boundary_scan/jtag_manager.cxx
 	entrypoint.cxx
