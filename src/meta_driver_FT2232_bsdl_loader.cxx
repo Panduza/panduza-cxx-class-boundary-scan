@@ -77,7 +77,8 @@ void MetaDriverFT2232BsdlLoader::message_arrived(mqtt::const_message_ptr msg)
 
         if (msg->get_topic().find("/cmds/content/set") != std::string::npos)
         {
-            int content_size = parsedMsg["content"].asString().size();
+            int content_size = parsedMsg["data"].asString().size();
+            parsedMsg["mime"] = "text/plain";
             
             // Get CRC32 encoded message and gets its checksum
             boost::crc_32_type crc32;
