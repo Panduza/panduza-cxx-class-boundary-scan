@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <boost/config.hpp>
 
-#include "src/loguru/loguru.hxx"
+#include "/panduza-cxx-platform/src/loguru/loguru.hxx"
 #include "mqtt/async_client.h"
 
 class MetaDriver : public virtual mqtt::callback, public virtual mqtt::iaction_listener
