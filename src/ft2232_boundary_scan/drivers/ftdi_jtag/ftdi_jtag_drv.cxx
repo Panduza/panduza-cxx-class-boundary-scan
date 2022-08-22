@@ -37,7 +37,7 @@
 #include "../../jtag_core/jtag_core.hxx"
 
 #include "../../bsdl_parser/bsdl_loader.hxx"
-#include "../../../loguru/loguru.hxx"
+#include "/panduza-cxx-platform/src/loguru/loguru.cxx"
 
 #ifdef __cplusplus
 extern "C" {
