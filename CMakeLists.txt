@@ -61,5 +61,5 @@ target_link_libraries(BoundaryScan PUBLIC ${EXTRA_LIBS} ${JSONCPP_LIBRARIES} ${M
 
 # add the binary tree to the search path for include files
 target_include_directories(BoundaryScan PUBLIC "${PROJECT_BINARY_DIR}")
-target_include_directories(BoundaryScan PUBLIC /usr/share/panduza-cxx/includes/paho.mqtt.c-src)
-target_include_directories(BoundaryScan PUBLIC /usr/share/panduza-cxx/includes/paho.mqtt.cpp-src)
+target_include_directories(BoundaryScan PUBLIC /usr/share/panduza-cxx/includes/paho.mqtt.c-src/src)
+target_include_directories(BoundaryScan PUBLIC /usr/share/panduza-cxx/includes/paho.mqtt.cpp-src/src)
