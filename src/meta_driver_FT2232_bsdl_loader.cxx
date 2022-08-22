@@ -45,7 +45,7 @@ void MetaDriverFT2232BsdlLoader::sendInfo()
 {
     // Create the info payload
     Json::Value info;
-    info["type"] = "File";
+    info["type"] = "file";
     info["version"] = "1.0";
 
     LOG_F(4, "Info sent is : %s", info.toStyledString().c_str());
