@@ -59,3 +59,7 @@ target_link_libraries(BoundaryScan PUBLIC ${EXTRA_LIBS} ${JSONCPP_LIBRARIES} ${M
 target_include_directories(BoundaryScan PUBLIC "${PROJECT_BINARY_DIR}")
 target_include_directories(BoundaryScan PUBLIC /usr/share/panduza-cxx/includes/paho.mqtt.c-src/src)
 target_include_directories(BoundaryScan PUBLIC /usr/share/panduza-cxx/includes/paho.mqtt.cpp-src/src)
+
+install(TARGETS BoundaryScan
+		LIBRARY DESTINATION /usr/share/panduza-cxx/libraries
+)
