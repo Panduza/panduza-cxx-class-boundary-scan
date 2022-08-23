@@ -35,7 +35,7 @@ set(EXTRA_LIBS
 	boost_program_options
 	boost_filesystem
 	boost_system
-	/usr/share/panduza-cxx/libraries/libMetaplatform.so
+	Metaplatform
 )
 
 # include mqtt libraries
