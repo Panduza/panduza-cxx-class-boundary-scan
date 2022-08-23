@@ -82,7 +82,7 @@ void MetaDriverFT2232BsdlLoader::message_arrived(mqtt::const_message_ptr msg)
             
             // Get CRC32 encoded message and gets its checksum
             boost::crc_32_type crc32;
-            crc32.process_bytes(parsedMsg["content"].asString().data(),content_size);
+            crc32.process_bytes(parsedMsg["data"].asString().data(),content_size);
             std::stringstream crc32hex;
             crc32hex << std::hex << crc32.checksum();
 
@@ -96,7 +96,7 @@ void MetaDriverFT2232BsdlLoader::message_arrived(mqtt::const_message_ptr msg)
             publish(getBaseTopic() + "/Bsdl_File/atts/content", parsedMsg, 0, true);
 
             // Get encoded message
-            std::string encoded_message = parsedMsg["content"].asString();
+            std::string encoded_message = parsedMsg["data"].asString();
 
             // Decode the payload
             mDecodedBSDL = base64_decode(encoded_message);
