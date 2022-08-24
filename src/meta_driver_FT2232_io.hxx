@@ -82,7 +82,7 @@ private:
     Json::Value mDirection;
 
     /// A Mutex to synchronize the publishes
-    std::mutex mPubMutex;
+    static std::mutex mPubMutex;
     static std::mutex mCheckInputMutex;
     static std::mutex mMessageMutex;
 
