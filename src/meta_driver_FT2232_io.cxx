@@ -3,6 +3,7 @@
 
 std::mutex MetaDriverFT2232Io::mCheckInputMutex;
 std::mutex MetaDriverFT2232Io::mMessageMutex;
+std::mutex MetaDriverFT2232Io::mPubMutex;
 
 MetaDriverFT2232Io::~MetaDriverFT2232Io()
 {
@@ -22,7 +23,6 @@ MetaDriverFT2232Io::MetaDriverFT2232Io(std::shared_ptr<JtagFT2232> jc)
 
 void MetaDriverFT2232Io::setup()
 {
-    mNeedThread = true;
     mJc = mJtagManager->getJc();
     mProbeId = mJtagManager->getProbeId();
 
@@ -36,9 +36,9 @@ void MetaDriverFT2232Io::setup()
     mPinName = pin_name;
 
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
-    subscribe(getBaseTopic() + "/" + pin_name + "/cmds/#", 0);
-    subscribe(getBaseTopic() + "/" + pin_name + "/atts/direction", 0);
-    subscribe(getBaseTopic() + "/" + pin_name + "/atts/value", 0);
+    subscribe(getBaseTopic() + "/" + mPinName + "/cmds/#", 0);
+    subscribe(getBaseTopic() + "/" + mPinName + "/atts/direction", 0);
+    subscribe(getBaseTopic() + "/" + mPinName + "/atts/value", 0);
 
     mAlternativeThread = new std::thread(&MetaDriverFT2232Io::checkInput, this);
 }
@@ -103,9 +103,9 @@ int MetaDriverFT2232Io::publishState(Io &Io)
 {
     mPubMutex.lock();
 
+
     std::string PUB_TOPIC_VALUE = getBaseTopic() + "/" + Io.getName() + "/atts/value";
     mState["value"] = Io.getState();
-    mqtt::message_ptr PubVal = mqtt::make_message(PUB_TOPIC_VALUE, mState.toStyledString());
 
     publish(PUB_TOPIC_VALUE, mState, 0, true);
 

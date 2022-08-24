@@ -28,9 +28,6 @@ void MetaDriverFT2232BoundaryScan::setup()
 
     /// Add the meta driver instance to the main meta driver list
     mMetaplatformInstance->addStaticDriverInstance(meta_driver_file_instance);
-
-    // /// Enable alternative thread
-    // mNeedThread = true;
 }
 
 // ============================================================================
