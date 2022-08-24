@@ -2,7 +2,7 @@
 #define _METADRIVERFT2232IO_
 #pragma once
 
-#include "../meta_driver.hxx"
+#include "/panduza-cxx-platform/src/meta_driver.hxx"
 #include "ft2232_boundary_scan/io.hxx"
 #include "ft2232_boundary_scan/jtag_core/jtag_core.hxx"
 #include "ft2232_boundary_scan/jtag_manager.hxx"

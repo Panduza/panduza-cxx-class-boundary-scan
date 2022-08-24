@@ -1,6 +1,6 @@
 #include "meta_driver_FT2232_bsdl_loader.hxx"
 #include "meta_driver_FT2232_boundary_scan.hxx"
-#include "base64/base64.hxx"
+#include "/panduza-cxx-platform/src/base64/base64.hxx"
 #include <fstream>
 
 class MetaDriverFT2232BoundaryScan;

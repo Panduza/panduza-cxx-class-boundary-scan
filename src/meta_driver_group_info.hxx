@@ -2,7 +2,7 @@
 #define _METADRIVERGROUPINFO
 #pragma once
 
-#include "../meta_driver.hxx"
+#include "/panduza-cxx-platform/src/meta_driver.hxx"
 #include <jsoncpp/json/json.h>
 
 class MetaDriverGroupInfo : public MetaDriver
