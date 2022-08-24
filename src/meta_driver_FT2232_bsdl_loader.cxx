@@ -9,9 +9,6 @@ MetaDriverFT2232BsdlLoader::MetaDriverFT2232BsdlLoader(MetaDriverFT2232BoundaryS
 {
     // Save the parent instance
     mMetaDriverFT2232BoundaryScanInstance = meta_driver_ft2232_boundary_scan_instance;
-
-    // Pass the thread flag to True
-    mNeedThread = true;
 }
 
 // ============================================================================
