@@ -41,7 +41,7 @@ set(EXTRA_LIBS
 # include mqtt libraries
 set(MQTT_LIBRARIES
 	paho-mqttpp3 
-	paho-mqtt3a # Put back mqtt3as when possible
+	paho-mqtt3as
 	paho-mqtt3c
 )
 
