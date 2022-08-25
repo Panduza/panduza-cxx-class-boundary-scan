@@ -8,7 +8,7 @@
 namespace boundary_scan
 {
 
-    class BoundaryscanEntrypoint : public Entrypoint
+    class BoundaryscanEntrypoint : public PluginEntrypoint
     {
     public:
         std::map<std::string, MetaDriverFactory *> getInformationAndFactory()
