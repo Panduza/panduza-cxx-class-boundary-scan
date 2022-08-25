@@ -23,10 +23,7 @@ public:
     ~MetaDriverFT2232BoundaryScan() { LOG_F(9, "Meta Driver Io Fake Destructor"); }
 
     /// Constructor with parent pointer
-    MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface)
-    {
-        mMetaplatformInstance = meta_platform_interface;
-    }
+    MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface){ mMetaplatformInstance = meta_platform_interface; }
 
     /// Setup the meta driver
     void setup();
@@ -52,6 +49,7 @@ public:
     /// set the BSDL name
     void setBSDLName(std::string bsdl_file_name) { mBSDLName = bsdl_file_name; }
 
+    /// Create group info meta driver
     void createGroupInfoMetaDriver();
 
 private:
@@ -75,8 +73,10 @@ private:
 class MetaDriverFactoryFT2232BoundaryScan : public MetaDriverFactory
 {
 public:
+    /// Constructor
     MetaDriverFactoryFT2232BoundaryScan(){};
 
+    /// Create the meta driver boundary scan
     std::shared_ptr<MetaDriver> createDriver(void *arg);
 };
 

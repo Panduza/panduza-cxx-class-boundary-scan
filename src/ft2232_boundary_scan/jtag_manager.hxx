@@ -19,6 +19,7 @@ public:
     /// Default constructor
     JtagFT2232();
 
+    /// Initialize the driver to connect to the probe
     void initializeDriver(std::string probe_name, std::string bsdl_name);
 
     /// Getter of Jc object
@@ -36,6 +37,7 @@ public:
     /// Gets the ID of the probe
     int getProbeId();
 
+    /// Return the probe name
     std::string getProbeName();
 
     /// Prints the ID of the board
@@ -44,10 +46,11 @@ public:
     /// Formats the string ID
     void bsdlIdStr(unsigned long id, char *str);
 
+    /// Deinit the driver
     void deinit();
     
-    bool mJtagDriverLoaded;
 private:
+    bool mJtagDriverLoaded;
     /// Member to communicate over JTAG
     jtag_core *mJc;
 

@@ -16,16 +16,16 @@ public:
     /// Destructor
     ~MetaDriverFT2232Io();
 
-    /// Constructor
+    /// Constructor @param Jtag connexion
     MetaDriverFT2232Io(std::shared_ptr<JtagFT2232> jc);
 
     /// Setup the instance
     void setup();
 
-    /// Sets a pin direction to input and reads its value
+    /// Sets a pin direction to input and reads its value @param Io : Io object of the  @return int : input state
     int readInputState(Io &Io);
 
-    /// Sets the state of an Io
+    /// Sets the state of an Io @param Io 
     void setState(Io &Io, int state);
 
     /// Sets the saved state of an Io
@@ -45,16 +45,13 @@ public:
     /// Getter of Jc object
     jtag_core *getJc() const { return mJc; };
 
-    /// Pin getter
-    /// @return Reference of the Pin
+    /// Pin getter @return Reference of the Pin
     Io *getPin();
 
-    /// Publishes state of an Io
-    /// @param Io : State of this Io is published
+    /// Publishes state of an Io @param Io : State of this Io is published
     int publishState(Io &Io);
 
-    /// Publishes direction of an Io
-    /// @param Io : State of this Io is published
+    /// Publishes direction of an Io @param Io : State of this Io is published
     int publishDirection(Io &Io);
 
     /// Check the input of the board, this is for the thread

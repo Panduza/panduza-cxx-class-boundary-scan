@@ -1,3 +1,9 @@
+/**
+ * @file   meta_driver_FT2232_boundary_scan.cxx
+ * @brief  Manages and keeps informations about each IO
+ * @author Valentin 
+ */
+
 #include "meta_driver_FT2232_boundary_scan.hxx"
 #include "/panduza-cxx-platform/src/meta_platform.hxx"
 

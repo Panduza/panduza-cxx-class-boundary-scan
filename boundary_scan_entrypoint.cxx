@@ -5,12 +5,14 @@
 #include "entrypoint.hxx"
 #include "src/meta_driver_FT2232_boundary_scan.hxx"
 
+/// Entrypoint Boundary Scan Namespace
 namespace boundary_scan
 {
-
+    /// Entrypoint for the boundary scan plugin
     class BoundaryscanEntrypoint : public PluginEntrypoint
     {
     public:
+        /// return the driver name and factory of the plugin
         std::map<std::string, MetaDriverFactory *> getInformationAndFactory()
         {
             std::map<std::string, MetaDriverFactory *> Factory;
@@ -18,7 +20,7 @@ namespace boundary_scan
             return Factory;
         }
 
-        // Factory method
+        /// Create the entrypoint object for boundary scan
         static boost::shared_ptr<BoundaryscanEntrypoint> create()
         {
             return boost::shared_ptr<BoundaryscanEntrypoint>(

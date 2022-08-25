@@ -5,9 +5,11 @@
 #include "/panduza-cxx-platform/src/meta_driver.hxx"
 #include <jsoncpp/json/json.h>
 
+/// Meta driver for group info
 class MetaDriverGroupInfo : public MetaDriver
 {
 public:
+    /// Constructor @param payload of the boundary scan info
     MetaDriverGroupInfo(Json::Value payload);
 
     /// Setup the meta driver
