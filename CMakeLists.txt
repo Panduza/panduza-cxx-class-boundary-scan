@@ -13,7 +13,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(SOURCES 
 	src/base64/base64.cxx
 	src/ft2232_boundary_scan/jtag_manager.cxx
-	entrypoint.cxx
+	boundary_scan_entrypoint.cxx
 	src/meta_driver_group_info.cxx
 	src/meta_driver_FT2232_boundary_scan.cxx
 	src/meta_driver_FT2232_bsdl_loader.cxx
