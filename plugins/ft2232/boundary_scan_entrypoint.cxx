@@ -2,7 +2,7 @@
 #include <boost/config.hpp>
 #include <boost/dll/alias.hpp>
 #include <boost/shared_ptr.hpp>
-#include "entrypoint.hxx"
+#include "/panduza-cxx-platform/src/plugins/entrypoint.hxx"
 #include "src/meta_driver_FT2232_boundary_scan.hxx"
 
 /// Entrypoint Boundary Scan Namespace
