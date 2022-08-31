@@ -10,7 +10,6 @@
                     "driver": "Scan_service",
                     "settings": {
                         "probe_name" : "FT2232HL A FT6RR4EEA",
-                        "mode" : "manual",
                         "pin"  : "%r",
                         "behaviour" : "static"
                     },
@@ -33,28 +32,6 @@
                         "H18",
                         "G18",
                         "M5"
-                    ],
-                    "repeated_artya7": [
-                        "H5"
-                    ]
-                },
-                {
-                    "name": "IO_%r",
-                    "driver": "Scan_service",
-                    "settings": {
-                        "probe_name" : "FT2232HL A FT72DWQ6A",
-                        "mode" : "manual",
-                        "pin"  : "%r"
-                    },
-                    "repeated": [
-                        "H5"
-                    ],
-                    "repeated_artya7": [
-                        "H5",
-                        "J5",
-                        "T9",
-                        "T10",
-                        "A8"
                     ]
                 }
             ]
