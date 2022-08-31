@@ -27,6 +27,13 @@ The connection is made as below (take the direction of the board the picture of 
 <img src="img/usb-jtag-schema.png" width="200">  <img src="img/link-probe-board.png" width="150">  <img src="img/jtag-artys7-schema.png" width="100">
 
 
+## FT2232HL Device name
+
+As defined in the tree.json (panduza/tree.json), the probe name need to be "FT2232HL A FT6RR4EEA".
+For this, the Serial number should be "FT6RR4EE" and the Product Description should be "FT2232HL".
+This should be editable with the software FT_Prog.
+
+## Starting the program
 
 With theses conditions met and the conditions desccribed in the readme from the platform,
 the example should work by launching with docker-compose.
