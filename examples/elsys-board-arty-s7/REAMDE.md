@@ -24,6 +24,7 @@ This projet use a probe and a board to test
 
 To allow the probe to connect to the board to test, the connection is made via JTAG.
 The connection is made as below (take the direction of the board the picture of the hardware used):
+<br/>
 <img src="img/usb-jtag-schema.png" width="200">  <img src="img/link-probe-board.png" width="150">  <img src="img/jtag-artys7-schema.png" width="100">
 
 
