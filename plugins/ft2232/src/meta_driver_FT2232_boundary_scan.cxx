@@ -15,6 +15,9 @@ std::mutex MetaDriverFT2232BoundaryScan::mSetupMutex;
 
 void MetaDriverFT2232BoundaryScan::setup()
 {
+    //transfert back the loguru verbose
+    loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
+
     mProbeName = getInterfaceTree()["settings"]["probe_name"].asString();
     
     // Create a unique name for the driver name when there is multiple driver with the same name
