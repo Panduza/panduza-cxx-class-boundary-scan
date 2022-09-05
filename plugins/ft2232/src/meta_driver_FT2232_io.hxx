@@ -70,6 +70,7 @@ private:
     std::shared_ptr<JtagFT2232> mJtagManager;
     jtag_core *mJc;
     std::string mProbeId;
+    bool first_start = false;
 
     //IO VARIABLES
 

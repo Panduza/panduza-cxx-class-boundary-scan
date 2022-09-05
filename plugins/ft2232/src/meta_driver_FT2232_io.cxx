@@ -222,7 +222,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             }
         }
         /// If the message contains "value" and IO's direction is output, get the value
-        if (((msg->get_topic().find("value")) != (std::string::npos)) && (pin.getDirection() == "out"))
+        if (((msg->get_topic().find("value")) != (std::string::npos)) && (mDirection == "out") && (((msg->get_topic().find("cmds")) != (std::string::npos)) || !first_start) )
         {
             val = root.get("value", "").asString();
             SubVal = stoi(val);
@@ -251,6 +251,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
                     LOG_F(WARNING, "Expecting 0 or 1 as pin value");
                 }
             }
+            first_start = true;
         }
     }
     mMessageMutex.unlock();
