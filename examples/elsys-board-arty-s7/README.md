@@ -2,7 +2,7 @@
 
 ## FOLDER PLACEMENT
 
-To allow the projet to work, panduza-cxx-platform and panduza-cxx-class-boundary-scan have to be placed on the same folder.(see below)
+To allow the projet to work, panduza-cxx-platform and panduza-cxx-class-boundary-scan have to be placed of a same folder.
 
 folder
   |--- panduza-cxx-platform
@@ -10,7 +10,7 @@ folder
 
 ## HARDWARE USED
 
-This projet use a probe and a board
+This projet use a probe and a board to test
 
 - The probe developped internally in ELSYS DESIGN which is a USB-JTAG probe that is based on the FT2232HL chip.
 
@@ -42,8 +42,6 @@ the example should work by launching with docker-compose.
 The command to launch from this folder is : 
 
 ```sh
-docker-compose build && docker-compose up --abort-on-container-exit
+docker-compose build
+docker-compose up
 ```
-
-
--v /home/valentin/workspace/boundary-scan-class:/home/builder/panduza-cxx-class-boundary-scan
