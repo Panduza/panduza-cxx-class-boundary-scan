@@ -5,7 +5,6 @@
  */
 
 #include "jtag_manager.hxx"
-#include "io.hxx"
 
 JtagFT2232::JtagFT2232()
 {
