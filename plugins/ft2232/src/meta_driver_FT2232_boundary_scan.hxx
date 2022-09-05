@@ -40,12 +40,6 @@ public:
     /// Send Info function
     void sendInfo();
 
-    /// Reads states of input IOs
-    void checkInput();
-
-    /// Create a shared ptr thread if needed
-    std::shared_ptr<std::thread> createAlternativeThread() { return std::make_shared<std::thread>(&MetaDriverFT2232BoundaryScan::checkInput, this); }
-
     /// set the BSDL name
     void setBSDLName(std::string bsdl_file_name) { mBSDLName = bsdl_file_name; }
 
@@ -60,8 +54,6 @@ private:
     static std::mutex mSetupMutex;
 
     Metaplatform *mMetaplatformInstance;
-
-    std::mutex mutx;
 
     // static std::list<std::shared_ptr<JtagFT2232>> JTAG_MANAGERS;
     std::shared_ptr<JtagFT2232> mJtagManager;

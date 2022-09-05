@@ -15,9 +15,6 @@ public:
     /// Constructor
     MetaDriverFT2232BsdlLoader(MetaDriverFT2232BoundaryScan *meta_driver_ft2232_boundary_scan_instance);
 
-    /// Create an alternative thread when needed
-    std::shared_ptr<std::thread> createAlternativeThread() { return std::make_shared<std::thread>(&MetaDriverFT2232BsdlLoader::test, this); }
-
     /// Setup the meta driver
     void setup();
 
@@ -26,9 +23,6 @@ public:
 
     /// launched when a message arrived on subscribed topics
     void message_arrived(mqtt::const_message_ptr msg);
-
-    /// Actual thread, to change
-    void test();
 
 private:
     std::string mDecodedBSDL;

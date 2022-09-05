@@ -129,18 +129,6 @@ void MetaDriverFT2232BoundaryScan::sendInfo()
 
 // ============================================================================
 //
-void MetaDriverFT2232BoundaryScan::checkInput()
-{
-    loguru::set_thread_name("MetaDriverFT2232BoundaryScanGroup");
-    while (1)
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-        LOG_F(9, "MetaDriverFT2232BoundaryScanGroup");
-    }
-}
-
-// ============================================================================
-//
 
 void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
 {

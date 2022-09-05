@@ -113,15 +113,3 @@ void MetaDriverFT2232BsdlLoader::message_arrived(mqtt::const_message_ptr msg)
         }
     }
 }
-
-// ============================================================================
-//
-void MetaDriverFT2232BsdlLoader::test()
-{
-    loguru::set_thread_name("MetaDriverFT2232BsdlLoader");
-    while(1)
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-        LOG_F(9,"MetaDriverFT2232BsdlLoader");
-    }
-}
