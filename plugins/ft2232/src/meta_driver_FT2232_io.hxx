@@ -16,7 +16,7 @@ public:
     /// Destructor
     ~MetaDriverFT2232Io();
 
-    /// Constructor @param Jtag connexion
+    /// Constructor @param Jtag Jtag connection object
     MetaDriverFT2232Io(std::shared_ptr<JtagFT2232> jc);
 
     /// Setup the instance

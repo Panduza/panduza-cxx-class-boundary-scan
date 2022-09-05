@@ -19,31 +19,31 @@ public:
     /// Default constructor
     JtagFT2232();
 
-    /// Initialize the driver to connect to the probe
+    /// Initialize the driver to connect to the probe @param probe_name Name of the probe used @param bsdl_name Name of the bsdl file
     void initializeDriver(std::string probe_name, std::string bsdl_name);
 
-    /// Getter of Jc object
+    /// Getter of Jc object @return jtag_core object
     jtag_core *getJc();
 
-    /// Gets the ID of the board
+    /// Gets the ID of the board @param numberofdevice Number of device @param jc jtag_core object @return get the IDs of the device connected in char format
     char *getIdStr(int numberofdevice, jtag_core *jc);
 
-    /// Prints the available probes and returns the one needed
+    /// Prints the available probes and returns the one needed @param jc jtag_core object @param probe_name Name of the probe @return Number of pins (int)
     int getAvailableProbes(jtag_core *jc, std::string probe_name);
 
-    /// Prints the pins names connected to the probe "Id"
+    /// Prints the pins names connected to the probe "Id" @param jc Jtag_core object @param device Device number to select
     void printPins(jtag_core *jc, int device);
 
-    /// Gets the ID of the probe
+    /// Gets the ID of the probe @return Probe Id (int)
     int getProbeId();
 
-    /// Return the probe name
+    /// Return the probe name @return Probe name
     std::string getProbeName();
 
-    /// Prints the ID of the board
+    /// Prints the ID of the board @param jc Jtag_core object @return ...
     int printJtagDevices(jtag_core *jc);
 
-    /// Formats the string ID
+    /// Formats the string ID @param id id of the device @param str ...
     void bsdlIdStr(unsigned long id, char *str);
 
     /// Deinit the driver

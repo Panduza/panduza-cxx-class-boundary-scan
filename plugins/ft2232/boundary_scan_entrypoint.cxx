@@ -12,7 +12,7 @@ namespace boundary_scan
     class BoundaryscanEntrypoint : public PluginEntrypoint
     {
     public:
-        /// return the driver name and factory of the plugin
+        /// return the driver name and factory of the plugin @return Boundary Scan Factory information as a Map data
         std::map<std::string, MetaDriverFactory *> getInformationAndFactory()
         {
             std::map<std::string, MetaDriverFactory *> Factory;
@@ -20,7 +20,7 @@ namespace boundary_scan
             return Factory;
         }
 
-        /// Create the entrypoint object for boundary scan
+        /// Create the entrypoint object for boundary scan @return Shared pointer of the Entrypoint class
         static boost::shared_ptr<BoundaryscanEntrypoint> create()
         {
             return boost::shared_ptr<BoundaryscanEntrypoint>(
@@ -30,8 +30,7 @@ namespace boundary_scan
     };
 
     BOOST_DLL_ALIAS(
-        boundary_scan::BoundaryscanEntrypoint::create, // <-- this function is exported with...
-        get_factory                                          // <-- ...this alias name
+        boundary_scan::BoundaryscanEntrypoint::create,
+        get_factory
     )
-
 }

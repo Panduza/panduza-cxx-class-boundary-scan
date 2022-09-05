@@ -23,7 +23,7 @@ public:
     /// Destructor
     ~MetaDriverFT2232BoundaryScan() { LOG_F(9, "Meta Driver Io Fake Destructor"); }
 
-    /// Constructor with parent pointer
+    /// Constructor with parent pointer @param meta_platform_interface Meta Platform object
     MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface){ mMetaplatformInstance = meta_platform_interface; }
 
     /// Setup the meta driver
@@ -32,19 +32,19 @@ public:
     /// Start the creation of Io Meta Driver
     void startIo();
 
-    /// Return JtagManager Object
+    /// Return JtagManager Object @return Shared ptr of the Jtag connection
     std::shared_ptr<JtagFT2232> getJtagManager();
 
-    /// Create a Jtag manager and initialize it
+    /// Create a Jtag manager and initialize it @param probe_name Name of the probe @param bsdl_name Name of the BSDL file @return Shared ptr of the Jtag connection
     std::shared_ptr<JtagFT2232> createJtagManager(std::string probe_name, std::string bsdl_name);
 
     /// Send Info function
     void sendInfo();
 
-    /// set the BSDL name
+    /// set the BSDL name @param bsdl_file_name Name of the BSDL file
     void setBSDLName(std::string bsdl_file_name) { mBSDLName = bsdl_file_name; }
 
-    /// Create group info meta driver
+    /// Create group info meta driver that will return info about the boundary scan
     void createGroupInfoMetaDriver();
 
 private:
@@ -70,7 +70,7 @@ public:
     /// Constructor
     MetaDriverFactoryFT2232BoundaryScan(){};
 
-    /// Create the meta driver boundary scan
+    /// Create the meta driver boundary scan @return shared pointer of the BoundaryScan Meta Driver
     std::shared_ptr<MetaDriver> createDriver(void *arg);
 };
 

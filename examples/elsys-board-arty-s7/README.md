@@ -4,8 +4,8 @@
 
 To allow the projet to work, panduza-cxx-platform and panduza-cxx-class-boundary-scan have to be placed of a same folder.
 
-folder
-  |--- panduza-cxx-platform
+folder<br/>
+  |--- panduza-cxx-platform<br/>
   |--- panduza-cxx-class-boundary-scan
 
 ## HARDWARE USED
