@@ -24,7 +24,6 @@ set(SOURCES
 	src/ft2232_boundary_scan/drivers/ftdi_jtag/ftdi_jtag_drv.cxx
 	src/ft2232_boundary_scan/bsdl_parser/bsdl_loader.cxx
 	src/ft2232_boundary_scan/bsdl_parser/bsdl_strings.cxx
-	src/ft2232_boundary_scan/io.cxx
 	)
 
 # set extra libraries needed

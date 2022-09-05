@@ -11,7 +11,6 @@ MetaDriverFT2232Io::~MetaDriverFT2232Io()
 
     mAlternativeThread->join();
     delete mAlternativeThread;
-    delete mPin;
 
     mKillThread = false;
 }
@@ -27,13 +26,15 @@ void MetaDriverFT2232Io::setup()
     mProbeId = mJtagManager->getProbeId();
 
     // Get the name of the pin to use it on the function
-    const std::string pin_name = "IO_" + getInterfaceTree()["settings"]["pin"].asString();
-    LOG_F(4, "driver instance for pin : %s", pin_name.c_str());
+    mPinName = "IO_" + getInterfaceTree()["settings"]["pin"].asString();
+    LOG_F(4, "driver instance for pin : %s", mPinName.c_str());
 
     // Load the pin
-    Io *Pin = new Io(pin_name, this);
-    mPin = Pin;
-    mPinName = pin_name;
+    mId = jtagcore_get_pin_id(mJc, 0, mPinName.data());
+    mState = -1;
+    mSavedState = -1;
+    mReadState = 1;
+    mDirection = "unknown";
 
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
     subscribe(getBaseTopic() + "/" + mPinName + "/cmds/#", 0);
@@ -43,7 +44,7 @@ void MetaDriverFT2232Io::setup()
     mAlternativeThread = new std::thread(&MetaDriverFT2232Io::checkInput, this);
 }
 
-int MetaDriverFT2232Io::readInputState(Io &Io)
+int MetaDriverFT2232Io::readInputState()
 {
     // Return -1 if there is an error
     if (jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ) < 0)
@@ -52,76 +53,65 @@ int MetaDriverFT2232Io::readInputState(Io &Io)
     }
 
     // Return the actual state
-    return jtagcore_get_pin_state(mJc, 0, Io.getId(), JTAG_CORE_INPUT);
+    return jtagcore_get_pin_state(mJc, 0, mId, JTAG_CORE_INPUT);
 }
 
-void MetaDriverFT2232Io::setState(Io &Io, int state)
+void MetaDriverFT2232Io::setState(int state)
 {
     // Set the state of the Io
-    Io.setState(state);
+    mState = state;
 }
 
-void MetaDriverFT2232Io::setSavedState(Io &Io, int save)
+void MetaDriverFT2232Io::setSavedState(int save)
 {
     // Set the saved state of the Io
-    Io.setSavedState(save);
+    mSavedState = save;
 }
 
-void MetaDriverFT2232Io::setOutputOn(Io &Io)
+void MetaDriverFT2232Io::setOutputOn()
 {
     // Set Output to On
-    jtagcore_set_pin_state(mJc, 0, Io.getId(), JTAG_CORE_OUTPUT, 1);
-    jtagcore_set_pin_state(mJc, 0, Io.getId(), JTAG_CORE_OE, 1);
+    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OUTPUT, 1);
+    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OE, 1);
     jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
 }
 
-void MetaDriverFT2232Io::setOutputOff(Io &Io)
+void MetaDriverFT2232Io::setOutputOff()
 {
     // Set Output to Off
-    jtagcore_set_pin_state(mJc, 0, Io.getId(), JTAG_CORE_OUTPUT, 0);
-    jtagcore_set_pin_state(mJc, 0, Io.getId(), JTAG_CORE_OE, 0);
+    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OUTPUT, 0);
+    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OE, 0);
     jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
 }
 
-void MetaDriverFT2232Io::setDirection(Io &Io, std::string direction)
+void MetaDriverFT2232Io::setDirection(std::string direction)
 {
     // Set the direction of the Io
-    Io.setDirection(direction);
+    mDirection = direction;
 }
 
-int MetaDriverFT2232Io::getSavedState(Io &Io)
-{
-    return Io.getSavedState();
-}
-
-Io *MetaDriverFT2232Io::getPin()
-{
-    return mPin;
-}
-
-int MetaDriverFT2232Io::publishState(Io &Io)
+int MetaDriverFT2232Io::publishState()
 {
     mPubMutex.lock();
 
+    std::string PUB_TOPIC_VALUE = getBaseTopic() + "/" + mPinName + "/atts/value";
+    mStatePayload["value"] = mState;
 
-    std::string PUB_TOPIC_VALUE = getBaseTopic() + "/" + Io.getName() + "/atts/value";
-    mState["value"] = Io.getState();
-
-    publish(PUB_TOPIC_VALUE, mState, 0, true);
+    publish(PUB_TOPIC_VALUE, mStatePayload, 0, true);
 
     mPubMutex.unlock();
 
     return 0;
 }
 
-int MetaDriverFT2232Io::publishDirection(Io &Io)
+int MetaDriverFT2232Io::publishDirection()
 {
     mPubMutex.lock();
 
-    std::string PUB_TOPIC_DIRECTION = getBaseTopic() + "/" + Io.getName() + "/atts/direction";
-    mDirection["direction"] = Io.getDirection();
+    std::string PUB_TOPIC_DIRECTION = getBaseTopic() + "/" + mPinName + "/atts/direction";
+    mDirectionPayload["direction"] = mDirection;
 
-    publish(PUB_TOPIC_DIRECTION, mDirection, 0, true);
+    publish(PUB_TOPIC_DIRECTION, mDirectionPayload, 0, true);
 
     mPubMutex.unlock();
 
@@ -138,27 +128,27 @@ void MetaDriverFT2232Io::checkInput()
 
         /// Parse IO vector, search for IO input, keeps track of their actual state and checks for changes to publish them.
         mCheckInputMutex.lock();
-        if (mPin->getDirection() == "in")
+        if (mDirection == "in")
         {
             // LOG_F(8, "The pin %s have it read value as : %d", mPin->getName().c_str(), mPin->getRead());
             ///	If the pin state hasnt been alrady read, we read it and mark as read
-            if (mPin->getRead() == 0)
+            if (mReadState == 0)
             {
-                setSavedState(*mPin, readInputState(*mPin));
-                setState(*mPin, readInputState(*mPin));
+                setSavedState(readInputState());
+                setState(readInputState());
 
-                mPin->setReadState(1);
+                mReadState = 1;
             }
 
             ///	If the saved state and actual state are different, we publish state and mark as not read yet
-            if ((mPin->getState() != readInputState(*mPin)) && (readInputState(*mPin) >= 0))
+            if ((mState != readInputState()) && (readInputState() >= 0))
             {
-                setState(*mPin, readInputState(*mPin));
-                publishState(*mPin);
+                setState(readInputState());
+                publishState();
 
-                mPin->setReadState(0);
+                mReadState = 0;
             }
-            if (readInputState(*mPin) < 0)
+            if (readInputState() < 0)
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
@@ -202,34 +192,28 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
         else if (msg->get_topic().find("/cmds") != std::string::npos)
             PinName = msg->get_topic().substr(start, (msg->get_topic().find("/cmds") - start));
 
-        Io &pin = getIo(PinName, this);
-
         /// If message contains "direction", get it
         if (msg->get_topic().find("direction") != std::string::npos)
         {
             SubDir = root.get("direction", "").asString();
-            /// If the direction of the pin is different then the direction published in the topic
-            if (SubDir != pin.getDirection())
+            /// If the direction of the pin is different than the direction published in the topic
+            if (SubDir != mDirection)
             {
                 /// If direction is "input" or "output", edit the object and publish its direction
                 if (SubDir == "in")
                 {
-                    LOG_F(INFO, "Setting %s as input", pin.getName().c_str());
+                    LOG_F(INFO, "Setting %s as input", mPinName.c_str());
 
-                    setDirection(pin, "in");
-                    publishDirection(pin);
-                    setState(pin, getSavedState(pin));
-
-                    pin.editPin(pin.getName(), this);
+                    mDirection = "in";
+                    publishDirection();
+                    setState(mSavedState);
                 }
                 else if (SubDir == "out")
                 {
-                    LOG_F(INFO, "Setting %s as output", pin.getName().c_str());
+                    LOG_F(INFO, "Setting %s as output", mPinName.c_str());
 
-                    setDirection(pin, "out");
-                    publishDirection(pin);
-
-                    pin.editPin(pin.getName(), this);
+                    mDirection = "out";
+                    publishDirection();
                 }
                 else
                 {
@@ -238,36 +222,36 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             }
         }
         /// If the message contains "value" and IO's direction is output, get the value
-        if (((msg->get_topic().find("value")) != (std::string::npos)) && (pin.getDirection() == "out"))
+        if (((msg->get_topic().find("value")) != (std::string::npos)) && (mDirection == "out") && (((msg->get_topic().find("cmds")) != (std::string::npos)) || !first_start) )
         {
             val = root.get("value", "").asString();
             SubVal = stoi(val);
             /// If the state of the pin is different then the state published in the topic
-            if (SubVal != pin.getState())
+            if (SubVal != mState)
             {
                 /// If value = 0/1, edit the object and publish its state
                 if (SubVal == 0)
                 {
-                    LOG_F(INFO, "Setting %s to state %d", pin.getName().c_str(), 0);
+                    LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 0);
 
-                    setOutputOff(pin);
-                    setState(pin, 0);
-                    publishState(pin);
+                    setOutputOff();
+                    setState(0);
+                    publishState();
                 }
                 else if (SubVal == 1)
                 {
-                    LOG_F(INFO, "Setting %s to state %d", pin.getName().c_str(), 1);
+                    LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 1);
 
-                    setOutputOn(pin);
-                    setState(pin, 1);
-                    publishState(pin);
+                    setOutputOn();
+                    setState(1);
+                    publishState();
                 }
                 else
                 {
                     LOG_F(WARNING, "Expecting 0 or 1 as pin value");
                 }
-                pin.editPin(pin.getName(), this);
             }
+            first_start = true;
         }
     }
     mMessageMutex.unlock();

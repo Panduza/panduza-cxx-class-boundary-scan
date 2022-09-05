@@ -8,9 +8,9 @@
 #define _JTAGFT2232_
 
 #include <iostream>
+#include <cstring>
+#include "/panduza-cxx-platform/src/loguru/loguru.hxx"
 #include "jtag_core/jtag_core.hxx"
-
-class Io;
 
 /// JTAG Class, responsible of initializing and creating an object to communicate with board
 class JtagFT2232
