@@ -16,6 +16,7 @@
 class Io;
 class Metaplatform;
 
+/// @brief Main instance that will handle functionalities of the plugin
 class MetaDriverFT2232BoundaryScan : public MetaDriver
 {
 public:
@@ -62,6 +63,7 @@ private:
     Json::Value mInterfaceTree;
 };
 
+/// @brief Boundary Scan Factory
 class MetaDriverFactoryFT2232BoundaryScan : public MetaDriverFactory
 {
 public:

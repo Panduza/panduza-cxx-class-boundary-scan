@@ -9,6 +9,7 @@
 class Io;
 class JtagFT2232;
 
+/// @brief Manage the IOs
 class MetaDriverFT2232Io : public MetaDriver
 {
 public:

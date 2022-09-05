@@ -12,7 +12,7 @@
 #include "/panduza-cxx-platform/src/loguru/loguru.hxx"
 #include "jtag_core/jtag_core.hxx"
 
-/// JTAG Class, responsible of initializing and creating an object to communicate with board
+/// JTAG Class, responsible of initializing and creating an object to communicate with the board
 class JtagFT2232
 {
 public:

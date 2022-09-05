@@ -9,6 +9,7 @@
 
 class MetaDriverFT2232BoundaryScan;
 
+/// @brief manage the bsdl file loading via mqtt
 class MetaDriverFT2232BsdlLoader : public MetaDriver
 {
 public:
