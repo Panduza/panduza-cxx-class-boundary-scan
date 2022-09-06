@@ -84,12 +84,6 @@ void MetaDriverFT2232Io::setOutputOff()
     jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
 }
 
-void MetaDriverFT2232Io::setDirection(std::string direction)
-{
-    // Set the direction of the Io
-    mDirection = direction;
-}
-
 int MetaDriverFT2232Io::publishState()
 {
     mPubMutex.lock();
@@ -126,12 +120,12 @@ void MetaDriverFT2232Io::checkInput()
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
-        /// Parse IO vector, search for IO input, keeps track of their actual state and checks for changes to publish them.
+        // Parse IO vector, search for IO input, keeps track of their actual state and checks for changes to publish them.
         mCheckInputMutex.lock();
         if (mDirection == "in")
         {
             // LOG_F(8, "The pin %s have it read value as : %d", mPin->getName().c_str(), mPin->getRead());
-            ///	If the pin state hasnt been alrady read, we read it and mark as read
+            //	If the pin state hasnt been alrady read, we read it and mark as read
             if (mReadState == 0)
             {
                 setSavedState(readInputState());
@@ -140,7 +134,7 @@ void MetaDriverFT2232Io::checkInput()
                 mReadState = 1;
             }
 
-            ///	If the saved state and actual state are different, we publish state and mark as not read yet
+            //	If the saved state and actual state are different, we publish state and mark as not read yet
             if ((mState != readInputState()) && (readInputState() >= 0))
             {
                 setState(readInputState());
@@ -181,10 +175,10 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
     }
     else
     {
-        /// Parse the message, get the name of the IO from it and the object associated to that IO
+        // Parse the message, get the name of the IO from it and the object associated to that IO
         reader.parse(msg->to_string().c_str(), root);
 
-        /// topic is ex. : "pza/machine/driver/LED_RGB_B1/cmds/value/set", extract LED_RGB_B1.
+        // topic is ex. : "pza/machine/driver/LED_RGB_B1/cmds/value/set", extract LED_RGB_B1.
         start = (msg->get_topic()).find(driver) + driver.length();
 
         if (msg->get_topic().find("/atts") != std::string::npos)
@@ -192,14 +186,14 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
         else if (msg->get_topic().find("/cmds") != std::string::npos)
             PinName = msg->get_topic().substr(start, (msg->get_topic().find("/cmds") - start));
 
-        /// If message contains "direction", get it
+        // If message contains "direction", get it
         if (msg->get_topic().find("direction") != std::string::npos)
         {
             SubDir = root.get("direction", "").asString();
-            /// If the direction of the pin is different than the direction published in the topic
+            // If the direction of the pin is different than the direction published in the topic
             if (SubDir != mDirection)
             {
-                /// If direction is "input" or "output", edit the object and publish its direction
+                // If direction is "input" or "output", edit the object and publish its direction
                 if (SubDir == "in")
                 {
                     LOG_F(INFO, "Setting %s as input", mPinName.c_str());
@@ -221,15 +215,15 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
                 }
             }
         }
-        /// If the message contains "value" and IO's direction is output, get the value
+        // If the message contains "value" and IO's direction is output, get the value
         if (((msg->get_topic().find("value")) != (std::string::npos)) && (mDirection == "out") && (((msg->get_topic().find("cmds")) != (std::string::npos)) || !first_start) )
         {
             val = root.get("value", "").asString();
             SubVal = stoi(val);
-            /// If the state of the pin is different then the state published in the topic
+            // If the state of the pin is different then the state published in the topic
             if (SubVal != mState)
             {
-                /// If value = 0/1, edit the object and publish its state
+                // If value = 0/1, edit the object and publish its state
                 if (SubVal == 0)
                 {
                     LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 0);
