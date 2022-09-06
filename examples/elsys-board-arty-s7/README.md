@@ -4,7 +4,7 @@ This example will be based on the docker image of panduza-cxx-platform that will
 
 ## HARDWARE USED
 
-This projet use a probe and a DUT
+This projet use a probe and a DUT (Device Under Test)
 
 - The probe developped internally in ELSYS DESIGN which is a USB-JTAG probe that is based on the FT2232HL chip.
 
