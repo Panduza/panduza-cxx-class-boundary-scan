@@ -19,7 +19,7 @@
 
 /**
  * @file   drv_loader.h
- * @brief  driver functions definitions
+ *  driver functions definitions
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
  

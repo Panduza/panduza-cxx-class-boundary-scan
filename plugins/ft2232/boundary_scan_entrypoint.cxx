@@ -19,7 +19,7 @@ namespace boundary_scan
             return Factory;
         }
 
-        /// @brief Create the entrypoint object for boundary scan @return Shared pointer of the Entrypoint class
+        /// Create the entrypoint object for boundary scan @return Shared pointer of the Entrypoint class
         static boost::shared_ptr<BoundaryscanEntrypoint> create()
         {
             return boost::shared_ptr<BoundaryscanEntrypoint>(

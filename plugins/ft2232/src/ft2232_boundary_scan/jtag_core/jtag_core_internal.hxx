@@ -19,7 +19,7 @@
 
 /**
  * @file   jtag_core_internal.h
- * @brief  jtag core library internal structures and defines types
+ *  jtag core library internal structures and defines types
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

@@ -15,35 +15,35 @@
 
 class Metaplatform;
 
-/// @brief Main instance that will handle functionalities of the plugin
+/// Main instance that will handle functionalities of the plugin
 class MetaDriverFT2232BoundaryScan : public MetaDriver
 {
 public:
-    /// @brief Destructor
+    /// Destructor
     ~MetaDriverFT2232BoundaryScan() { LOG_F(9, "Meta Driver Io Fake Destructor"); }
 
-    /// @brief Constructor with parent pointer @param meta_platform_interface Meta Platform object
+    /// Constructor with parent pointer @param meta_platform_interface Meta Platform object
     MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface){ mMetaplatformInstance = meta_platform_interface; }
 
-    /// @brief Setup the meta driver
+    /// Setup the meta driver
     void setup();
 
-    /// @brief Start the creation of Io Meta Driver
+    /// Start the creation of Io Meta Driver
     void startIo();
 
-    /// @brief Return JtagManager Object @return Shared ptr of the Jtag connection
+    /// Return JtagManager Object @return Shared ptr of the Jtag connection
     std::shared_ptr<JtagFT2232> getJtagManager();
 
-    /// @brief Create a Jtag manager and initialize it @param probe_name Name of the probe @param bsdl_name Name of the BSDL file @return Shared ptr of the Jtag connection
+    /// Create a Jtag manager and initialize it @param probe_name Name of the probe @param bsdl_name Name of the BSDL file @return Shared ptr of the Jtag connection
     std::shared_ptr<JtagFT2232> createJtagManager(std::string probe_name, std::string bsdl_name);
 
-    /// @brief Send Info function
+    /// Send Info function
     void sendInfo();
 
-    /// @brief set the BSDL name @param bsdl_file_name Name of the BSDL file
+    /// set the BSDL name @param bsdl_file_name Name of the BSDL file
     void setBSDLName(std::string bsdl_file_name) { mBSDLName = bsdl_file_name; }
 
-    /// @brief Create group info meta driver that will return info about the boundary scan
+    /// Create group info meta driver that will return info about the boundary scan
     void createGroupInfoMetaDriver();
 
 private:
@@ -62,14 +62,14 @@ private:
     Json::Value mInterfaceTree;
 };
 
-/// @brief Boundary Scan Factory
+/// Boundary Scan Factory
 class MetaDriverFactoryFT2232BoundaryScan : public MetaDriverFactory
 {
 public:
-    /// @brief Constructor
+    /// Constructor
     MetaDriverFactoryFT2232BoundaryScan(){};
 
-    /// @brief Create the meta driver boundary scan @param arg instance of the platform @return shared pointer of the BoundaryScan Meta Driver
+    /// Create the meta driver boundary scan @param arg instance of the platform @return shared pointer of the BoundaryScan Meta Driver
     std::shared_ptr<MetaDriver> createDriver(void *arg);
 };
 

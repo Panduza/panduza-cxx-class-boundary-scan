@@ -1,6 +1,6 @@
 /**
  * @file   meta_driver_FT2232_boundary_scan.cxx
- * @brief  Manages and keeps informations about each IO
+ *  Manages and keeps informations about each IO
  * @author Valentin 
  */
 

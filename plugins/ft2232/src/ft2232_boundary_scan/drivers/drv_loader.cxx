@@ -19,7 +19,7 @@
 
 /**
  * @file   drv_loader.c
- * @brief  driver loader
+ *  driver loader
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

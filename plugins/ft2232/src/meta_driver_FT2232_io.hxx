@@ -8,56 +8,56 @@
 
 class JtagFT2232;
 
-/// @brief Manage the IOs
+/// Manage the IOs
 class MetaDriverFT2232Io : public MetaDriver
 {
 public:
-    /// @brief Destructor
+    /// Destructor
     ~MetaDriverFT2232Io();
 
-    /// @brief Constructor @param Jtag Jtag connection object
+    /// Constructor @param Jtag Jtag connection object
     MetaDriverFT2232Io(std::shared_ptr<JtagFT2232> jc);
 
-    /// @brief Setup the instance
+    /// Setup the instance
     void setup();
 
-    /// @brief Sets a pin direction to input and reads its value @param Io : Io object of the  @return int : input state
+    /// Sets a pin direction to input and reads its value @param Io : Io object of the  @return int : input state
     int readInputState();
 
-    /// @brief Sets the state of an Io @param Io 
+    /// Sets the state of an Io @param Io 
     void setState(int state);
 
-    /// @brief Sets the saved state of an Io
+    /// Sets the saved state of an Io
     void setSavedState(int save);
 
-    /// @brief Sets an Io direction to output and sets its value to 1 (to the board)
+    /// Sets an Io direction to output and sets its value to 1 (to the board)
     void setOutputOn();
 
-    /// @brief Sets an Io direction to output and sets its value to 0  (to the board)
+    /// Sets an Io direction to output and sets its value to 0  (to the board)
     void setOutputOff();
 
-    /// @brief Getter of Jc object
+    /// Getter of Jc object
     jtag_core *getJc() const { return mJc; };
 
-    /// @brief Publishes state of an Io @param Io : State of this Io is published
+    /// Publishes state of an Io @param Io : State of this Io is published
     int publishState();
 
-    /// @brief Publishes direction of an Io @param Io : State of this Io is published
+    /// Publishes direction of an Io @param Io : State of this Io is published
     int publishDirection();
 
-    /// @brief Check the input of the board, this is for the thread
+    /// Check the input of the board, this is for the thread
     void checkInput();
 
-    /// @brief Launched when a message arrive on the subscribed topic
+    /// Launched when a message arrive on the subscribed topic
     void message_arrived(mqtt::const_message_ptr msg);
 
-    /// @brief Send info when asked
+    /// Send info when asked
     void sendInfo();
 
-    /// @brief Create an alternative thread
+    /// Create an alternative thread
     std::shared_ptr<std::thread> createAlternativeThread() { return std::make_shared<std::thread>(&MetaDriverFT2232Io::checkInput, this); }
 
-    /// @brief Edits an Io in the vector @param name : Name of the Io to edit
+    /// Edits an Io in the vector @param name : Name of the Io to edit
     void editPin(std::string name);
 
 private:

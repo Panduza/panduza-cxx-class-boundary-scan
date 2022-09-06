@@ -19,7 +19,7 @@
 
 /**
  * @file   bsdl_strings.c
- * @brief  bsdl file string keywords
+ *  bsdl file string keywords
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

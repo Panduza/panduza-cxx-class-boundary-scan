@@ -1,6 +1,6 @@
 /**
  * @file   jtag_manager.cpp
- * @brief  Manages the communication with board over JTAG
+ *  Manages the communication with board over JTAG
  * @author Adel
  */
 
