@@ -19,7 +19,7 @@
 
 /**
  * @file   jtag_core.c
- * @brief  Main jtag core library functions
+ *  Main jtag core library functions
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

@@ -9,10 +9,11 @@
 
 class MetaDriverFT2232BoundaryScan;
 
+/// Manage the bsdl file loading via mqtt
 class MetaDriverFT2232BsdlLoader : public MetaDriver
 {
 public:
-    /// Constructor
+    /// Constructor @param meta_driver_ft2232_boundary_scan_instance Meta Driver Boundary Scan object
     MetaDriverFT2232BsdlLoader(MetaDriverFT2232BoundaryScan *meta_driver_ft2232_boundary_scan_instance);
 
     /// Setup the meta driver
@@ -21,7 +22,7 @@ public:
     /// Send info
     void sendInfo();
 
-    /// launched when a message arrived on subscribed topics
+    /// launched when a message arrived on subscribed topics @param msg Receiver message from the MQTT broker
     void message_arrived(mqtt::const_message_ptr msg);
 
 private:

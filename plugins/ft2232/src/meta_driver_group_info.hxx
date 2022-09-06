@@ -18,7 +18,7 @@ public:
     /// Send info
     void sendInfo();
 
-    /// launched when a message arrived on subscribed topics
+    /// launched when a message arrived on subscribed topics @param msg payload received with topic
     void message_arrived(mqtt::const_message_ptr msg);
 
 private:

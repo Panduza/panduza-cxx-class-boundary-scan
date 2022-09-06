@@ -1,6 +1,6 @@
 /**
  * @file   jtag_manager.cpp
- * @brief  Manages the communication with board over JTAG
+ *  Manages the communication with board over JTAG
  * @author Adel
  */
 
@@ -17,32 +17,32 @@ void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
     LOG_F(1, "Initializing the Driver for the probe : %s", probe_name.c_str());
     mProbeName = probe_name;
     
-    /// Initialization of mJc
+    // Initialization of mJc
     mJc = jtagcore_init();
 
     if (mJc)
     {
-        /// Scan available probes
+        // Scan available probes
         mProbeId = getAvailableProbes(mJc, probe_name);
         LOG_F(1, "Probe ID is : %d", mProbeId);
-        /// Selects the needed probe
+        // Selects the needed probe
         if (jtagcore_select_and_open_probe(mJc, mProbeId) >= 0) // Probe: FT2232H_MM A FT12345A ID=0
         {
-            /// Scan and initialize JTAG chain
+            // Scan and initialize JTAG chain
             jtagcore_scan_and_init_chain(mJc);
         }
 
-        /// Gets the ID of the board
+        // Gets the ID of the board
         printJtagDevices(mJc);
 
-        /// Loads the BSDL file
+        // Loads the BSDL file
         jtagcore_loadbsdlfile(mJc, bsdl_name.c_str(), 0);
 
-        /// Enables test mode
+        // Enables test mode
         jtagcore_set_scan_mode(mJc, 0, JTAG_CORE_EXTEST_SCANMODE);
         jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
 
-        /// Prints all the pins on the board (verbosity 6 is needed)
+        // Prints all the pins on the board (verbosity 6 is needed)
         printPins(mJc, 0);
         mJtagDriverLoaded = true;
     }
@@ -131,7 +131,7 @@ int JtagFT2232::printJtagDevices(jtag_core *mJc)
     char tempstring[DEFAULT_BUFLEN];
     VLOG_SCOPE_F(6, "Print jtag devices");
 
-    /// Counts the peripherals on JTAG chain and prints the ID of the board
+    // Counts the peripherals on JTAG chain and prints the ID of the board
     ret = jtagcore_get_number_of_devices(mJc);
     if (ret > 0)
     {

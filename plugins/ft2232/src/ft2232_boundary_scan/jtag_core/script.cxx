@@ -19,7 +19,7 @@
 
 /**
 * @file   script.c
-* @brief  command line parser.
+*  command line parser.
 * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
 */
 

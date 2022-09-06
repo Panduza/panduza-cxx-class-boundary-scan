@@ -19,7 +19,7 @@
 
 /**
  * @file   jtag_core.hxx
- * @brief  Main jtag core library header
+ *  Main jtag core library header
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

@@ -19,7 +19,7 @@
 
 /**
  * @file   ftdi_jtag_drv.h
- * @brief  FTDI based probes driver entry point definition
+ *  FTDI based probes driver entry point definition
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

@@ -19,7 +19,7 @@
 
 /**
  * @file   bsdl_loader.h
- * @brief  bsdl file parser header
+ *  bsdl file parser header
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

@@ -19,7 +19,7 @@
 
 /**
  * @file   ftdi_jtag_drv.c
- * @brief  FTDI based probes driver
+ *  FTDI based probes driver
  * @author Jean-François DEL NERO <Jean-Francois.DELNERO@viveris.fr>
  */
 

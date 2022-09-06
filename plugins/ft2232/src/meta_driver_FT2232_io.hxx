@@ -6,16 +6,16 @@
 #include "ft2232_boundary_scan/jtag_core/jtag_core.hxx"
 #include "ft2232_boundary_scan/jtag_manager.hxx"
 
-class Io;
 class JtagFT2232;
 
+/// Manage the IOs
 class MetaDriverFT2232Io : public MetaDriver
 {
 public:
     /// Destructor
     ~MetaDriverFT2232Io();
 
-    /// Constructor @param Jtag connexion
+    /// Constructor @param Jtag Jtag connection object
     MetaDriverFT2232Io(std::shared_ptr<JtagFT2232> jc);
 
     /// Setup the instance
@@ -36,13 +36,8 @@ public:
     /// Sets an Io direction to output and sets its value to 0  (to the board)
     void setOutputOff();
 
-    void setDirection(std::string direction);
-
     /// Getter of Jc object
     jtag_core *getJc() const { return mJc; };
-
-    /// Pin getter @return Reference of the Pin
-    Io *getPin();
 
     /// Publishes state of an Io @param Io : State of this Io is published
     int publishState();

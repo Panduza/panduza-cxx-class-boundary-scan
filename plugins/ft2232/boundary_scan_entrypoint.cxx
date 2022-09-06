@@ -5,14 +5,13 @@
 #include "/panduza-cxx-platform/src/plugins/entrypoint.hxx"
 #include "src/meta_driver_FT2232_boundary_scan.hxx"
 
-/// Entrypoint Boundary Scan Namespace
 namespace boundary_scan
 {
-    /// Entrypoint for the boundary scan plugin
+    
     class BoundaryscanEntrypoint : public PluginEntrypoint
     {
     public:
-        /// return the driver name and factory of the plugin
+        
         std::map<std::string, MetaDriverFactory *> getInformationAndFactory()
         {
             std::map<std::string, MetaDriverFactory *> Factory;
@@ -20,7 +19,7 @@ namespace boundary_scan
             return Factory;
         }
 
-        /// Create the entrypoint object for boundary scan
+        /// Create the entrypoint object for boundary scan @return Shared pointer of the Entrypoint class
         static boost::shared_ptr<BoundaryscanEntrypoint> create()
         {
             return boost::shared_ptr<BoundaryscanEntrypoint>(
@@ -30,8 +29,7 @@ namespace boundary_scan
     };
 
     BOOST_DLL_ALIAS(
-        boundary_scan::BoundaryscanEntrypoint::create, // <-- this function is exported with...
-        get_factory                                          // <-- ...this alias name
+        boundary_scan::BoundaryscanEntrypoint::create,
+        get_factory
     )
-
 }
