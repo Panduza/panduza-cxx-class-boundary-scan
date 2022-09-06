@@ -3,6 +3,7 @@ version: '3'
 services: 
 
   mosquitto:
+    container_name: mosquitto
     image: eclipse-mosquitto
     ports:
       - 1883:1883
@@ -10,7 +11,8 @@ services:
     volumes:
       - ./mosquitto-data/mosquitto.conf:/mosquitto/config/mosquitto.conf 
     
-  panduza-platform: 
+  panduza-platform:
+    container_name: panduza-cxx-platform
     user: builder
     build:
       context: ../../../panduza-cxx-platform
