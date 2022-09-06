@@ -8,18 +8,18 @@ This projet use a probe and a DUT
 
 - The probe developped internally in ELSYS DESIGN which is a USB-JTAG probe that is based on the FT2232HL chip.
 
-<img src="img/probe.jpg" alt="probe" width="400"/>
+<img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="300" alt="probe"/>
 
 - The DUT is a ARTY S7.
 
-<img src="img/artys7.jpg" alt="artys7" width="400"/>
+<img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
 
 ## JTAG CONNECTION PINOUT
 
 To allow the probe to connect to the DUT, the connection is made via JTAG.
-The connection is made as below (take the direction of the board the picture of the hardware used):
+The connection is made as below :
 <br/>
-<img src="img/JTAG_pinout.jpg" width="300" style="margin:10px"> <img src="img/ALTERA_pinout.jpg" width="300" style="margin:10px">
+<img src="https://user-images.githubusercontent.com/37267717/188600493-8225c4cc-107b-45c7-9919-f281b57ffa34.jpg" width="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/188600479-69a1a7ef-e334-4bbb-b0b5-c415a05effef.jpg" width="300" style="margin:10px" />
 
 
 ## FT2232HL Device name
