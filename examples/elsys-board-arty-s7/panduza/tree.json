@@ -10,6 +10,7 @@
                     "driver": "Scan_service",
                     "settings": {
                         "probe_name" : "FT2232HL A FT6RR4EEA",
+                        "BSDL" : "xc7s50_csga324.bsdl",
                         "pin"  : "%r",
                         "behaviour" : "static"
                     },
