@@ -19,4 +19,4 @@ services:
     privileged: true
     volumes:
       - ./panduza/tree.json:/etc/panduza/tree.json
-      - ../../.:/home/builder/panduza-cxx-class-boundary-scan
+      - ./logs:/panduza-cxx-platform/logs
