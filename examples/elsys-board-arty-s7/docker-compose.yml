@@ -13,12 +13,10 @@ services:
     
   panduza-platform:
     container_name: panduza-cxx-platform
+    image: ghcr.io/panduza/panduza-cxx-platform:create-github-action
     user: builder
-    build:
-      context: ../../../panduza-cxx-platform
     network_mode: host
     privileged: true
     volumes:
-      - ../../../panduza-cxx-platform:/panduza-cxx-platform
       - ./panduza/tree.json:/etc/panduza/tree.json
       - ../../.:/home/builder/panduza-cxx-class-boundary-scan
