@@ -46,7 +46,7 @@ void MetaDriverFT2232BsdlLoader::checkBSDLFile(std::string bsdl_path)
     if (bsdl_file.is_open())
     {
         LOG_F(INFO, "BSDL File found in %s, loading the BSDL...", bsdl_path.c_str());
-        mMetaDriverFT2232BoundaryScanInstance->setBSDLName(getDriverName() + ".bsdl");
+        mMetaDriverFT2232BoundaryScanInstance->setBSDLName(bsdl_path);
         mMetaDriverFT2232BoundaryScanInstance->setProbeName(getProbeName());
         mMetaDriverFT2232BoundaryScanInstance->startIo();
 
