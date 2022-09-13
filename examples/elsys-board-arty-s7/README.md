@@ -47,7 +47,7 @@ To start the program, please launch the command below from this folder
  ./start.sh
 ```
 
-After the start of the platform and the loading of the pins, it is possible to change the direction and the state of a pin with MQTT-Explorer or also with some python script.
+After the start of the platform and the loading of the pins, it is possible to change the direction and the state of a pin with MQTT-Explorer with the specific topics and messages.
 
 ## Changing the BSDL file
 
