@@ -31,7 +31,6 @@ set(EXTRA_LIBS
 	dl
 	ftd2xx 
 	pthread
-	boost_program_options
 	boost_filesystem
 	boost_system
 	Metaplatform
