@@ -20,10 +20,10 @@ void MetaDriverFT2232BsdlLoader::setup()
     subscribe(getBaseTopic() + "/Bsdl_File/atts/content", 0);
     subscribe(getBaseTopic() + "/Bsdl_File/atts/data", 0);
 
-    // Define tree_bsdl variable if it existe
-    if(!getInterfaceTree()["setting"]["BSDL"].empty())
+    // Define tree_bsdl variable if it exist
+    if(!getInterfaceTree()["settings"]["BSDL"].empty())
     {
-        std::string tree_bsdl = getInterfaceTree()["setting"]["BSDL"].asString();
+        std::string tree_bsdl = getInterfaceTree()["settings"]["BSDL"].asString();
 
         checkBSDLFile("/etc/BoundaryScan/" + tree_bsdl);
         return;
