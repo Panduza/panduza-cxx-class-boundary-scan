@@ -21,12 +21,35 @@ The connection is made as below :
 
 <img src="https://user-images.githubusercontent.com/37267717/189347706-711e7679-fd5f-46aa-90f1-2e2b8b343668.jpg" width="400" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/189347876-f6a7096a-ca11-4add-ae23-10463189eb2f.jpg" width="400" style="margin:10px" />
 
-## FT2232HL Device name
+## FT2232HL Probe name
 
-As defined in the tree.json (panduza/tree.json), the probe name need to be "FT2232HL A FT6RR4EEA".
+There is two way of defining the probe name. One is to change directly the name of the probe (EEPROM needed in the probe board) to be the same as the one defined on the tree. This can be made with the Software FT_Prog.
 For this, the Serial number should be "FT6RR4EE" and the Product Description should be "FT2232HL".
 This should be editable with the software FT_Prog.
 
+The other way is to find the name of the probe use and redefine it on the tree. This can be found either on the software FT_Prog or with the command usb-devices on ubuntu.
+
+The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNumber to change. Both "A" and spaceshave to be put in the same position 
+
 ## Starting the program
 
-Please refer to the start of the docker image of the platform for that.
+When starting the program from here, the tree used will be the tree.json present in the panduza folder.
+
+The BSDL file is loaded by default from the BoundaryScan folder. By so it is not possible to load another BSDL.
+This BSDL file is only working with an ARTY s7 board. 
+
+The probe name is also essential to be the name as defined on the tree (or on the other way)
+
+
+To start the program, please launch the command below from this folder
+
+```sh
+ ./start.sh
+```
+
+After the start of the platform and the loading of the pins, it is possible to change the direction and the state of a pin with MQTT-Explorer or also with some python script.
+
+## Changing the BSDL file
+
+An option to change the BSDL File name is to change the file name in the tree and add the file in the folder called BoundaryScan. This will allow the program to load directly the bsdl file.
+When changing the BSDL file, and DUT, the pin listed on "repeated" on the tree have to be changed for the pin you want to test.
