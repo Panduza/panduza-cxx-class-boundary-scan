@@ -20,3 +20,4 @@ services:
     volumes:
       - ./panduza/tree.json:/etc/panduza/tree.json
       - ./logs:/panduza-cxx-platform/logs
+      - ./BoundaryScan:/etc/BoundaryScan
