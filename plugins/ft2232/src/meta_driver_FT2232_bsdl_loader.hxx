@@ -25,6 +25,8 @@ public:
     /// launched when a message arrived on subscribed topics @param msg Receiver message from the MQTT broker
     void message_arrived(mqtt::const_message_ptr msg);
 
+    void checkBSDLFile(std::string bsdl_path);
+
 private:
     std::string mDecodedBSDL;
     std::string mBSDLName;

@@ -20,21 +20,40 @@ void MetaDriverFT2232BsdlLoader::setup()
     subscribe(getBaseTopic() + "/Bsdl_File/atts/content", 0);
     subscribe(getBaseTopic() + "/Bsdl_File/atts/data", 0);
 
-    LOG_F(ERROR, "%s.bsdl",getDriverName().c_str());
-    // Try to open the BSDL
-    std::ifstream bsdl_file(getDriverName() + ".bsdl", std::ifstream::binary);
+    // Define tree_bsdl variable if it existe
+    if(getInterfaceTree()["setting"]["BSDL"])
+    {
+        std::string tree_bsdl = getInterfaceTree()["setting"]["BSDL"];
+
+        checkBSDLFile("/etc/BoundaryScan/" + tree_bsdl);
+        return;
+    }
+
+    LOG_F(3, "The BSDL file will be named : %s.bsdl",getDriverName().c_str());
+
+    checkBSDLFile(getDriverName() + ".bsdl");
+}
+
+// ============================================================================
+//
+
+void MetaDriverFT2232BsdlLoader::checkBSDLFile(std::string bsdl_path)
+{
+    // Try to open the BSDL of the Service name
+    std::ifstream bsdl_file(bsdl_path, std::ifstream::binary);
 
     // If it does open, then start the launch of Ios
     if (bsdl_file.is_open())
     {
-        LOG_F(INFO, "BSDL File found, loading the BSDL...");
+        LOG_F(INFO, "BSDL File found in %s, loading the BSDL...", bsdl_path.c_str());
         mMetaDriverFT2232BoundaryScanInstance->setBSDLName(getDriverName() + ".bsdl");
         mMetaDriverFT2232BoundaryScanInstance->setProbeName(getProbeName());
         mMetaDriverFT2232BoundaryScanInstance->startIo();
-        
+
         bsdl_file.close();
     }
 }
+
 
 // ============================================================================
 //
