@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <cstring>
-#include "/panduza-cxx-platform/src/loguru/loguru.hxx"
+#include "../../../../headers/loguru.hxx"
 #include "jtag_core/jtag_core.hxx"
 
 /// JTAG Class, responsible of initializing and creating an object to communicate with the board

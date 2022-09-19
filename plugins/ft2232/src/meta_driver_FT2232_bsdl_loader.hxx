@@ -5,7 +5,7 @@
 #include <iostream>
 #include <boost/crc.hpp>
 #include <sstream>
-#include "/panduza-cxx-platform/src/meta_driver.hxx"
+#include "../../../headers/meta_driver.hxx"
 
 class MetaDriverFT2232BoundaryScan;
 

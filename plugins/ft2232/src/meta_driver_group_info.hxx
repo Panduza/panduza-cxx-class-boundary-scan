@@ -2,7 +2,7 @@
 #define _METADRIVERGROUPINFO
 #pragma once
 
-#include "/panduza-cxx-platform/src/meta_driver.hxx"
+#include "../../../headers/meta_driver.hxx"
 #include <jsoncpp/json/json.h>
 
 /// Meta driver for group info

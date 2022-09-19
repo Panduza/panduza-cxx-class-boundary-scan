@@ -5,7 +5,7 @@
  */
 
 #include "meta_driver_FT2232_boundary_scan.hxx"
-#include "/panduza-cxx-platform/src/meta_platform.hxx"
+#include "../../../headers/meta_platform.hxx"
 
 // Initalizing static variables
 std::mutex MetaDriverFT2232BoundaryScan::mSetupMutex;
