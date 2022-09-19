@@ -11,7 +11,6 @@ set(CMAKE_BUILD_TYPE Debug)
 
 # specify sources
 set(SOURCES 
-	src/base64/base64.cxx
 	src/ft2232_boundary_scan/jtag_manager.cxx
 	boundary_scan_entrypoint.cxx
 	src/meta_driver_group_info.cxx
