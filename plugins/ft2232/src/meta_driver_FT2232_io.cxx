@@ -4,6 +4,7 @@
 std::mutex MetaDriverFT2232Io::mCheckInputMutex;
 std::mutex MetaDriverFT2232Io::mMessageMutex;
 std::mutex MetaDriverFT2232Io::mPubMutex;
+std::mutex MetaDriverFT2232Io::mJtagMutex;
 
 MetaDriverFT2232Io::~MetaDriverFT2232Io()
 {
@@ -86,28 +87,28 @@ void MetaDriverFT2232Io::setOutputOff()
 
 int MetaDriverFT2232Io::publishState()
 {
-    mPubMutex.lock();
+    // mPubMutex.lock();
 
     std::string PUB_TOPIC_VALUE = getBaseTopic() + "/" + mPinName + "/atts/value";
     mStatePayload["value"] = mState;
 
     publish(PUB_TOPIC_VALUE, mStatePayload, 0, true);
 
-    mPubMutex.unlock();
+    // mPubMutex.unlock();
 
     return 0;
 }
 
 int MetaDriverFT2232Io::publishDirection()
 {
-    mPubMutex.lock();
+    // mPubMutex.lock();
 
     std::string PUB_TOPIC_DIRECTION = getBaseTopic() + "/" + mPinName + "/atts/direction";
     mDirectionPayload["direction"] = mDirection;
 
     publish(PUB_TOPIC_DIRECTION, mDirectionPayload, 0, true);
 
-    mPubMutex.unlock();
+    // mPubMutex.unlock();
 
     return 0;
 }
@@ -124,6 +125,7 @@ void MetaDriverFT2232Io::checkInput()
         mCheckInputMutex.lock();
         if (mDirection == "in")
         {
+            mJtagMutex.lock();
             // LOG_F(8, "The pin %s have it read value as : %d", mPin->getName().c_str(), mPin->getRead());
             //	If the pin state hasnt been alrady read, we read it and mark as read
             if (mReadState == 0)
@@ -142,10 +144,7 @@ void MetaDriverFT2232Io::checkInput()
 
                 mReadState = 0;
             }
-            if (readInputState() < 0)
-            {
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-            }
+            mJtagMutex.unlock();
         }
         mCheckInputMutex.unlock();
     }
@@ -227,18 +226,20 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
                 if (SubVal == 0)
                 {
                     LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 0);
-
+                    mJtagMutex.lock();
                     setOutputOff();
                     setState(0);
                     publishState();
+                    mJtagMutex.unlock();
                 }
                 else if (SubVal == 1)
                 {
                     LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 1);
-
+                    mJtagMutex.lock();
                     setOutputOn();
                     setState(1);
                     publishState();
+                    mJtagMutex.unlock();
                 }
                 else
                 {

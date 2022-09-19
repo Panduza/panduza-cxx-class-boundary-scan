@@ -83,6 +83,7 @@ private:
     static std::mutex mPubMutex;
     static std::mutex mCheckInputMutex;
     static std::mutex mMessageMutex;
+    static std::mutex mJtagMutex;
 
     std::thread *mAlternativeThread;
     bool mKillThread = false;
