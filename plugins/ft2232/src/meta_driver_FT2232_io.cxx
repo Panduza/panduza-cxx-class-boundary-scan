@@ -236,7 +236,6 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             first_start = true;
         }
     }
-    mMessageMutex.unlock();
 }
 
 void MetaDriverFT2232Io::sendInfo()
