@@ -118,18 +118,19 @@ void MetaDriverFT2232Io::checkInput()
             mJtagMutex.lock();
             // LOG_F(8, "The pin %s have it read value as : %d", mPin->getName().c_str(), mPin->getRead());
             //	If the pin state hasnt been alrady read, we read it and mark as read
+            const int inputState = readInputState();
             if (mReadState == 0)
             {
-                setSavedState(readInputState());
-                setState(readInputState());
+                setSavedState(inputState);
+                setState(inputState);
 
                 mReadState = 1;
             }
 
-            //	If the saved state and actual state are different, we publish state and mark as not read yet
-            if ((mState != readInputState()) && (readInputState() >= 0))
+            //	If the saved state and actual state are different, we publish the state
+            if ((mState != inputState) && (inputState >= 0))
             {
-                setState(readInputState());
+                setState(inputState);
                 publishState();
 
                 mReadState = 0;
@@ -144,7 +145,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
     loguru::set_thread_name("Sub callback");
     Json::Value root;
     Json::Reader reader;
-    std::string SubDir, val, PinName, driver = getDriverName() + "/";
+    std::string SubDir, val, driver = getDriverName() + "/";
     std::size_t start;
     int SubVal;
 
@@ -163,15 +164,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
     else
     {
         // Parse the message, get the name of the IO from it and the object associated to that IO
-        reader.parse(msg->to_string().c_str(), root);
-
-        // topic is ex. : "pza/machine/driver/LED_RGB_B1/cmds/value/set", extract LED_RGB_B1.
-        start = (msg->get_topic()).find(driver) + driver.length();
-
-        if (msg->get_topic().find("/atts") != std::string::npos)
-            PinName = msg->get_topic().substr(start, (msg->get_topic().find("/atts") - start));
-        else if (msg->get_topic().find("/cmds") != std::string::npos)
-            PinName = msg->get_topic().substr(start, (msg->get_topic().find("/cmds") - start));
+        reader.parse(msg->to_string().c_str(), root);  
 
         // If message contains "direction", get it
         if (msg->get_topic().find("direction") != std::string::npos)

@@ -28,9 +28,6 @@ void MetaDriverFT2232BoundaryScan::setup()
     // Create Meta Driver File
     std::shared_ptr<MetaDriver> meta_driver_file_instance = std::make_shared<MetaDriverFT2232BsdlLoader>(this);
 
-    // Create the unique driver name and put it back to the interface tree
-    mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + probe_serial_no;
-
     // Initialize the meta_driver file instance
     meta_driver_file_instance->initialize(getMachineName(), getBrokerName(), getBrokerAddr(), getBrokerPort(), mInterfaceTree);
 
@@ -113,18 +110,8 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::createJtagManager(std:
 
 // ============================================================================
 //
-void MetaDriverFT2232BoundaryScan::sendInfo()
-{
-    // // Create the info payload
-    // Json::Value info;
-    // info["type"] = "Group";
-    // info["version"] = "1.0";
 
-    // LOG_F(4, "Info sent is : %s", info.toStyledString().c_str());
-
-    // // publish the message info to the mqtt server for the pin
-    // publish(getBaseTopic() + "/info", info, 0, false);
-}
+void MetaDriverFT2232BoundaryScan::sendInfo() {}
 
 // ============================================================================
 //
