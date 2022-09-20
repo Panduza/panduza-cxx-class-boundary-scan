@@ -12,11 +12,12 @@
 
 void MetaDriverFT2232BoundaryScan::setup()
 {
-    //transfert back the loguru verbose
+    // Transfert back the loguru verbose and file logging
     loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
     loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
     loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
 
+    // Get Probe name
     mProbeName = getInterfaceTree()["settings"]["probe_name"].asString();
     
     // Create a unique name for the driver name when there is multiple driver with the same name
@@ -24,6 +25,7 @@ void MetaDriverFT2232BoundaryScan::setup()
     int serial_start_index = mInterfaceTree["settings"]["probe_name"].asString().find(" FT") + 1;
     int probe_name_size = mInterfaceTree["settings"]["probe_name"].size();
     std::string probe_serial_no = mProbeName.substr( serial_start_index, probe_name_size - serial_start_index);
+    mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + probe_serial_no;
 
     // Create Meta Driver File
     std::shared_ptr<MetaDriver> meta_driver_file_instance = std::make_shared<MetaDriverFT2232BsdlLoader>(this);
@@ -37,6 +39,7 @@ void MetaDriverFT2232BoundaryScan::setup()
 
 // ============================================================================
 //
+
 void MetaDriverFT2232BoundaryScan::startIo()
 {
     // Kill all reloadable instances
@@ -87,6 +90,7 @@ void MetaDriverFT2232BoundaryScan::startIo()
 
 // ============================================================================
 //
+
 std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
 {
     if (mJtagManagerLoaded == false)
@@ -99,6 +103,7 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
 
 // ============================================================================
 //
+
 std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::createJtagManager(std::string probe_name, std::string bsdl_name)
 {
     // Create the Jtag manager with the probe name and bsdl name
