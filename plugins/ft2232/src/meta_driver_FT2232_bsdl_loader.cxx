@@ -16,9 +16,10 @@ MetaDriverFT2232BsdlLoader::MetaDriverFT2232BsdlLoader(MetaDriverFT2232BoundaryS
 void MetaDriverFT2232BsdlLoader::setup()
 {
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
-    subscribe(getBaseTopic() + "/Bsdl_File/cmds/#", 0);
-    subscribe(getBaseTopic() + "/Bsdl_File/atts/content", 0);
-    subscribe(getBaseTopic() + "/Bsdl_File/atts/data", 0);
+    setBaseTopic(getBaseTopic() + "/Bsdl_File");
+    subscribe(getBaseTopic() + "/cmds/#", 0);
+    subscribe(getBaseTopic() + "/atts/content", 0);
+    subscribe(getBaseTopic() + "/atts/data", 0);
 
     // Define tree_bsdl variable if it exist
     if(!getInterfaceTree()["settings"]["BSDL"].empty())
@@ -67,7 +68,7 @@ void MetaDriverFT2232BsdlLoader::sendInfo()
     LOG_F(4, "Info sent is : %s", info.toStyledString().c_str());
 
     // publish the message info to the mqtt server for the pin
-    publish(getBaseTopic() + "/Bsdl_File/info", info, 0, false);
+    publish(getBaseTopic() + "/info", info, 0, false);
 }
 
 // ============================================================================
@@ -108,8 +109,8 @@ void MetaDriverFT2232BsdlLoader::message_arrived(mqtt::const_message_ptr msg)
             payload["crc"] = crc32hex.str();
             
             // Send payloads to atts
-            publish(getBaseTopic() + "/Bsdl_File/atts/metadata", payload, 0, true);
-            publish(getBaseTopic() + "/Bsdl_File/atts/content", parsedMsg, 0, true);
+            publish(getBaseTopic() + "/atts/metadata", payload, 0, true);
+            publish(getBaseTopic() + "/atts/content", parsedMsg, 0, true);
 
             // Get encoded message
             std::string encoded_message = parsedMsg["data"].asString();

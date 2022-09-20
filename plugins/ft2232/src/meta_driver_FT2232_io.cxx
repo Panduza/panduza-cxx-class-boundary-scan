@@ -37,10 +37,12 @@ void MetaDriverFT2232Io::setup()
     mReadState = 1;
     mDirection = "unknown";
 
+    setBaseTopic(getBaseTopic() + "/" + mPinName);
+
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
-    subscribe(getBaseTopic() + "/" + mPinName + "/cmds/#", 0);
-    subscribe(getBaseTopic() + "/" + mPinName + "/atts/direction", 0);
-    subscribe(getBaseTopic() + "/" + mPinName + "/atts/value", 0);
+    subscribe(getBaseTopic() + "/cmds/#", 0);
+    subscribe(getBaseTopic() + "/atts/direction", 0);
+    subscribe(getBaseTopic() + "/atts/value", 0);
 
     mAlternativeThread = new std::thread(&MetaDriverFT2232Io::checkInput, this);
 }
@@ -87,9 +89,7 @@ void MetaDriverFT2232Io::setOutputOff()
 
 int MetaDriverFT2232Io::publishState()
 {
-    // mPubMutex.lock();
-
-    std::string PUB_TOPIC_VALUE = getBaseTopic() + "/" + mPinName + "/atts/value";
+    std::string PUB_TOPIC_VALUE = getBaseTopic() + "/atts/value";
     mStatePayload["value"] = mState;
 
     publish(PUB_TOPIC_VALUE, mStatePayload, 0, true);
@@ -101,9 +101,7 @@ int MetaDriverFT2232Io::publishState()
 
 int MetaDriverFT2232Io::publishDirection()
 {
-    // mPubMutex.lock();
-
-    std::string PUB_TOPIC_DIRECTION = getBaseTopic() + "/" + mPinName + "/atts/direction";
+    std::string PUB_TOPIC_DIRECTION = getBaseTopic() + "/atts/direction";
     mDirectionPayload["direction"] = mDirection;
 
     publish(PUB_TOPIC_DIRECTION, mDirectionPayload, 0, true);
@@ -262,5 +260,5 @@ void MetaDriverFT2232Io::sendInfo()
     LOG_F(4, "Info sent is : %s", info.toStyledString().c_str());
 
     // publish the message info to the mqtt server for the pin
-    publish(getBaseTopic() + "/" + mPinName + "/info", info, 0, false);
+    publish(getBaseTopic() + "/info", info, 0, false);
 }
