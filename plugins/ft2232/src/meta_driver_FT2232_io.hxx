@@ -79,10 +79,7 @@ private:
     Json::Value mStatePayload;
     Json::Value mDirectionPayload;
 
-    /// A Mutex to synchronize the publishes
-    static std::mutex mPubMutex;
-    static std::mutex mCheckInputMutex;
-    static std::mutex mMessageMutex;
+    /// A Mutex to synchronize the Jtag connection
     static std::mutex mJtagMutex;
 
     std::thread *mAlternativeThread;

@@ -1,9 +1,6 @@
 #include "meta_driver_FT2232_io.hxx"
 // #include "meta_driver_FT2232_boundary_scan.hxx"
 
-std::mutex MetaDriverFT2232Io::mCheckInputMutex;
-std::mutex MetaDriverFT2232Io::mMessageMutex;
-std::mutex MetaDriverFT2232Io::mPubMutex;
 std::mutex MetaDriverFT2232Io::mJtagMutex;
 
 MetaDriverFT2232Io::~MetaDriverFT2232Io()
@@ -37,10 +34,12 @@ void MetaDriverFT2232Io::setup()
     mReadState = 1;
     mDirection = "unknown";
 
+    setBaseTopic(getBaseTopic() + "/" + mPinName);
+
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
-    subscribe(getBaseTopic() + "/" + mPinName + "/cmds/#", 0);
-    subscribe(getBaseTopic() + "/" + mPinName + "/atts/direction", 0);
-    subscribe(getBaseTopic() + "/" + mPinName + "/atts/value", 0);
+    subscribe(getBaseTopic() + "/cmds/#", 0);
+    subscribe(getBaseTopic() + "/atts/direction", 0);
+    subscribe(getBaseTopic() + "/atts/value", 0);
 
     mAlternativeThread = new std::thread(&MetaDriverFT2232Io::checkInput, this);
 }
@@ -87,28 +86,20 @@ void MetaDriverFT2232Io::setOutputOff()
 
 int MetaDriverFT2232Io::publishState()
 {
-    // mPubMutex.lock();
-
-    std::string PUB_TOPIC_VALUE = getBaseTopic() + "/" + mPinName + "/atts/value";
+    std::string PUB_TOPIC_VALUE = getBaseTopic() + "/atts/value";
     mStatePayload["value"] = mState;
 
     publish(PUB_TOPIC_VALUE, mStatePayload, 0, true);
-
-    // mPubMutex.unlock();
 
     return 0;
 }
 
 int MetaDriverFT2232Io::publishDirection()
 {
-    // mPubMutex.lock();
-
-    std::string PUB_TOPIC_DIRECTION = getBaseTopic() + "/" + mPinName + "/atts/direction";
+    std::string PUB_TOPIC_DIRECTION = getBaseTopic() + "/atts/direction";
     mDirectionPayload["direction"] = mDirection;
 
     publish(PUB_TOPIC_DIRECTION, mDirectionPayload, 0, true);
-
-    // mPubMutex.unlock();
 
     return 0;
 }
@@ -122,31 +113,30 @@ void MetaDriverFT2232Io::checkInput()
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         // Parse IO vector, search for IO input, keeps track of their actual state and checks for changes to publish them.
-        mCheckInputMutex.lock();
         if (mDirection == "in")
         {
             mJtagMutex.lock();
             // LOG_F(8, "The pin %s have it read value as : %d", mPin->getName().c_str(), mPin->getRead());
             //	If the pin state hasnt been alrady read, we read it and mark as read
+            const int inputState = readInputState();
             if (mReadState == 0)
             {
-                setSavedState(readInputState());
-                setState(readInputState());
+                setSavedState(inputState);
+                setState(inputState);
 
                 mReadState = 1;
             }
 
-            //	If the saved state and actual state are different, we publish state and mark as not read yet
-            if ((mState != readInputState()) && (readInputState() >= 0))
+            //	If the saved state and actual state are different, we publish the state
+            if ((mState != inputState) && (inputState >= 0))
             {
-                setState(readInputState());
+                setState(inputState);
                 publishState();
 
                 mReadState = 0;
             }
             mJtagMutex.unlock();
         }
-        mCheckInputMutex.unlock();
     }
 }
 
@@ -155,7 +145,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
     loguru::set_thread_name("Sub callback");
     Json::Value root;
     Json::Reader reader;
-    std::string SubDir, val, PinName, driver = getDriverName() + "/";
+    std::string SubDir, val, driver = getDriverName() + "/";
     std::size_t start;
     int SubVal;
 
@@ -165,7 +155,6 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
     LOG_F(3, "Topic: %s", msg->get_topic().c_str());
     LOG_F(3, "Payload: %s", msg->to_string().c_str());
 
-    mMessageMutex.lock();
     // if the topic is pza, send the info
     if ((msg->get_topic().compare("pza") == 0) && (msg->get_payload().compare("*") == 0))
     {
@@ -175,15 +164,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
     else
     {
         // Parse the message, get the name of the IO from it and the object associated to that IO
-        reader.parse(msg->to_string().c_str(), root);
-
-        // topic is ex. : "pza/machine/driver/LED_RGB_B1/cmds/value/set", extract LED_RGB_B1.
-        start = (msg->get_topic()).find(driver) + driver.length();
-
-        if (msg->get_topic().find("/atts") != std::string::npos)
-            PinName = msg->get_topic().substr(start, (msg->get_topic().find("/atts") - start));
-        else if (msg->get_topic().find("/cmds") != std::string::npos)
-            PinName = msg->get_topic().substr(start, (msg->get_topic().find("/cmds") - start));
+        reader.parse(msg->to_string().c_str(), root);  
 
         // If message contains "direction", get it
         if (msg->get_topic().find("direction") != std::string::npos)
@@ -192,6 +173,8 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             // If the direction of the pin is different than the direction published in the topic
             if (SubDir != mDirection)
             {
+                // Lock Jtag Connection Mutex
+                mJtagMutex.lock();
                 // If direction is "input" or "output", edit the object and publish its direction
                 if (SubDir == "in")
                 {
@@ -212,6 +195,9 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
                 {
                     LOG_F(WARNING, "Expecting in or out as pin direction");
                 }
+
+                // Unlock Jtag Connection Mutex
+                mJtagMutex.unlock();
             }
         }
         // If the message contains "value" and IO's direction is output, get the value
@@ -222,34 +208,34 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             // If the state of the pin is different then the state published in the topic
             if (SubVal != mState)
             {
+                // Lock Jtag connection mutex
+                mJtagMutex.lock();
                 // If value = 0/1, edit the object and publish its state
                 if (SubVal == 0)
                 {
                     LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 0);
-                    mJtagMutex.lock();
                     setOutputOff();
                     setState(0);
                     publishState();
-                    mJtagMutex.unlock();
                 }
                 else if (SubVal == 1)
                 {
                     LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 1);
-                    mJtagMutex.lock();
                     setOutputOn();
                     setState(1);
                     publishState();
-                    mJtagMutex.unlock();
                 }
                 else
                 {
                     LOG_F(WARNING, "Expecting 0 or 1 as pin value");
                 }
+
+                //Unlock Jtag connection Mutex
+                mJtagMutex.unlock();
             }
             first_start = true;
         }
     }
-    mMessageMutex.unlock();
 }
 
 void MetaDriverFT2232Io::sendInfo()
@@ -262,5 +248,5 @@ void MetaDriverFT2232Io::sendInfo()
     LOG_F(4, "Info sent is : %s", info.toStyledString().c_str());
 
     // publish the message info to the mqtt server for the pin
-    publish(getBaseTopic() + "/" + mPinName + "/info", info, 0, false);
+    publish(getBaseTopic() + "/info", info, 0, false);
 }
