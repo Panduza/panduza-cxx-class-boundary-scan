@@ -51,8 +51,6 @@ private:
     std::string mMode;
     std::string mProbeName;
 
-    static std::mutex mSetupMutex;
-
     Metaplatform *mMetaplatformInstance;
 
     // static std::list<std::shared_ptr<JtagFT2232>> JTAG_MANAGERS;

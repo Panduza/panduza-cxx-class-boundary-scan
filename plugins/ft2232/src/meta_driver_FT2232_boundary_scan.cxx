@@ -7,9 +7,6 @@
 #include "meta_driver_FT2232_boundary_scan.hxx"
 #include "../../../headers/meta_platform.hxx"
 
-// Initalizing static variables
-std::mutex MetaDriverFT2232BoundaryScan::mSetupMutex;
-
 // ============================================================================
 //
 

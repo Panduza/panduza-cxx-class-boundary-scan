@@ -1,9 +1,6 @@
 #include "meta_driver_FT2232_io.hxx"
 // #include "meta_driver_FT2232_boundary_scan.hxx"
 
-std::mutex MetaDriverFT2232Io::mCheckInputMutex;
-std::mutex MetaDriverFT2232Io::mMessageMutex;
-std::mutex MetaDriverFT2232Io::mPubMutex;
 std::mutex MetaDriverFT2232Io::mJtagMutex;
 
 MetaDriverFT2232Io::~MetaDriverFT2232Io()
@@ -94,8 +91,6 @@ int MetaDriverFT2232Io::publishState()
 
     publish(PUB_TOPIC_VALUE, mStatePayload, 0, true);
 
-    // mPubMutex.unlock();
-
     return 0;
 }
 
@@ -105,8 +100,6 @@ int MetaDriverFT2232Io::publishDirection()
     mDirectionPayload["direction"] = mDirection;
 
     publish(PUB_TOPIC_DIRECTION, mDirectionPayload, 0, true);
-
-    // mPubMutex.unlock();
 
     return 0;
 }
@@ -120,7 +113,6 @@ void MetaDriverFT2232Io::checkInput()
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         // Parse IO vector, search for IO input, keeps track of their actual state and checks for changes to publish them.
-        mCheckInputMutex.lock();
         if (mDirection == "in")
         {
             mJtagMutex.lock();
@@ -144,7 +136,6 @@ void MetaDriverFT2232Io::checkInput()
             }
             mJtagMutex.unlock();
         }
-        mCheckInputMutex.unlock();
     }
 }
 
@@ -163,7 +154,6 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
     LOG_F(3, "Topic: %s", msg->get_topic().c_str());
     LOG_F(3, "Payload: %s", msg->to_string().c_str());
 
-    mMessageMutex.lock();
     // if the topic is pza, send the info
     if ((msg->get_topic().compare("pza") == 0) && (msg->get_payload().compare("*") == 0))
     {
@@ -190,6 +180,8 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             // If the direction of the pin is different than the direction published in the topic
             if (SubDir != mDirection)
             {
+                // Lock Jtag Connection Mutex
+                mJtagMutex.lock();
                 // If direction is "input" or "output", edit the object and publish its direction
                 if (SubDir == "in")
                 {
@@ -210,6 +202,9 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
                 {
                     LOG_F(WARNING, "Expecting in or out as pin direction");
                 }
+
+                // Unlock Jtag Connection Mutex
+                mJtagMutex.unlock();
             }
         }
         // If the message contains "value" and IO's direction is output, get the value
@@ -220,29 +215,30 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             // If the state of the pin is different then the state published in the topic
             if (SubVal != mState)
             {
+                // Lock Jtag connection mutex
+                mJtagMutex.lock();
                 // If value = 0/1, edit the object and publish its state
                 if (SubVal == 0)
                 {
                     LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 0);
-                    mJtagMutex.lock();
                     setOutputOff();
                     setState(0);
                     publishState();
-                    mJtagMutex.unlock();
                 }
                 else if (SubVal == 1)
                 {
                     LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 1);
-                    mJtagMutex.lock();
                     setOutputOn();
                     setState(1);
                     publishState();
-                    mJtagMutex.unlock();
                 }
                 else
                 {
                     LOG_F(WARNING, "Expecting 0 or 1 as pin value");
                 }
+
+                //Unlock Jtag connection Mutex
+                mJtagMutex.unlock();
             }
             first_start = true;
         }
