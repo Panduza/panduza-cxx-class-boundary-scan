@@ -29,7 +29,7 @@ void MetaDriverFT2232Io::setup()
     LOG_F(4, "driver instance for pin : %s", mPinName.c_str());
 
     // Load the pin
-    mId = jtagcore_get_pin_id(mJc, 0, mPinName.data());
+    mId = jtagcore_get_pin_id(mJc, mDeviceNo, mPinName.data());
     mState = -1;
     mSavedState = -1;
     mReadState = 1;
