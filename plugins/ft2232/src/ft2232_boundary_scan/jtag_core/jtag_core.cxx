@@ -264,7 +264,7 @@ int jtagcore_get_number_of_devices(jtag_core * jc)
 	return JTAG_CORE_BAD_PARAMETER;
 }
 
-unsigned long jtagcore_get_dev_id(jtag_core * jc,int device)
+unsigned long jtagcore_get_dev_id(jtag_core * jc, int device)
 {
 	if (jc && device >= 0)
 	{
