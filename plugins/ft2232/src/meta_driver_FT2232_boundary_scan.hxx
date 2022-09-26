@@ -54,8 +54,8 @@ private:
     Metaplatform *mMetaplatformInstance;
 
     // static std::list<std::shared_ptr<JtagFT2232>> JTAG_MANAGERS;
-    std::shared_ptr<JtagFT2232> mJtagManager;
-    bool mJtagManagerLoaded = false;
+    static std::shared_ptr<JtagFT2232> mJtagManager;
+    static bool mJtagManagerLoaded;
 
     Json::Value mInterfaceTree;
 };

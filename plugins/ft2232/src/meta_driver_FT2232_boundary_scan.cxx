@@ -7,6 +7,9 @@
 #include "meta_driver_FT2232_boundary_scan.hxx"
 #include "../../../headers/meta_platform.hxx"
 
+std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::mJtagManager;
+bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
+
 // ============================================================================
 //
 
