@@ -9,7 +9,6 @@
 JtagFT2232::JtagFT2232()
 {
     mProbeName = "";
-    mJtagDriverLoaded = false;
 }
 
 void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
@@ -34,17 +33,6 @@ void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
 
         // Gets the ID of the board
         printJtagDevices(mJc);
-
-        // Loads the BSDL file
-        jtagcore_loadbsdlfile(mJc, bsdl_name.c_str(), 0);
-
-        // Enables test mode
-        jtagcore_set_scan_mode(mJc, 0, JTAG_CORE_EXTEST_SCANMODE);
-        jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
-
-        // Prints all the pins on the board (verbosity 6 is needed)
-        printPins(mJc, 0);
-        mJtagDriverLoaded = true;
     }
 
     else
@@ -52,6 +40,19 @@ void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
         LOG_F(ERROR, "Couldn't initialise jc");
         exit(1);
     }
+}
+
+void JtagFT2232::initializeDevice(std::string probe_name, std::string bsdl_name, int device_no)
+{
+        // Loads the BSDL file
+        jtagcore_loadbsdlfile(mJc, bsdl_name.c_str(), device_no);
+
+        // Enables test mode
+        jtagcore_set_scan_mode(mJc, device_no, JTAG_CORE_EXTEST_SCANMODE);
+        jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
+
+        // Prints all the pins on the board (verbosity 6 is needed)
+        printPins(mJc, device_no);
 }
 
 int JtagFT2232::getProbeId()
