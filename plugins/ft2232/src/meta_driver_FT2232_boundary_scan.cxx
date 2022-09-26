@@ -29,6 +29,7 @@ void MetaDriverFT2232BoundaryScan::setup()
     int probe_name_size = mInterfaceTree["settings"]["probe_name"].size();
     std::string probe_serial_no = mProbeName.substr( serial_start_index, probe_name_size - serial_start_index);
     mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + probe_serial_no;
+    mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
 
     // Create Meta Driver File
     std::shared_ptr<MetaDriver> meta_driver_file_instance = std::make_shared<MetaDriverFT2232BsdlLoader>(this);
@@ -49,12 +50,12 @@ void MetaDriverFT2232BoundaryScan::startIo()
     mMetaplatformInstance->clearReloadableInterfaces();
 
     // If there is a jtagManager loaded, delete it and reset its flag
-    if (mJtagManagerLoaded)
-    {
-        mJtagManager->deinit();
-        mJtagManager.reset();
-        mJtagManagerLoaded = false;
-    }
+    // if (mJtagManagerLoaded)
+    // {
+    //     mJtagManager->deinit();
+    //     mJtagManager.reset();
+    //     mJtagManagerLoaded = false;
+    // }
 
     // If there is no Jtag Manager, create it and pass a flag to true
     if (!mJtagManagerLoaded)
@@ -101,6 +102,8 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
         mJtagManager = createJtagManager(mProbeName, mBSDLName);
         mJtagManagerLoaded = true;
     }
+    mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
+
     return mJtagManager;
 }
 
