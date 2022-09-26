@@ -35,7 +35,7 @@ void MetaDriverFT2232Io::setup()
     mReadState = 1;
     mDirection = "unknown";
 
-    setBaseTopic(getBaseTopic() + "/" + mPinName);
+    setBaseTopic(getBaseTopic() + std::to_string(mDeviceNo) +  "/" + mPinName);
 
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
     subscribe(getBaseTopic() + "/cmds/#", 0);
@@ -206,6 +206,8 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
         {
             val = root.get("value", "").asString();
             SubVal = stoi(val);
+            LOG_F(ERROR, "topic = %s, payload = %s", msg->get_topic().c_str(), msg->get_payload().c_str());
+            LOG_F(ERROR, "value : %d", SubVal);
             // If the state of the pin is different then the state published in the topic
             if (SubVal != mState)
             {
