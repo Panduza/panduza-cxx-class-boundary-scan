@@ -25,6 +25,7 @@ void MetaDriverFT2232Io::setup()
 
     // Get the name of the pin to use it on the function
     mPinName = "IO_" + getInterfaceTree()["settings"]["pin"].asString();
+    mDeviceNo = getInterfaceTree()["settings"]["device_no"].asInt();
     LOG_F(4, "driver instance for pin : %s", mPinName.c_str());
 
     // Load the pin
@@ -53,7 +54,7 @@ int MetaDriverFT2232Io::readInputState()
     }
 
     // Return the actual state
-    return jtagcore_get_pin_state(mJc, 0, mId, JTAG_CORE_INPUT);
+    return jtagcore_get_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_INPUT);
 }
 
 void MetaDriverFT2232Io::setState(int state)
@@ -71,16 +72,16 @@ void MetaDriverFT2232Io::setSavedState(int save)
 void MetaDriverFT2232Io::setOutputOn()
 {
     // Set Output to On
-    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OUTPUT, 1);
-    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OE, 1);
+    jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OUTPUT, 1);
+    jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OE, 1);
     jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
 }
 
 void MetaDriverFT2232Io::setOutputOff()
 {
     // Set Output to Off
-    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OUTPUT, 0);
-    jtagcore_set_pin_state(mJc, 0, mId, JTAG_CORE_OE, 0);
+    jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OUTPUT, 0);
+    jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OE, 0);
     jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
 }
 
