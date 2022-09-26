@@ -1,0 +1,94 @@
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=28940), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver_plugin_discovery', 'level': (name='DEBUG', no=10, icon='🐞'), 'line': 180, 'message': 'Start plugin discovery', 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8357, name='MainProcess'), 'thread': (id=139981601310528, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 35, 962195, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=41622), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver_plugin_discovery', 'level': (name='DEBUG', no=10, icon='🐞'), 'line': 187, 'message': 'Discovered plugins: {}', 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8357, name='MainProcess'), 'thread': (id=139981601310528, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 35, 974877, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=41871), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'platform_py'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8357, name='MainProcess'), 'thread': (id=139981601310528, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 35, 975126, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=41967), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'fake_io'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8357, name='MainProcess'), 'thread': (id=139981601310528, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 35, 975222, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=42041), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'std_serial'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8357, name='MainProcess'), 'thread': (id=139981601310528, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 35, 975296, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=42098), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'psu_fake'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8357, name='MainProcess'), 'thread': (id=139981601310528, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 35, 975353, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+REQUEST TO START PLATFORM IN TEST MODE WITH TREE ( /home/valentin/workspace/panduza-py/acceptance/features/rsc/file_tree.json )
+Traceback (most recent call last):
+  File "/home/valentin/workspace/panduza-py/acceptance/features/rsc/test-py-platform-run.py", line 33, in <module>
+    srv.load_tree_overide(sys.argv[1])
+AttributeError: 'MetaPlatform' object has no attribute 'load_tree_overide'
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=25705), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver_plugin_discovery', 'level': (name='DEBUG', no=10, icon='🐞'), 'line': 180, 'message': 'Start plugin discovery', 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8508, name='MainProcess'), 'thread': (id=140428273678144, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 57, 38637, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=33850), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver_plugin_discovery', 'level': (name='DEBUG', no=10, icon='🐞'), 'line': 187, 'message': 'Discovered plugins: {}', 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8508, name='MainProcess'), 'thread': (id=140428273678144, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 57, 46782, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=34042), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'platform_py'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8508, name='MainProcess'), 'thread': (id=140428273678144, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 57, 46974, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=34123), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'fake_io'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8508, name='MainProcess'), 'thread': (id=140428273678144, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 57, 47055, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=34184), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'std_serial'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8508, name='MainProcess'), 'thread': (id=140428273678144, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 57, 47116, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(microseconds=34247), 'exception': None, 'extra': {}, 'file': (name='meta_platform.py', path='/usr/local/lib/python3.8/dist-packages/panduza_platform/meta_platform.py'), 'function': 'register_driver', 'level': (name='INFO', no=20, icon='ℹ️'), 'line': 221, 'message': "Register driver: 'psu_fake'", 'module': 'meta_platform', 'name': 'panduza_platform.meta_platform', 'process': (id=8508, name='MainProcess'), 'thread': (id=140428273678144, name='MainThread'), 'time': datetime(2022, 9, 23, 11, 21, 57, 47179, tzinfo=datetime.timezone(datetime.timedelta(seconds=7200), 'CEST'))}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/loguru/_handler.py", line 151, in emit
+    formatted = precomputed_format.format_map(formatter_record)
+KeyError: 'driver_name'
+--- End of logging error ---
+REQUEST TO START PLATFORM IN TEST MODE WITH TREE ( /home/valentin/workspace/panduza-py/acceptance/features/rsc/io_tree.json )
+Traceback (most recent call last):
+  File "/home/valentin/workspace/panduza-py/acceptance/features/rsc/test-py-platform-run.py", line 33, in <module>
+    srv.load_tree_overide(sys.argv[1])
+AttributeError: 'MetaPlatform' object has no attribute 'load_tree_overide'

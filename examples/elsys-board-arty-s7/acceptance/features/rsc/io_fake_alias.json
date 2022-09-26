@@ -1,0 +1,23 @@
+{
+    "local_test": {
+        "url": "localhost",
+        "port": 1883,
+        "interfaces": {
+            "io_test": "pza/rpi4_test/io_fake",
+            "io_in": "pza/rpi4_test/io_fake",
+            "io_out": "pza/rpi4_test/io_fake"
+        }
+    },
+    "broker_1":
+    {
+        "url": "localhost",
+        "port": 1883,
+        "interfaces": {
+            "IO_E18": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_E18",
+            "IO_F13": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_F13",
+            "IO_E13": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_E13",
+            "IO_H15": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_H15"
+        }
+    }
+}
+

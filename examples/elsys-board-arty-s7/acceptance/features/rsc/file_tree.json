@@ -1,0 +1,15 @@
+{
+    "machine": "rpi4_test",
+    "brokers": {
+        "test_broker": {
+            "addr": "localhost",
+            "port": 1883,
+            "interfaces": [
+                {
+                    "name": "file_test",
+                    "driver": "file_fake"
+                }
+            ]
+        }
+    }
+}
