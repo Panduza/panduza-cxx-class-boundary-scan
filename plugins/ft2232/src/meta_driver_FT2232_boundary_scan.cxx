@@ -47,7 +47,7 @@ void MetaDriverFT2232BoundaryScan::setup()
 void MetaDriverFT2232BoundaryScan::startIo()
 {
     // Kill all reloadable instances
-    mMetaplatformInstance->clearReloadableInterfaces();
+    // mMetaplatformInstance->clearReloadableInterfaces();
 
     // If there is a jtagManager loaded, delete it and reset its flag
     // if (mJtagManagerLoaded)
@@ -72,6 +72,7 @@ void MetaDriverFT2232BoundaryScan::startIo()
     const std::string format = "%r";
     const size_t posFormat = mInterfaceTree["name"].asString().find(format);
     
+    std::list<std::shared_ptr<MetaDriver>> io_list;
     // Loop into the repeated list of pins
     for (auto repeated_pin : repeated_json)
     {
@@ -87,9 +88,15 @@ void MetaDriverFT2232BoundaryScan::startIo()
         // Initialize the meta Driver
         meta_driver_io_instance->initialize(getMachineName(), getBrokerName(), getBrokerAddr(), getBrokerPort(), interface_json_copy);
 
+
         // add the meta driver to the main list
-        mMetaplatformInstance->addReloadableDriverInstance(meta_driver_io_instance);
+        // mMetaplatformInstance->addReloadableDriverInstance(meta_driver_io_instance);
+        io_list.emplace_back(meta_driver_io_instance);
     }
+    std::map<std::string, std::list<std::shared_ptr<MetaDriver>>> io_map_entry {{getDriverName() + "_io_list_" + std::to_string(mDeviceNo), io_list}};
+    // std::pair<std::string, std::list<std::shared_ptr<MetaDriver>>> io_map_entry (getProbeName(), io_list);
+    
+    mMetaplatformInstance->addReloadableDriverInstance(io_map_entry);
 }
 
 // ============================================================================
@@ -148,8 +155,13 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     // Initialize the meta Driver
     meta_driver_group_info->initialize(getMachineName(), getBrokerName(), getBrokerAddr(), getBrokerPort(), mInterfaceTree);
 
+    // std::map<std::string,std::list<std::shared_ptr<MetaDriver>>> group_info_map_entry;
+    std::list<std::shared_ptr<MetaDriver>> group_info_list;
+    group_info_list.emplace_back(meta_driver_group_info);
+    
+    std::map<std::string, std::list<std::shared_ptr<MetaDriver>>> group_info_map_entry {{getDriverName()+"_group_info_" + std::to_string(mDeviceNo), group_info_list}};
     // add the meta driver to the main list
-    mMetaplatformInstance->addReloadableDriverInstance(meta_driver_group_info);    
+    mMetaplatformInstance->addReloadableDriverInstance(group_info_map_entry);    
 }
 
 // ============================================================================
