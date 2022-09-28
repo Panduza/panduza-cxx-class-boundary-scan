@@ -45,16 +45,16 @@ Feature: API Io
 
 # -----------------------------------------------------------------------------
 
-    @fixture.interface.io.in
-    @fixture.interface.io.out
+    @fixture.interface.io.<IO>
     Scenario Outline: Io value must support operation set and get through 2 interfaces in loopback
         Given core aliases loaded with file "io_alias.json"
-        When io interface "<io>" initialized with alias "<io>"
-        When io interface "<io>" direction is set to "<io>"
-        When io interface "<io>" value is set to "1"
-        Then io interface "<io>" value is "1"
-        When io interface "<io>" value is set to "0"
-        Then io interface "<io>" value is "0"
+        And io interface "<IO>" initialized with alias "<IO>"
+        When io interface "<IO>" direction is set to "out"
+        Then io interface "<IO>" direction is "out"
+        When io interface "<IO>" value is set to "1"
+        Then io interface "<IO>" value is "1"
+        When io interface "<IO>" value is set to "0"
+        Then io interface "<IO>" value is "0"
 
         Examples: IOs
             | IO            |
@@ -62,3 +62,9 @@ Feature: API Io
             | IO_F13        |
             | IO_E13        |
             | IO_H15        |
+            | IO_J15        |
+            | IO_G17        |
+            | IO_F15        |
+            | IO_E15        |
+            | IO_F18        |
+            | IO_E14        |
