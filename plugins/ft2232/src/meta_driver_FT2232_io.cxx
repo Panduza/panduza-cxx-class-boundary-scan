@@ -133,7 +133,6 @@ void MetaDriverFT2232Io::checkInput()
                 setState(inputState);
                 publishState();
 
-                mReadState = 0;
             }
             mJtagMutex.unlock();
         }
