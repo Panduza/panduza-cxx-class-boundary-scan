@@ -47,7 +47,8 @@ void MetaDriverFT2232BoundaryScan::setup()
 void MetaDriverFT2232BoundaryScan::startIo()
 {
     // Kill all reloadable instances
-    // mMetaplatformInstance->clearReloadableInterfaces();
+    LOG_F(ERROR, "%s", (getDriverName() + "_io_list_" + std::to_string(mDeviceNo)).c_str());
+    mMetaplatformInstance->clearReloadableInterfaces(getDriverName() + "_io_list_" + std::to_string(mDeviceNo));
 
     // If there is a jtagManager loaded, delete it and reset its flag
     // if (mJtagManagerLoaded)
