@@ -1,5 +1,5 @@
 {
-    "broker_io":
+    "local_test":
     {
         "url": "localhost",
         "port": 1883,
@@ -7,7 +7,13 @@
             "IO_E18": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_E18",
             "IO_F13": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_F13",
             "IO_E13": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_E13",
-            "IO_H15": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_H15"
+            "IO_H15": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_H15",
+            "IO_J15": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_J15",
+            "IO_G17": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_G17",
+            "IO_F15": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_F15",
+            "IO_E15": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_E15",
+            "IO_F18": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_F18",
+            "IO_E14": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_E14"
         }
     }
 }
