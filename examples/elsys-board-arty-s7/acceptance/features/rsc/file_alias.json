@@ -3,8 +3,7 @@
         "url": "localhost",
         "port": 1883,
         "interfaces": {
-            "file_test": "pza/rpi4_test/file_fake",
-            "not_exist": "pza/rpi4_test/file__fake/where_are_you"
+            "artys7": "pza/rpi4_test/Scan_service_FT6RR4EEA/Bsdl_File"
         }
     }
 }

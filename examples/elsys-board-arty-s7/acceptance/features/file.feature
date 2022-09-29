@@ -31,7 +31,7 @@ Feature: API File
 
         @fixture.interface.file.test
         Scenario Outline: Transfert simple file
-            Given core aliases loaded with file "file_alias.json"
+            Given core aliases loaded with file "file_fake_alias.json"
             And   file interface "test" initialized with alias "file_test"
             When  file interface "test" is set with content from file "<rsc_file>"
             Then  atts/content data of the file interface "test" is filled with file "<rsc_file>" content encoded in base64
@@ -40,6 +40,21 @@ Feature: API File
         Examples:
             | rsc_file          | mime          |
             | file/2bytes.txt   | text/plain    |
+
+
+# -----------------------------------------------------------------------------
+
+        @fixture.interface.file.artys7
+        Scenario Outline: Transfert simple file
+            Given core aliases loaded with file "file_alias.json"
+            And   file interface "artys7" initialized with alias "file_test"
+            When  file interface "artys7" is set with content from file "<rsc_file>"
+            Then  atts/content data of the file interface "artys7" is filled with file "<rsc_file>" content encoded in base64
+            And   atts/content mime of the file interface "artys7" is filled "<mime>"
+
+        Examples:
+            | rsc_file          | mime          |
+            | file/xc7s50_csga324.bsdl   | text/plain    |
 
 
     # -----------------------------------------------------------------------------
