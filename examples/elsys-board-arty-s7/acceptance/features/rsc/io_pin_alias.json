@@ -1,0 +1,20 @@
+{
+    "local_test":
+    {
+        "url": "localhost",
+        "port": 1883,
+        "interfaces": {
+            "IO_G13": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_G13",
+            "IO_B16": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_B16",
+            "IO_A16": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_A16",
+            "IO_C13": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_C13",
+            "IO_C14": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_C14",
+            "IO_D18": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_D18",
+            "IO_B14": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_B14",
+            "IO_A14": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_A14",
+            "IO_D16": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_D16",
+            "IO_D17": "pza/rpi4_test/Scan_service_FT6RR4EEA/IO_D17"
+        }
+    }
+}
+
