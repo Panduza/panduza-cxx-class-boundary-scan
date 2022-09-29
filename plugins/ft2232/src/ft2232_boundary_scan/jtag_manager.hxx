@@ -40,7 +40,7 @@ public:
     /// Return the probe name @return Probe name
     std::string getProbeName();
 
-    /// Prints the ID of the board @param jc Jtag_core object @return ...
+    /// Prints the number of device connected to the probe @param jc Jtag_core object @return Number of devices connected 
     int printJtagDevices(jtag_core *jc);
 
     /// Formats the string ID @param id id of the device @param str ...
