@@ -58,11 +58,8 @@ Please first verify that you put the same name in the probe name than the name o
 
 When starting the program from here, the tree used will be the tree.json present in the panduza folder.
 
-The BSDL file is loaded by default from the BoundaryScan folder. By so it is not possible to load another BSDL.
-This BSDL file is only working with an ARTY s7 board. 
-
-The probe name is also essential to be the name as defined on the tree (or on the other way)
-
+The BSDL file is loaded by default from the BoundaryScan folder if the specific file is added (in our case it is).
+This BSDL file ( xc7s50_csga324.bsdl )is only working with an ARTY s7 device. 
 
 To start the program, please launch the command below from this folder
 
