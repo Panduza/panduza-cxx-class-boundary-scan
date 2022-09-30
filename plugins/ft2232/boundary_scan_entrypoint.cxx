@@ -12,7 +12,7 @@ namespace boundary_scan
     {
     public:
         /// @brief Function to return the information and the factory of the Boundary Scan plugin
-        /// @return Name of the driver and object of the Boundary Scan as a map
+        /// @return Name of the driver and object of the Boundary Scan factory as a map
         std::map<std::string, MetaDriverFactory *> getInformationAndFactory()
         {
             std::map<std::string, MetaDriverFactory *> Factory;
