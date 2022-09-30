@@ -48,7 +48,9 @@ With version is compatible with the daisy chaining. To avoid issue, the interfac
 ```
 where x is the device position.
 
-Note that the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0.
+Note that the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
+
+<img src="https://user-images.githubusercontent.com/37267717/193233333-03f81d89-c400-4df0-a90e-259ca924e40e.png" width="400" />
 
 ## Starting the program
 
