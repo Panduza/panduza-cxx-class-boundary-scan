@@ -48,7 +48,6 @@ public:
 
 private:
     std::string mBSDLName;
-    std::string mMode;
     std::string mProbeName;
 
     Metaplatform *mMetaplatformInstance;

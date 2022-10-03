@@ -21,13 +21,13 @@ public:
     /// Setup the instance
     void setup();
 
-    /// Sets a pin direction to input and reads its value @param Io : Io object of the  @return int : input state
+    /// Sets a pin direction to input and reads its value  @return int : input state
     int readInputState();
 
-    /// Sets the state of an Io @param Io 
+    /// Sets the state of an Io @param state State value to put for the IO
     void setState(int state);
 
-    /// Sets the saved state of an Io
+    /// Sets the saved state of an Io @param save Set saved state value
     void setSavedState(int save);
 
     /// Sets an Io direction to output and sets its value to 1 (to the board)
@@ -36,25 +36,25 @@ public:
     /// Sets an Io direction to output and sets its value to 0  (to the board)
     void setOutputOff();
 
-    /// Getter of Jc object
+    /// Getter of Jc object @return jtag connection
     jtag_core *getJc() const { return mJc; };
 
-    /// Publishes state of an Io @param Io : State of this Io is published
+    /// Publishes state of an Io
     int publishState();
 
-    /// Publishes direction of an Io @param Io : State of this Io is published
+    /// Publishes direction of an Io
     int publishDirection();
 
     /// Check the input of the board, this is for the thread
     void checkInput();
 
-    /// Launched when a message arrive on the subscribed topic
+    /// Launched when a message arrive on the subscribed topic @param msg message arrived with topic and payload
     void message_arrived(mqtt::const_message_ptr msg);
 
     /// Send info when asked
     void sendInfo();
 
-    /// Create an alternative thread
+    /// Create an alternative thread @return return a shared ptr of the thread created
     std::shared_ptr<std::thread> createAlternativeThread() { return std::make_shared<std::thread>(&MetaDriverFT2232Io::checkInput, this); }
 
     /// Edits an Io in the vector @param name : Name of the Io to edit
