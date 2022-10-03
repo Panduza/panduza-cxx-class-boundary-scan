@@ -17,7 +17,7 @@ MetaDriverFT2232BsdlLoader::MetaDriverFT2232BsdlLoader(MetaDriverFT2232BoundaryS
 void MetaDriverFT2232BsdlLoader::setup()
 {
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
-    setBaseTopic(getBaseTopic() + "/device_" + getInterfaceTree()["settings"]["device_no"].asString() + "/Bsdl_File");
+    setBaseTopic(getBaseTopic() + "_device_" + getInterfaceTree()["settings"]["device_no"].asString() + "/Bsdl_File");
     subscribe(getBaseTopic() + "/cmds/#", 0);
     subscribe(getBaseTopic() + "/atts/content", 0);
     subscribe(getBaseTopic() + "/atts/data", 0);
