@@ -35,7 +35,14 @@ void MetaDriverFT2232Io::setup()
     mReadState = 1;
     mDirection = "unknown";
 
-    setBaseTopic(getBaseTopic() + "_device_"+ std::to_string(mDeviceNo) +  "/" + mPinName);
+    if(!getInterfaceTree()["group_name"].isNull())
+    {
+        setBaseTopic(getBaseTopic()+  "/" + mPinName);
+    }
+    else
+    {
+        setBaseTopic(getBaseTopic() + "_device_"+ std::to_string(mDeviceNo) +  "/" + mPinName);
+    }
 
     // Subscribe to the different topic needed direction and value separated because of retained not coming in the good order
     subscribe(getBaseTopic() + "/cmds/#", 0);
