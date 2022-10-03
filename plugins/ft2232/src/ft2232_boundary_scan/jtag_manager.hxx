@@ -48,6 +48,9 @@ public:
     /// Formats the string ID @param id id of the device @param str ...
     void bsdlIdStr(unsigned long id, char *str);
 
+    /// @brief Check if there is a space at the start or at the end of the probe name and warn the user if it is the case
+    void checkSpaceOnProbeLimit(char *probe_name);
+    
     /// Deinit the driver
     void deinit();
     
