@@ -23,23 +23,43 @@ The connection is made as below :
 
 ## FT2232HL Probe name
 
-There is two way of defining the probe name. One is to change directly the name of the probe (EEPROM needed in the probe board) to be the same as the one defined on the tree. This can be made with the Software FT_Prog.
+There is two way of defining the probe name. One is to change directly the name of the probe (EEPROM needed in the probe board) to be the same as the one defined on the tree. This can be made with the Software FT_Prog. This software is available on Windows.
 For this, the Serial number should be "FT6RR4EE" and the Product Description should be "FT2232HL".
 This should be editable with the software FT_Prog.
 
 The other way is to find the name of the probe use and redefine it on the tree. This can be found either on the software FT_Prog or with the command usb-devices on ubuntu.
 
-The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNumber to change. Both "A" and spaceshave to be put in the same position 
+The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNumber to change. Both "A" and spaces have to be put in the same position 
+
+## Daisy Chaining
+
+With version is compatible with the daisy chaining. To avoid issue, the interface tree must contains a device value in the settings. It must be presented as defined : 
+
+```sh
+"name": "IO_%r",
+"driver": "Scan_service",
+"settings": {
+    "probe_name" : "FT2232HL A FT6RR4EEA",
+    "device_no" : x,
+    "BSDL" : "XA7A100T_CSG324.bsdl",
+    "pin"  : "%r",
+    "behaviour" : "static"
+},
+```
+where x is the device position.
+
+Note that the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
+
+<img src="https://user-images.githubusercontent.com/37267717/193233333-03f81d89-c400-4df0-a90e-259ca924e40e.png" width="400" />
 
 ## Starting the program
 
+Please first verify that you put the same name in the probe name than the name of your probe.
+
 When starting the program from here, the tree used will be the tree.json present in the panduza folder.
 
-The BSDL file is loaded by default from the BoundaryScan folder. By so it is not possible to load another BSDL.
-This BSDL file is only working with an ARTY s7 board. 
-
-The probe name is also essential to be the name as defined on the tree (or on the other way)
-
+The BSDL file is loaded by default from the BoundaryScan folder if the specific file is added (in our case it is).
+This BSDL file ( xc7s50_csga324.bsdl )is only working with an ARTY s7 device. 
 
 To start the program, please launch the command below from this folder
 
@@ -52,4 +72,5 @@ After the start of the platform and the loading of the pins, it is possible to c
 ## Changing the BSDL file
 
 An option to change the BSDL File name is to change the file name in the tree and add the file in the folder called BoundaryScan. This will allow the program to load directly the bsdl file.
+
 When changing the BSDL file, and DUT, the pin listed on "repeated" on the tree have to be changed for the pin you want to test.

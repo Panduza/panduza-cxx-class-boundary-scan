@@ -22,6 +22,8 @@ public:
     /// Initialize the driver to connect to the probe @param probe_name Name of the probe used @param bsdl_name Name of the bsdl file
     void initializeDriver(std::string probe_name, std::string bsdl_name);
 
+    void initializeDevice(std::string probe_name, std::string bsdl_name, int device_no);
+
     /// Getter of Jc object @return jtag_core object
     jtag_core *getJc();
 
@@ -46,11 +48,13 @@ public:
     /// Formats the string ID @param id id of the device @param str ...
     void bsdlIdStr(unsigned long id, char *str);
 
+    /// @brief Check if there is a space at the start or at the end of the probe name and warn the user if it is the case
+    void checkSpaceOnProbeLimit(char *probe_name);
+    
     /// Deinit the driver
     void deinit();
     
 private:
-    bool mJtagDriverLoaded;
     /// Member to communicate over JTAG
     jtag_core *mJc;
 

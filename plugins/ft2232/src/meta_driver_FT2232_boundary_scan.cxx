@@ -7,6 +7,9 @@
 #include "meta_driver_FT2232_boundary_scan.hxx"
 #include "../../../headers/meta_platform.hxx"
 
+std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::mJtagManager;
+bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
+
 // ============================================================================
 //
 
@@ -22,10 +25,12 @@ void MetaDriverFT2232BoundaryScan::setup()
     
     // Create a unique name for the driver name when there is multiple driver with the same name
     mInterfaceTree = getInterfaceTree();
-    int serial_start_index = mInterfaceTree["settings"]["probe_name"].asString().find(" FT") + 1;
-    int probe_name_size = mInterfaceTree["settings"]["probe_name"].size();
-    std::string probe_serial_no = mProbeName.substr( serial_start_index, probe_name_size - serial_start_index);
-    mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + probe_serial_no;
+    // int serial_start_index = mInterfaceTree["settings"]["probe_name"].asString().find(" FT") + 1;
+    // int probe_name_size = mInterfaceTree["settings"]["probe_name"].size();
+    // std::string probe_serial_no = mProbeName.substr( serial_start_index, probe_name_size - serial_start_index);
+    // mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + probe_serial_no;
+    mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + getProbeName();
+    mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
 
     // Create Meta Driver File
     std::shared_ptr<MetaDriver> meta_driver_file_instance = std::make_shared<MetaDriverFT2232BsdlLoader>(this);
@@ -43,15 +48,15 @@ void MetaDriverFT2232BoundaryScan::setup()
 void MetaDriverFT2232BoundaryScan::startIo()
 {
     // Kill all reloadable instances
-    mMetaplatformInstance->clearReloadableInterfaces();
+    mMetaplatformInstance->clearReloadableInterfaces(getDriverName() + "_io_list_" + std::to_string(mDeviceNo));
 
     // If there is a jtagManager loaded, delete it and reset its flag
-    if (mJtagManagerLoaded)
-    {
-        mJtagManager->deinit();
-        mJtagManager.reset();
-        mJtagManagerLoaded = false;
-    }
+    // if (mJtagManagerLoaded)
+    // {
+    //     mJtagManager->deinit();
+    //     mJtagManager.reset();
+    //     mJtagManagerLoaded = false;
+    // }
 
     // If there is no Jtag Manager, create it and pass a flag to true
     if (!mJtagManagerLoaded)
@@ -68,6 +73,7 @@ void MetaDriverFT2232BoundaryScan::startIo()
     const std::string format = "%r";
     const size_t posFormat = mInterfaceTree["name"].asString().find(format);
     
+    std::list<std::shared_ptr<MetaDriver>> io_list;
     // Loop into the repeated list of pins
     for (auto repeated_pin : repeated_json)
     {
@@ -83,9 +89,17 @@ void MetaDriverFT2232BoundaryScan::startIo()
         // Initialize the meta Driver
         meta_driver_io_instance->initialize(getMachineName(), getBrokerName(), getBrokerAddr(), getBrokerPort(), interface_json_copy);
 
+
         // add the meta driver to the main list
-        mMetaplatformInstance->addReloadableDriverInstance(meta_driver_io_instance);
+        // mMetaplatformInstance->addReloadableDriverInstance(meta_driver_io_instance);
+        io_list.emplace_back(meta_driver_io_instance);
     }
+
+    LOG_F(INFO, "Adding IOs list with the key : %s", (getDriverName() + "_io_list_" + std::to_string(mDeviceNo)).c_str());
+    std::map<std::string, std::list<std::shared_ptr<MetaDriver>>> io_map_entry {{getDriverName() + "_io_list_" + std::to_string(mDeviceNo), io_list}};
+    // std::pair<std::string, std::list<std::shared_ptr<MetaDriver>>> io_map_entry (getProbeName(), io_list);
+    
+    mMetaplatformInstance->addReloadableDriverInstance(io_map_entry);
 }
 
 // ============================================================================
@@ -98,6 +112,8 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
         mJtagManager = createJtagManager(mProbeName, mBSDLName);
         mJtagManagerLoaded = true;
     }
+    mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
+
     return mJtagManager;
 }
 
@@ -142,8 +158,13 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     // Initialize the meta Driver
     meta_driver_group_info->initialize(getMachineName(), getBrokerName(), getBrokerAddr(), getBrokerPort(), mInterfaceTree);
 
+    // std::map<std::string,std::list<std::shared_ptr<MetaDriver>>> group_info_map_entry;
+    std::list<std::shared_ptr<MetaDriver>> group_info_list;
+    group_info_list.emplace_back(meta_driver_group_info);
+    
+    std::map<std::string, std::list<std::shared_ptr<MetaDriver>>> group_info_map_entry {{getDriverName()+"_group_info_" + std::to_string(mDeviceNo), group_info_list}};
     // add the meta driver to the main list
-    mMetaplatformInstance->addReloadableDriverInstance(meta_driver_group_info);    
+    mMetaplatformInstance->addReloadableDriverInstance(group_info_map_entry);    
 }
 
 // ============================================================================

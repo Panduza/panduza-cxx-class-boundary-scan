@@ -9,7 +9,6 @@
 JtagFT2232::JtagFT2232()
 {
     mProbeName = "";
-    mJtagDriverLoaded = false;
 }
 
 void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
@@ -34,17 +33,6 @@ void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
 
         // Gets the ID of the board
         printJtagDevices(mJc);
-
-        // Loads the BSDL file
-        jtagcore_loadbsdlfile(mJc, bsdl_name.c_str(), 0);
-
-        // Enables test mode
-        jtagcore_set_scan_mode(mJc, 0, JTAG_CORE_EXTEST_SCANMODE);
-        jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
-
-        // Prints all the pins on the board (verbosity 6 is needed)
-        printPins(mJc, 0);
-        mJtagDriverLoaded = true;
     }
 
     else
@@ -52,6 +40,19 @@ void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
         LOG_F(ERROR, "Couldn't initialise jc");
         exit(1);
     }
+}
+
+void JtagFT2232::initializeDevice(std::string probe_name, std::string bsdl_name, int device_no)
+{
+        // Loads the BSDL file
+        jtagcore_loadbsdlfile(mJc, bsdl_name.c_str(), device_no);
+
+        // Enables test mode
+        jtagcore_set_scan_mode(mJc, device_no, JTAG_CORE_EXTEST_SCANMODE);
+        jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
+
+        // Prints all the pins on the board (verbosity 6 is needed)
+        printPins(mJc, device_no);
 }
 
 int JtagFT2232::getProbeId()
@@ -168,7 +169,7 @@ void JtagFT2232::printPins(jtag_core *mJc, int device)
 int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
 {
     int i = 0;
-    int good_id = 0;
+    int good_id = -1;
     char tempstring[DEFAULT_BUFLEN - 7];
     char idstring[DEFAULT_BUFLEN];
 
@@ -179,12 +180,23 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
     {
         jtagcore_get_probe_name(mJc, PROBE_ID(0, i), tempstring);
         sprintf(idstring, "Probe: %s", tempstring);
+
+        // Check if there is a space at the start and the end of the probe name
+        checkSpaceOnProbeLimit(tempstring);
+
+        VLOG_F(3, "probe name available with id %d : \"%s\"", i, idstring);
         if (strcmp(idstring, good_probe.c_str()) == 0)
         {
+            LOG_F(ERROR, "Probe found!");
             good_id = i;
         }
         i++;
-        VLOG_F(3, "%s", idstring);
+    }
+
+    if (good_id == -1)
+    {
+        LOG_F(ERROR, "Probe %s not found", good_probe.c_str());
+        exit(0);
     }
 
     if (nb_of_probes == 0)
@@ -194,6 +206,21 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
     }
 
     return good_id;
+}
+
+void JtagFT2232::checkSpaceOnProbeLimit(char *probe_name)
+{
+    
+    if (probe_name[0] == ' ')
+    {
+        LOG_F(WARNING, "There is a space at the begin of the probe name that we are trying to connect. Are you aware of it ?");
+        LOG_F(WARNING, "Continuing...");
+    }
+    if (probe_name[strlen(probe_name)-1] == ' ')
+    {
+        LOG_F(WARNING, "There is a space at the end of the probe name that we are trying to connect. Are you aware of it ?");
+        LOG_F(WARNING, "Continuing...");
+    }
 }
 
 void JtagFT2232::deinit()
