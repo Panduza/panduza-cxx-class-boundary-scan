@@ -169,7 +169,7 @@ void JtagFT2232::printPins(jtag_core *mJc, int device)
 int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
 {
     int i = 0;
-    int good_id = 0;
+    int good_id = -1;
     char tempstring[DEFAULT_BUFLEN - 7];
     char idstring[DEFAULT_BUFLEN];
 
@@ -182,10 +182,17 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
         sprintf(idstring, "Probe: %s", tempstring);
         if (strcmp(idstring, good_probe.c_str()) == 0)
         {
+            LOG_F(ERROR, "Probe found!");
             good_id = i;
         }
         i++;
-        VLOG_F(3, "%s", idstring);
+        VLOG_F(3, "\"%s\"", idstring);
+    }
+
+    if (good_id == -1)
+    {
+        LOG_F(ERROR, "Probe %s not found", good_probe.c_str());
+        exit(0);
     }
 
     if (nb_of_probes == 0)
