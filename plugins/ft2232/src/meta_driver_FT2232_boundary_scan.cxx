@@ -10,16 +10,22 @@
 std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::mJtagManager;
 bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
 
+/// Constructor with parent pointer @param meta_platform_interface Meta Platform object
+MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface)
+{
+    mMetaplatformInstance = meta_platform_interface;
+
+    // Transfert back the loguru verbose and file logging
+    loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
+    loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
+    loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
+}
+
 // ============================================================================
 //
 
 void MetaDriverFT2232BoundaryScan::setup()
 {
-    // Transfert back the loguru verbose and file logging
-    loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
-    loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
-    loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
-
     // Get Probe name
     mProbeName = getInterfaceTree()["settings"]["probe_name"].asString();
     
