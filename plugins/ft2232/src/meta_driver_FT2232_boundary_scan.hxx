@@ -14,6 +14,7 @@
 #include <boost/config.hpp>
 
 class Metaplatform;
+class JtagFT2232;
 
 /// Main instance that will handle functionalities of the plugin
 class MetaDriverFT2232BoundaryScan : public MetaDriver
@@ -45,6 +46,8 @@ public:
 
     /// Create group info meta driver that will return info about the boundary scan
     void createGroupInfoMetaDriver();
+
+    Json::Value generateAutodetectInfo();
 
 private:
     std::string mBSDLName;

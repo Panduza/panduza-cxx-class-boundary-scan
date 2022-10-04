@@ -167,6 +167,65 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     mMetaplatformInstance->addReloadableDriverInstance(group_info_map_entry);    
 }
 
+Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
+{
+    Json::Value json;
+    Json::Value template_json;
+    Json::Value template_settings_json;
+    Json::Value autodetect_settings_json;
+    Json::Value autodetect_json;
+
+    template_settings_json["behaviour"] = "static";
+
+    template_json["name"] = "IO_%r";
+    template_json["group_name"] = "??? (optional)";
+    template_json["driver"] = "Scan_Service";
+    template_json["settings"]["probe_name"] = "???";
+    template_json["settings"]["device_no"] = "???";
+    template_json["settings"]["BSDL"] = "???";
+    template_json["settings"]["pin"] = "%r";
+    template_json["settings"]["behaviour"] = "static";
+    template_json["repeated"] = Json::arrayValue;
+
+    std::shared_ptr<JtagFT2232> jtagManager = std::make_shared<JtagFT2232>();
+    jtagManager->autodetectInitialization();
+
+    int number_of_probes = jtagManager->getNumberOfProbes();
+    for(int probe_id = 0; probe_id < number_of_probes; probe_id++)
+    {
+        autodetect_json = template_json;
+        autodetect_json["settings"]["probe_name"] = jtagManager->getProbeName(probe_id);
+        
+        int number_of_devices = jtagManager->getNumberOfDevices(probe_id);
+        LOG_F(ERROR, "%d", number_of_devices);
+        for(int device_id = 0; device_id < number_of_devices; device_id++)
+        {
+            // autodetect_json["settings"]["device_no"] = Json::Int();
+            autodetect_json["settings"]["device_no"] = device_id;
+
+            json["autodetect"].append(autodetect_json);
+        }
+        
+        // if(number_of_devices == 0)
+        // {
+        //     json["autodetect"].append(autodetect_json);
+        // }
+
+    }
+
+    if(number_of_probes == 0)
+    {
+    json["autodetect"] = Json::arrayValue;
+    }
+
+    json["name"] = "BoundaryScan";
+    json["version"] = "1.0";
+    json["description"] = "Boundary Scan interface";
+    json["template"] = template_json;
+
+    return json;
+}
+
 // ============================================================================
 //
 std::shared_ptr<MetaDriver> MetaDriverFactoryFT2232BoundaryScan::createDriver(void *arg)
