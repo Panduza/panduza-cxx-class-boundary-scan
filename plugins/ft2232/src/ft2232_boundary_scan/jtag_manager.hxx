@@ -53,6 +53,13 @@ public:
     
     /// Deinit the driver
     void deinit();
+
+    void autodetectInitialization(){mJc = jtagcore_init();};
+
+    int getNumberOfProbes();
+    std::string getProbeName(int id_of_probe);
+
+    int getNumberOfDevices(int id_of_probe);
     
 private:
     /// Member to communicate over JTAG

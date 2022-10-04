@@ -223,6 +223,31 @@ void JtagFT2232::checkSpaceOnProbeLimit(char *probe_name)
     }
 }
 
+int JtagFT2232::getNumberOfProbes()
+{
+    return jtagcore_get_number_of_probes(mJc, 0);
+}
+
+std::string JtagFT2232::getProbeName(int id_of_probe)
+{
+    char tempstring[DEFAULT_BUFLEN - 7];
+
+    jtagcore_get_probe_name(mJc, id_of_probe, tempstring);
+
+    return tempstring;
+}
+
+int JtagFT2232::getNumberOfDevices(int id_of_probe)
+{
+    if (jtagcore_select_and_open_probe(mJc, id_of_probe) >= 0) // Probe: FT2232H_MM A FT12345A ID=0
+        {
+            // Scan and initialize JTAG chain
+            jtagcore_scan_and_init_chain(mJc);
+        }
+
+    return jtagcore_get_number_of_devices(mJc);
+}
+
 void JtagFT2232::deinit()
 {
     jtagcore_deinit(mJc);
