@@ -194,16 +194,19 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     jtagManager->autodetectInitialization();
 
     int number_of_probes = jtagManager->getNumberOfProbes();
+    LOG_F(9, "Number of probes : %d", number_of_probes);
+
     for(int probe_id = 0; probe_id < number_of_probes; probe_id++)
     {
+        std::string probe_name = jtagManager->getProbeName(probe_id);
+
         autodetect_json = template_json;
-        autodetect_json["settings"]["probe_name"] = jtagManager->getProbeName(probe_id);
+        autodetect_json["settings"]["probe_name"] = probe_name;
         
         int number_of_devices = jtagManager->getNumberOfDevices(probe_id);
-        LOG_F(ERROR, "%d", number_of_devices);
+        LOG_F(9, "Number of devices for probe %s : %d", probe_name.c_str(), number_of_devices);
         for(int device_id = 0; device_id < number_of_devices; device_id++)
         {
-            // autodetect_json["settings"]["device_no"] = Json::Int();
             autodetect_json["settings"]["device_no"] = device_id;
 
             json["autodetect"].append(autodetect_json);
