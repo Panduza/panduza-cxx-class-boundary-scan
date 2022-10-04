@@ -31,10 +31,7 @@ void MetaDriverFT2232BoundaryScan::setup()
     
     // Create a unique name for the driver name when there is multiple driver with the same name
     mInterfaceTree = getInterfaceTree();
-    // int serial_start_index = mInterfaceTree["settings"]["probe_name"].asString().find(" FT") + 1;
-    // int probe_name_size = mInterfaceTree["settings"]["probe_name"].size();
-    // std::string probe_serial_no = mProbeName.substr( serial_start_index, probe_name_size - serial_start_index);
-    // mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + probe_serial_no;
+
     mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + getProbeName();
     mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
 
