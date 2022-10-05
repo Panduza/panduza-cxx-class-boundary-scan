@@ -29,11 +29,11 @@ This should be editable with the software FT_Prog.
 
 The other way is to find the name of the probe use and redefine it on the tree. This can be found either on the software FT_Prog or with the command usb-devices on ubuntu.
 
-The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNumber to change. Both "A" and spaces have to be put in the same position 
+The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNumber to change. Both "A" and spaces have to be put in the same position
 
-## Daisy Chaining
+## Daisy Chaining
 
-With version is compatible with the daisy chaining. To avoid issue, the interface tree must contains a device value in the settings. It must be presented as defined : 
+With version is compatible with the daisy chaining. To avoid issue, the interface tree must contains a device value in the settings. It must be presented as defined :
 
 ```sh
 "name": "IO_%r",
@@ -46,6 +46,7 @@ With version is compatible with the daisy chaining. To avoid issue, the interfac
     "behaviour" : "static"
 },
 ```
+
 where x is the device position.
 
 Note that the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
@@ -59,7 +60,7 @@ Please first verify that you put the same name in the probe name than the name o
 When starting the program from here, the tree used will be the tree.json present in the panduza folder.
 
 The BSDL file is loaded by default from the BoundaryScan folder if the specific file is added (in our case it is).
-This BSDL file ( xc7s50_csga324.bsdl )is only working with an ARTY s7 device. 
+This BSDL file ( xc7s50_csga324.bsdl )is only working with an ARTY s7 device.
 
 To start the program, please launch the command below from this folder
 
@@ -74,3 +75,15 @@ After the start of the platform and the loading of the pins, it is possible to c
 An option to change the BSDL File name is to change the file name in the tree and add the file in the folder called BoundaryScan. This will allow the program to load directly the bsdl file.
 
 When changing the BSDL file, and DUT, the pin listed on "repeated" on the tree have to be changed for the pin you want to test.
+
+## AUTODETECT
+
+This version of the program contains an autodetection feature. This will create a file that will create a json file with every interfaces that can be loaded.
+To be able to use the autodetection, start the program with this command :
+
+```sh
+AUTODETECT=1 ./start.sh
+```
+
+This will create a flag that will be read by the program and will only run the autodetect and then will stop the program.
+The template file will be available in the platform directory.
