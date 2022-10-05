@@ -14,6 +14,7 @@
 #include <boost/config.hpp>
 
 class Metaplatform;
+class JtagFT2232;
 
 /// Main instance that will handle functionalities of the plugin
 class MetaDriverFT2232BoundaryScan : public MetaDriver
@@ -23,7 +24,7 @@ public:
     ~MetaDriverFT2232BoundaryScan() { LOG_F(9, "Meta Driver Io Fake Destructor"); }
 
     /// Constructor with parent pointer @param meta_platform_interface Meta Platform object
-    MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface){ mMetaplatformInstance = meta_platform_interface; }
+    MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface);
 
     /// Setup the meta driver
     void setup();
@@ -45,6 +46,8 @@ public:
 
     /// Create group info meta driver that will return info about the boundary scan
     void createGroupInfoMetaDriver();
+
+    Json::Value generateAutodetectInfo();
 
 private:
     std::string mBSDLName;

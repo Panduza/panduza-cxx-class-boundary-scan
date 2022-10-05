@@ -10,25 +10,28 @@
 std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::mJtagManager;
 bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
 
+/// Constructor with parent pointer @param meta_platform_interface Meta Platform object
+MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface)
+{
+    mMetaplatformInstance = meta_platform_interface;
+
+    // Transfert back the loguru verbose and file logging
+    loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
+    loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
+    loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
+}
+
 // ============================================================================
 //
 
 void MetaDriverFT2232BoundaryScan::setup()
 {
-    // Transfert back the loguru verbose and file logging
-    loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
-    loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
-    loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
-
     // Get Probe name
     mProbeName = getInterfaceTree()["settings"]["probe_name"].asString();
     
     // Create a unique name for the driver name when there is multiple driver with the same name
     mInterfaceTree = getInterfaceTree();
-    // int serial_start_index = mInterfaceTree["settings"]["probe_name"].asString().find(" FT") + 1;
-    // int probe_name_size = mInterfaceTree["settings"]["probe_name"].size();
-    // std::string probe_serial_no = mProbeName.substr( serial_start_index, probe_name_size - serial_start_index);
-    // mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + probe_serial_no;
+
     mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + getProbeName();
     mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
 
@@ -165,6 +168,68 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     std::map<std::string, std::list<std::shared_ptr<MetaDriver>>> group_info_map_entry {{getDriverName()+"_group_info_" + std::to_string(mDeviceNo), group_info_list}};
     // add the meta driver to the main list
     mMetaplatformInstance->addReloadableDriverInstance(group_info_map_entry);    
+}
+
+Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
+{
+    Json::Value json;
+    Json::Value template_json;
+    Json::Value template_settings_json;
+    Json::Value autodetect_settings_json;
+    Json::Value autodetect_json;
+
+    template_settings_json["behaviour"] = "static";
+
+    template_json["name"] = "IO_%r";
+    template_json["group_name"] = "??? (optional)";
+    template_json["driver"] = "Scan_Service";
+    template_json["settings"]["probe_name"] = "???";
+    template_json["settings"]["device_no"] = "???";
+    template_json["settings"]["BSDL"] = "???";
+    template_json["settings"]["pin"] = "%r";
+    template_json["settings"]["behaviour"] = "static";
+    template_json["repeated"] = Json::arrayValue;
+
+    std::shared_ptr<JtagFT2232> jtagManager = std::make_shared<JtagFT2232>();
+    jtagManager->autodetectInitialization();
+
+    int number_of_probes = jtagManager->getNumberOfProbes();
+    LOG_F(9, "Number of probes : %d", number_of_probes);
+
+    for(int probe_id = 0; probe_id < number_of_probes; probe_id++)
+    {
+        std::string probe_name = jtagManager->getProbeName(probe_id);
+
+        autodetect_json = template_json;
+        autodetect_json["settings"]["probe_name"] = probe_name;
+        
+        int number_of_devices = jtagManager->getNumberOfDevices(probe_id);
+        LOG_F(9, "Number of devices for probe %s : %d", probe_name.c_str(), number_of_devices);
+        for(int device_id = 0; device_id < number_of_devices; device_id++)
+        {
+            autodetect_json["settings"]["device_no"] = device_id;
+
+            json["autodetect"].append(autodetect_json);
+        }
+        
+        // if(number_of_devices == 0)
+        // {
+        //     json["autodetect"].append(autodetect_json);
+        // }
+
+    }
+
+    if(number_of_probes == 0)
+    {
+    json["autodetect"] = Json::arrayValue;
+    }
+
+    json["name"] = "BoundaryScan";
+    json["version"] = "1.0";
+    json["description"] = "Boundary Scan interface";
+    json["template"] = template_json;
+
+    return json;
 }
 
 // ============================================================================

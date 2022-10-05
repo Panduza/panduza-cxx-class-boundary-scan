@@ -34,7 +34,7 @@ void MetaDriverFT2232BsdlLoader::setup()
     {
         std::string tree_bsdl = getInterfaceTree()["settings"]["BSDL"].asString();
 
-        checkBSDLFile("/etc/BoundaryScan/" + tree_bsdl);
+        checkBSDLFile("/etc/panduza/BoundaryScan/" + tree_bsdl);
         return;
     }
 
