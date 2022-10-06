@@ -190,10 +190,10 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
         // Check if there is a space at the start and the end of the probe name
         checkSpaceOnProbeLimit(tempstring);
 
-        VLOG_F(3, "probe name available with id %d : \"%s\"", i, idstring);
+        VLOG_F(0, "probe name available with id %d : \"%s\"", i, idstring);
         if (strcmp(idstring, good_probe.c_str()) == 0)
         {
-            LOG_F(ERROR, "Probe found!");
+            LOG_F(INFO, "Probe found!");
             good_id = i;
         }
         i++;
