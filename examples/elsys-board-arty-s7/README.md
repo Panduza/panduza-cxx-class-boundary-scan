@@ -51,7 +51,7 @@ where x is the device position.
 
 Note that the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
 
-<img src="https://user-images.githubusercontent.com/37267717/193233333-03f81d89-c400-4df0-a90e-259ca924e40e.png" width="400" />
+<img src="https://user-images.githubusercontent.com/37267717/194265634-a7072bbf-d548-414b-acc6-af8db4dcb855.png" width="400" />
 
 ## Starting the program
 
