@@ -19,7 +19,8 @@ This projet use a probe and a DUT (Device Under Test)
 To allow the probe to connect to the DUT, the connection is made via JTAG.
 The connection is made as below :
 
-<img src="https://user-images.githubusercontent.com/37267717/189347706-711e7679-fd5f-46aa-90f1-2e2b8b343668.jpg" width="400" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/189347876-f6a7096a-ca11-4add-ae23-10463189eb2f.jpg" width="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/194315033-b5991b4f-36b8-4af4-afc0-53c06ae3b6df.png" height="400" style="margin:10px" />
 
 ## FT2232HL Probe name
 
