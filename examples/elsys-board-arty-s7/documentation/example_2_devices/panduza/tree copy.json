@@ -1,0 +1,74 @@
+{
+    "machine": "rpi4_test",
+    "brokers": {
+        "boundaryscanner": {
+            "addr": "localhost",
+            "port": 1883,
+            "interfaces": [
+                {
+                    "name": "IO_%r",
+                    "group_name" : "artys7",
+                    "driver": "Scan_service",
+                    "settings": {
+                        "probe_name" : "FT2232HL A FT6RR4EEA",
+                        "device_no" : 1,
+                        "BSDL" : "xc7s50_csga324.bsdl",
+                        "pin"  : "%r",
+                        "behaviour" : "static"
+                    },
+                    "repeated": [
+                        "E18",
+                        "F13",
+                        "E13",
+                        "H15"
+                    ]
+                },
+                {
+                    "name": "IO_%r",
+                    "group_name" : "artya7",
+                    "driver": "Scan_service",
+                    "settings": {
+                        "probe_name" : "FT2232HL A FT6RR4EEA",
+                        "device_no" : 0,
+                        "BSDL" : "XA7A100T_CSG324.bsdl",
+                        "pin"  : "%r",
+                        "behaviour" : "static"
+                    },
+                    "repeated": [
+                        "H5",
+                        "J5",
+                        "T9",
+                        "T10"
+                    ]
+                }
+            ]
+        },
+        "boundaryscanner1": {
+            "addr": "localhost",
+            "port": 1883,
+            "interfaces": [
+                {
+                    "name": "IO",
+                    "driver": "io_fake",
+                    "settings": {
+                        "behaviour" : "static"
+                    }
+                },
+                {
+                    "name": "PSU",
+                    "driver": "psu_fake",
+                    "settings": {
+                        "behaviour" : "manual"
+                    }
+                },
+                {
+                    "name": "FILE",
+                    "driver": "file_fake",
+                    "settings": {
+                        "behaviour" : "manual"
+                    }
+                }
+            ]
+        }
+    }
+}
