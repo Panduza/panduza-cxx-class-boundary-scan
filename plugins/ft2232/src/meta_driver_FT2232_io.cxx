@@ -30,6 +30,7 @@ void MetaDriverFT2232Io::setup()
 
     // Load the pin
     mId = jtagcore_get_pin_id(mJc, mDeviceNo, mPinName.data());
+    mPinType = jtagcore_get_pintype(mJc, mDeviceNo, mPinName.data());
     mState = -1;
     mSavedState = -1;
     mReadState = 1;
@@ -186,18 +187,34 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
                 // If direction is "input" or "output", edit the object and publish its direction
                 if (SubDir == "in")
                 {
-                    LOG_F(INFO, "Setting %s as input", mPinName.c_str());
+                    if (mPinType == 1 || mPinType == 3)
+                    {
+                        LOG_F(INFO, "Setting %s as input", mPinName.c_str());
 
-                    mDirection = "in";
-                    publishDirection();
-                    setState(mSavedState);
+                        mDirection = "in";
+                        publishDirection();
+                        setState(mSavedState);
+                    }
+                    else
+                    {
+                        LOG_F(WARNING, "This pin cannot be change to Input, please verify the pin characteristics");
+                    }
+                    
                 }
                 else if (SubDir == "out")
                 {
-                    LOG_F(INFO, "Setting %s as output", mPinName.c_str());
+                    if (mPinType == 2 || mPinType == 3)
+                    {
+                        LOG_F(INFO, "Setting %s as output", mPinName.c_str());
 
                     mDirection = "out";
                     publishDirection();
+                    }
+                    else
+                    {
+                        LOG_F(WARNING, "This pin cannot be change to Output, please verify the pin characteristics");
+                    }
+                    
                 }
                 else
                 {
