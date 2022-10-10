@@ -24,7 +24,7 @@ void MetaDriverFT2232Io::setup()
     mProbeId = mJtagManager->getProbeId();
 
     // Get the name of the pin to use it on the function
-    mPinName = "IO_" + getInterfaceTree()["settings"]["pin"].asString();
+    mPinName = getInterfaceTree()["settings"]["pin"].asString();
     mDeviceNo = getInterfaceTree()["settings"]["device_no"].asInt();
     LOG_F(4, "driver instance for pin : %s", mPinName.c_str());
 

@@ -188,7 +188,7 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
 
     template_settings_json["behaviour"] = "static";
 
-    template_json["name"] = "IO_%r";
+    template_json["name"] = "%r";
     template_json["group_name"] = "??? (optional)";
     template_json["driver"] = "Scan_Service";
     template_json["settings"]["probe_name"] = "???";
