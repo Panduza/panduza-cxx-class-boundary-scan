@@ -64,7 +64,7 @@ void MetaDriverFT2232BoundaryScan::startIo()
     // If there is no Jtag Manager, create it and pass a flag to true
     if (!mJtagManagerLoaded)
     {
-        mJtagManager = createJtagManager(mProbeName, mBSDLName);
+        mJtagManager = getJtagManager();
         mJtagManagerLoaded = true;
     }
 
@@ -72,13 +72,18 @@ void MetaDriverFT2232BoundaryScan::startIo()
     createGroupInfoMetaDriver();
 
     // get some variable and key point
-    const Json::Value repeated_json = mInterfaceTree["repeated"];
+    mRepeatedJson = mInterfaceTree["repeated"];
     const std::string format = "%r";
     const size_t posFormat = mInterfaceTree["name"].asString().find(format);
     
+    if(mRepeatedJson.isNull() || mRepeatedJson.size() == 0)
+    {
+        addAllIoPins();
+    }
+
     std::list<std::shared_ptr<MetaDriver>> io_list;
     // Loop into the repeated list of pins
-    for (auto repeated_pin : repeated_json)
+    for (auto repeated_pin : mRepeatedJson)
     {
         // Create a json with the good pin name
         Json::Value interface_json_copy = mInterfaceTree;
@@ -114,8 +119,8 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
     {
         mJtagManager = createJtagManager(mProbeName, mBSDLName);
         mJtagManagerLoaded = true;
+        mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
     }
-    mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
 
     return mJtagManager;
 }
@@ -169,6 +174,9 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     // add the meta driver to the main list
     mMetaplatformInstance->addReloadableDriverInstance(group_info_map_entry);    
 }
+
+// ============================================================================
+//
 
 Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
 {
@@ -230,6 +238,31 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     json["template"] = template_json;
 
     return json;
+}
+
+void MetaDriverFT2232BoundaryScan::addAllIoPins()
+{
+    mJtagManager = getJtagManager();
+    int number_of_pin = jtagcore_get_number_of_pins(mJtagManager->getJc(), mDeviceNo);
+
+    for(int i = 0; i < number_of_pin; i++)
+    {
+        char tmp_name[128];
+        jtagcore_get_pin_properties(mJtagManager->getJc(), mJtagManager->getProbeId(), i, tmp_name, sizeof(tmp_name), 0);
+        std::string pinName(tmp_name);
+        
+        int pin_type = jtagcore_get_pintype(mJtagManager->getJc(), mJtagManager->getProbeId(), i);
+
+        // if(pinName.find("IO_") != std::string::npos)
+        // {
+        //     mRepeatedJson.append(pinName);
+        // }
+        if(pin_type > 0)
+        {
+            mRepeatedJson.append(pinName);
+        }
+    }
+    LOG_F(INFO,"%s", mRepeatedJson.toStyledString().c_str());
 }
 
 // ============================================================================

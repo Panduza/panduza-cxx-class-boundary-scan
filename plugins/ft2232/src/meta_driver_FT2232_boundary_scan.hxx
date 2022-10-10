@@ -49,6 +49,8 @@ public:
 
     Json::Value generateAutodetectInfo();
 
+    void addAllIoPins();
+
 private:
     std::string mBSDLName;
     std::string mProbeName;
@@ -61,6 +63,7 @@ private:
     static bool mJtagManagerLoaded;
 
     Json::Value mInterfaceTree;
+    Json::Value mRepeatedJson;
 };
 
 /// Boundary Scan Factory
