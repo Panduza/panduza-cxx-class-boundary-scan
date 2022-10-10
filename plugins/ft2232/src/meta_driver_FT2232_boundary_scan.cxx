@@ -34,15 +34,22 @@ void MetaDriverFT2232BoundaryScan::setup()
 
     mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + getProbeName();
     mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
+    mBSDLName = "/etc/panduza/BoundaryScan/" + mInterfaceTree["settings"]["BSDL"].asString();
+    mProbeName = mInterfaceTree["settings"]["probe_name"].asString();
 
-    // Create Meta Driver File
-    std::shared_ptr<MetaDriver> meta_driver_file_instance = std::make_shared<MetaDriverFT2232BsdlLoader>(this);
+    std::ifstream bsdl_file(mBSDLName, std::ifstream::binary);
 
-    // Initialize the meta_driver file instance
-    meta_driver_file_instance->initialize(getMachineName(), getBrokerName(), getBrokerAddr(), getBrokerPort(), mInterfaceTree);
-
-    // Add the meta driver instance to the main meta driver list
-    mMetaplatformInstance->addStaticDriverInstance(meta_driver_file_instance);
+    if (bsdl_file.is_open())
+    {
+        LOG_F(INFO, "BSDL File found, loading the BSDL...");
+        startIo();
+        bsdl_file.close();
+    }
+    else
+    {
+        LOG_F(ERROR, "No BSDL file found... exiting...");
+        exit(1);
+    }
 }
 
 // ============================================================================
@@ -118,8 +125,8 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
     if (mJtagManagerLoaded == false)
     {
         mJtagManager = createJtagManager(mProbeName, mBSDLName);
-        mJtagManagerLoaded = true;
         mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
+        mJtagManagerLoaded = true;
     }
 
     return mJtagManager;
@@ -186,8 +193,6 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     Json::Value autodetect_settings_json;
     Json::Value autodetect_json;
 
-    template_settings_json["behaviour"] = "static";
-
     template_json["name"] = "%r";
     template_json["group_name"] = "??? (optional)";
     template_json["driver"] = "Scan_Service";
@@ -195,7 +200,6 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     template_json["settings"]["device_no"] = "???";
     template_json["settings"]["BSDL"] = "???";
     template_json["settings"]["pin"] = "%r";
-    template_json["settings"]["behaviour"] = "static";
     template_json["repeated"] = Json::arrayValue;
 
     std::shared_ptr<JtagFT2232> jtagManager = std::make_shared<JtagFT2232>();
@@ -251,7 +255,7 @@ void MetaDriverFT2232BoundaryScan::addAllIoPins()
         jtagcore_get_pin_properties(mJtagManager->getJc(), mJtagManager->getProbeId(), i, tmp_name, sizeof(tmp_name), 0);
         std::string pinName(tmp_name);
         
-        int pin_type = jtagcore_get_pintype(mJtagManager->getJc(), mJtagManager->getProbeId(), i);
+        int pin_type = jtagcore_get_pintype(mJtagManager->getJc(), mJtagManager->getProbeId(), pinName.data());
 
         // if(pinName.find("IO_") != std::string::npos)
         // {
