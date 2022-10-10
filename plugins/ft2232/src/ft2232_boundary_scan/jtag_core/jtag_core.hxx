@@ -131,6 +131,9 @@ int jtagcore_get_pin_properties(jtag_core * jc, int device, int pin, char * pinn
 #define JTAG_CORE_PIN_IS_OUTPUT    0x02
 #define JTAG_CORE_PIN_IS_TRISTATES 0x04
 
+
+int jtagcore_get_pintype(jtag_core * jc, int device, int pin);
+
 // jtagcore_get_pin_id : Find and return a pin id (if exist) from the pin name
 // "device" should be between 0 and "the number of devices into the chain" - 1
 

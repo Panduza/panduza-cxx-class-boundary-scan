@@ -469,6 +469,33 @@ int jtagcore_get_pin_properties(jtag_core * jc, int device,int pin,char * pinnam
 	return JTAG_CORE_BAD_PARAMETER;
 }
 
+int jtagcore_get_pintype(jtag_core * jc, int device, int pin)
+{
+	jtag_bsdl * bsdl_file;
+	int type_code;
+	if (device < jc->nb_of_devices_in_chain && device < MAX_NB_JTAG_DEVICE)
+	{
+		if (jc->devices_list[device].bsdl)
+		{
+			bsdl_file = jc->devices_list[device].bsdl;
+
+			if (pin < bsdl_file->number_of_pins  )
+			{
+				type_code = 0x00;
+
+				if (bsdl_file->pins_list[pin].pintype)
+					LOG_F(ERROR, "pinname : %s, pintype : %d,physical pin : %s, ctrl_bit_number : %d, out_bit_number : %d, in_bit_number : %d", bsdl_file->pins_list[pin].pinname, bsdl_file->pins_list[pin].pintype, bsdl_file->pins_list[pin].physical_pin, bsdl_file->pins_list[pin].out_bit_number, bsdl_file->pins_list[pin].in_bit_number);
+					return bsdl_file->pins_list[pin].pintype;
+				
+
+				return JTAG_CORE_NO_ERROR;
+			}
+		}
+	}
+
+	return JTAG_CORE_BAD_PARAMETER;
+}
+
 int jtagcore_get_pin_state(jtag_core * jc, int device, int pin, int type)
 {
 	jtag_bsdl * bsdl_file;
