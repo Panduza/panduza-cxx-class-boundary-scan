@@ -75,6 +75,8 @@ void MetaDriverFT2232BoundaryScan::startIo()
         mJtagManagerLoaded = true;
     }
 
+    mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
+
     // Create the Group Info meta Driver where it will store the payload of the jtagManager infos...
     createGroupInfoMetaDriver();
 
@@ -125,7 +127,6 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
     if (mJtagManagerLoaded == false)
     {
         mJtagManager = createJtagManager(mProbeName, mBSDLName);
-        mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
         mJtagManagerLoaded = true;
     }
 
