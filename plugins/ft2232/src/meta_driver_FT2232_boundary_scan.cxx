@@ -249,10 +249,10 @@ void MetaDriverFT2232BoundaryScan::addAllIoPins()
     for(int i = 0; i < number_of_pin; i++)
     {
         char tmp_name[128];
-        jtagcore_get_pin_properties(mJtagManager->getJc(), mJtagManager->getProbeId(), i, tmp_name, sizeof(tmp_name), 0);
+        jtagcore_get_pin_properties(mJtagManager->getJc(), mDeviceNo, i, tmp_name, sizeof(tmp_name), 0);
         std::string pinName(tmp_name);
         
-        int pin_type = jtagcore_get_pintype(mJtagManager->getJc(), mJtagManager->getProbeId(), pinName.data());
+        int pin_type = jtagcore_get_pintype(mJtagManager->getJc(), mDeviceNo, pinName.data());
 
         // if(pinName.find("IO_") != std::string::npos)
         // {
