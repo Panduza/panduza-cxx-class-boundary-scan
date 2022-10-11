@@ -159,10 +159,6 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     std::string probe_name = mProbeName;
     int nb_of_devices = jtagcore_get_number_of_devices(mJtagManager->getJc());
 
-    LOG_F(ERROR,"%d", probe_id);
-    LOG_F(ERROR,"%s", probe_name.c_str());
-    LOG_F(ERROR,"%d", nb_of_devices);
-
     Json::Value payload;
 
     payload["probe_id"] = probe_id;
