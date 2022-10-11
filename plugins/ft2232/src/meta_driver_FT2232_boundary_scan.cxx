@@ -243,7 +243,6 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
 
 void MetaDriverFT2232BoundaryScan::addAllIoPins()
 {
-    mJtagManager = getJtagManager();
     int number_of_pin = jtagcore_get_number_of_pins(mJtagManager->getJc(), mDeviceNo);
 
     for(int i = 0; i < number_of_pin; i++)
