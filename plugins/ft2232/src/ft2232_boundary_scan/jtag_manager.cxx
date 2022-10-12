@@ -11,7 +11,7 @@ JtagFT2232::JtagFT2232()
     mProbeName = "";
 }
 
-void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
+void JtagFT2232::initializeDriver(std::string probe_name)
 {
     LOG_F(1, "Initializing the Driver for the probe : %s", probe_name.c_str());
     mProbeName = probe_name;

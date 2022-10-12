@@ -33,8 +33,8 @@ public:
     /// Return JtagManager Object @return Shared ptr of the Jtag connection
     std::shared_ptr<JtagFT2232> getJtagManager();
 
-    /// Create a Jtag manager and initialize it @param probe_name Name of the probe @param bsdl_name Name of the BSDL file @return Shared ptr of the Jtag connection
-    std::shared_ptr<JtagFT2232> createJtagManager(std::string probe_name, std::string bsdl_name);
+    /// Create a Jtag manager and initialize it @param probe_name Name of the probe @return Shared ptr of the Jtag connection
+    std::shared_ptr<JtagFT2232> createJtagManager(std::string probe_name);
 
     /// Send Info function
     void sendInfo();

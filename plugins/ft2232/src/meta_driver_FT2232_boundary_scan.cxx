@@ -126,7 +126,7 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
 {
     if (mJtagManagerLoaded == false)
     {
-        mJtagManager = createJtagManager(mProbeName, mBSDLName);
+        mJtagManager = createJtagManager(mProbeName);
         mJtagManagerLoaded = true;
     }
 
@@ -136,11 +136,11 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::getJtagManager()
 // ============================================================================
 //
 
-std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::createJtagManager(std::string probe_name, std::string bsdl_name)
+std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::createJtagManager(std::string probe_name)
 {
     // Create the Jtag manager with the probe name and bsdl name
     std::shared_ptr<JtagFT2232> jtagManager = std::make_shared<JtagFT2232>();
-    jtagManager->initializeDriver(probe_name, bsdl_name);
+    jtagManager->initializeDriver(probe_name);
 
     return jtagManager;
 }
