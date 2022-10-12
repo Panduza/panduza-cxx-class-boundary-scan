@@ -8,8 +8,10 @@
 #include "meta_driver_FT2232_io.hxx"
 #include "meta_driver_group_info.hxx"
 
+#include <boost/filesystem.hpp>
 #include <thread>
 #include <boost/config.hpp>
+#include <sstream>
 
 class Metaplatform;
 class JtagFT2232;
@@ -49,6 +51,8 @@ public:
 
     void addAllIoPins();
 
+    void loadBSDLIdCode();
+
 private:
     std::string mBSDLName;
     std::string mProbeName;
@@ -59,6 +63,8 @@ private:
     // static std::list<std::shared_ptr<JtagFT2232>> JTAG_MANAGERS;
     static std::shared_ptr<JtagFT2232> mJtagManager;
     static bool mJtagManagerLoaded;
+    static std::map<std::string,std::string> mBSDLFileIdCode;
+    static bool mBSDLFileIdCodeLoaded;
 
     Json::Value mInterfaceTree;
     Json::Value mRepeatedJson;

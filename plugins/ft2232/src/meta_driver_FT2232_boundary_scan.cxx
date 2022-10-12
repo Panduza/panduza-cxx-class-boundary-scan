@@ -4,11 +4,14 @@
  * @author Valentin 
  */
 
+#include <iomanip>
 #include "meta_driver_FT2232_boundary_scan.hxx"
 #include "../../../headers/meta_platform.hxx"
 
 std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::mJtagManager;
 bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
+std::map<std::string, std::string> MetaDriverFT2232BoundaryScan::mBSDLFileIdCode;
+bool MetaDriverFT2232BoundaryScan::mBSDLFileIdCodeLoaded = false;
 
 /// Constructor with parent pointer @param meta_platform_interface Meta Platform object
 MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface)
@@ -33,9 +36,39 @@ void MetaDriverFT2232BoundaryScan::setup()
     mInterfaceTree = getInterfaceTree();
 
     mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + getProbeName();
-    mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
-    mBSDLName = "/etc/panduza/BoundaryScan/" + mInterfaceTree["settings"]["BSDL"].asString();
+    (mInterfaceTree["settings"]["device_no"].isNull()) ? mDeviceNo = -1 : mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
+    // mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
     mProbeName = mInterfaceTree["settings"]["probe_name"].asString();
+
+    // If there is no Jtag Manager, create it and pass a flag to true
+    if (!mJtagManagerLoaded)
+    {
+        mJtagManager = getJtagManager();
+        mJtagManagerLoaded = true;
+    }
+    if (!mBSDLFileIdCodeLoaded)
+    {
+        loadBSDLIdCode();
+        mBSDLFileIdCodeLoaded = true;
+    }
+
+    if(mDeviceNo != -1)
+    {
+        int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), mDeviceNo);
+
+        std::stringstream hex_ss;
+        hex_ss<< std::hex << device_dec_id; // int decimal_value
+        std::string device_hex_id (hex_ss.str());
+
+        for(auto idcode_line : mBSDLFileIdCode)
+        {
+            if(idcode_line.first == device_hex_id)
+            {
+                mBSDLName = idcode_line.second;
+                LOG_F(INFO, "%s", idcode_line.second.c_str());
+            }
+        }
+    }
 
     std::ifstream bsdl_file(mBSDLName, std::ifstream::binary);
 
@@ -67,13 +100,6 @@ void MetaDriverFT2232BoundaryScan::startIo()
     //     mJtagManager.reset();
     //     mJtagManagerLoaded = false;
     // }
-
-    // If there is no Jtag Manager, create it and pass a flag to true
-    if (!mJtagManagerLoaded)
-    {
-        mJtagManager = getJtagManager();
-        mJtagManagerLoaded = true;
-    }
 
     mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
 
@@ -244,6 +270,7 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
 void MetaDriverFT2232BoundaryScan::addAllIoPins()
 {
     int number_of_pin = jtagcore_get_number_of_pins(mJtagManager->getJc(), mDeviceNo);
+    LOG_F(ERROR, "Nb of pin : %d", number_of_pin);
 
     for(int i = 0; i < number_of_pin; i++)
     {
@@ -262,7 +289,36 @@ void MetaDriverFT2232BoundaryScan::addAllIoPins()
             mRepeatedJson.append(pinName);
         }
     }
-    LOG_F(INFO,"%s", mRepeatedJson.toStyledString().c_str());
+}
+
+void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
+{
+    boost::filesystem::path bsdl_library = mInterfaceTree["settings"]["bsdl_library"].asString();
+
+    if(boost::filesystem::is_directory(bsdl_library))
+    {
+        for (auto file : boost::filesystem::directory_iterator(bsdl_library))
+        {
+            LOG_F(INFO,"%s", file.path().c_str());
+            std::ifstream bsdl_file(file.path().c_str(), std::ifstream::binary);
+            if(bsdl_file.is_open())
+            {
+                bsdl_file.close();
+                
+                int bsdl_dec_id = jtagcore_get_bsdl_id(mJtagManager->getJc(), file.path().c_str());
+
+                std::stringstream hex_ss;
+                hex_ss<< std::hex << bsdl_dec_id;
+                std::string bsdl_hex_id (hex_ss.str());
+
+                mBSDLFileIdCode[bsdl_hex_id] = file.path().c_str();
+            }
+        }
+    }
+    else
+    {
+        LOG_F(ERROR, "The path given is not a directory");
+    }
 }
 
 // ============================================================================
