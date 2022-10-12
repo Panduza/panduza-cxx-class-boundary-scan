@@ -1,0 +1,26 @@
+{
+    "machine": "rpi4_test",
+    "brokers": {
+        "boundaryscanner": {
+            "addr": "localhost",
+            "port": 1883,
+            "interfaces": [
+                {
+                    "name": "%r",
+                    "group_name" : "artys7",
+                    "driver": "Scan_service",
+                    "settings": {
+                        "probe_name" : "FT2232HL A FT72DWQ6A",
+                        "device_no" : 1,
+                        "idcode" : "0101010101010101010",
+                        "bsdl_library" : "/etc/panduza/data/BSDL",
+                        "BSDL" : "STM32L431_433_443_LQFP64.bsdl",
+                        "pin"  : "%r"
+                    },
+                    "repeated": [
+                    ]
+                }
+            ]
+        }
+    }
+}
