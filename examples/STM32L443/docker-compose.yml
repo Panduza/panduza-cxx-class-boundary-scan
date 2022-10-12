@@ -23,12 +23,10 @@ services:
     environment:
       - AUTODETECT
     volumes:
-      - ../../:/home/builder/panduza-cxx-class-boundary-scan
       - ./panduza:/etc/panduza/tree
       - ./logs:/panduza-cxx-platform/logs
       - ./BoundaryScan:/etc/panduza/data/BSDL
       - ./platform:/etc/panduza/platform
-      - ../../../panduza-cxx-platform:/panduza-cxx-platform
 
 
 
