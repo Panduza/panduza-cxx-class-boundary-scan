@@ -232,7 +232,7 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
 
     template_json["name"] = "%r";
     template_json["group_name"] = "??? (optional)";
-    template_json["driver"] = "Scan_Service";
+    template_json["driver"] = "FTX232_JTAG_IO";
     template_json["settings"]["probe_name"] = "???";
     template_json["settings"]["device_no"] = "???";
     template_json["settings"]["bsdl_library"] = "???";

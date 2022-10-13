@@ -7,8 +7,8 @@
             "interfaces": [
                 {
                     "name": "%r",
-                    "group_name" : "artys7",
-                    "driver": "Scan_service",
+                    "group_name" : "STM32",
+                    "driver": "FTX232_JTAG_IO",
                     "settings": {
                         "probe_name" : "FT2232HL A FT72DWQ6A",
                         "bsdl_library" : "/etc/panduza/data/BSDL",
