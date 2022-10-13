@@ -57,9 +57,7 @@ void MetaDriverFT2232BoundaryScan::setup()
         int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), mDeviceNo);
         device_dec_id = device_dec_id & 0x0fffffff;
 
-        std::stringstream hex_ss;
-        hex_ss<< std::hex << device_dec_id;
-        std::string device_hex_id ("0x" + hex_ss.str());
+        std::string device_hex_id = convertDecToHex(device_dec_id);
 
         findCorrespondingBsdlFile(device_hex_id);
 
@@ -76,6 +74,8 @@ void MetaDriverFT2232BoundaryScan::setup()
             LOG_F(ERROR,"No device number or idcode defined in the tree, ... exiting for now");
             exit(1);
         }
+
+        verifyMultipleIdcode(mIdcode);
         findCorrespondingBsdlFile(mIdcode);
     }
    
@@ -310,10 +310,7 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
                 bsdl_file.close();
                 
                 int bsdl_dec_id = jtagcore_get_bsdl_id(mJtagManager->getJc(), file.path().c_str());
-
-                std::stringstream hex_ss;
-                hex_ss<< std::hex << bsdl_dec_id;
-                std::string bsdl_hex_id (hex_ss.str());
+                std::string bsdl_hex_id = convertDecToHex(bsdl_dec_id);
 
                 mBSDLFileIdCode["0x" + bsdl_hex_id] = file.path().c_str();
             }
@@ -323,6 +320,40 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
     {
         LOG_F(ERROR, "The path given is not a directory");
     }
+}
+
+void MetaDriverFT2232BoundaryScan::verifyMultipleIdcode(std::string idcode)
+{
+    int no_of_devices = jtagcore_get_number_of_devices(mJtagManager->getJc());
+    int idcode_count = 0;
+
+    for(int device_no = 0; device_no < no_of_devices; device_no++)
+    {
+        int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), mDeviceNo);
+        device_dec_id = device_dec_id & 0x0fffffff;
+
+        std::string device_hex_id = convertDecToHex(device_dec_id);
+
+        if(strcmp(idcode.c_str(), device_hex_id.c_str()) == 0)
+        {
+            idcode_count++;
+        }
+    }
+
+    if(idcode_count > 1)
+    {
+        LOG_F(ERROR, "There is multiple device with the same idcode, please define a device on the tree...");
+        exit(1);
+    }
+}
+
+std::string MetaDriverFT2232BoundaryScan::convertDecToHex(int decimal_value)
+{
+    std::stringstream hex_ss;
+    hex_ss<< std::hex << decimal_value;
+    std::string hex_value ("0x" + hex_ss.str());
+
+    return hex_value;
 }
 
 // ============================================================================
