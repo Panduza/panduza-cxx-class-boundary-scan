@@ -12,8 +12,8 @@
                     "settings": {
                         "probe_name" : "FT2232HL A FT6RR4EEA",
                         "device_no" : 1,
-                        "BSDL" : "xc7s50_csga324.bsdl",
-                        "pin"  : "%r"
+                        "bsdl_library" : "/etc/panduza/data/BSDL",
+                        "pin"  : "%r",
                     },
                     "repeated": [
                     ]
@@ -25,8 +25,8 @@
                     "settings": {
                         "probe_name" : "FT2232HL A FT6RR4EEA",
                         "device_no" : 0,
-                        "BSDL" : "XA7A100T_CSG324.bsdl",
-                        "pin"  : "%r"
+                        "bsdl_library" : "/etc/panduza/data/BSDL",
+                        "pin"  : "%r",
                     },
                     "repeated": [
                     ]
