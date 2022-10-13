@@ -53,6 +53,8 @@ public:
 
     void loadBSDLIdCode();
 
+    void findCorrespondingBsdlFile(std::string idcode);
+
 private:
     std::string mBSDLName;
     std::string mProbeName;
