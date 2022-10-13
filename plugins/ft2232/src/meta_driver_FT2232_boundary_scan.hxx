@@ -57,6 +57,7 @@ private:
     std::string mBSDLName;
     std::string mProbeName;
     int mDeviceNo;
+    std::string mIdcode;
 
     Metaplatform *mMetaplatformInstance;
 

@@ -37,7 +37,7 @@ void MetaDriverFT2232BoundaryScan::setup()
 
     mInterfaceTree["driver"] = mInterfaceTree["driver"].asString() + "_" + getProbeName();
     (mInterfaceTree["settings"]["device_no"].isNull()) ? mDeviceNo = -1 : mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
-    // mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
+    (mInterfaceTree["settings"]["idcode"].isNull()) ? mIdcode = "" : mIdcode = mInterfaceTree["settings"]["idcode"].asString();
     mProbeName = mInterfaceTree["settings"]["probe_name"].asString();
 
     // If there is no Jtag Manager, create it and pass a flag to true
