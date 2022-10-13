@@ -13,7 +13,7 @@
                         "probe_name" : "FT2232HL A FT6RR4EEA",
                         "device_no" : 1,
                         "bsdl_library" : "/etc/panduza/data/BSDL",
-                        "pin"  : "%r",
+                        "pin"  : "%r"
                     },
                     "repeated": [
                     ]
@@ -26,7 +26,7 @@
                         "probe_name" : "FT2232HL A FT6RR4EEA",
                         "device_no" : 0,
                         "bsdl_library" : "/etc/panduza/data/BSDL",
-                        "pin"  : "%r",
+                        "pin"  : "%r"
                     },
                     "repeated": [
                     ]
