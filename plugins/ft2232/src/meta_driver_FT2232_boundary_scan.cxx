@@ -55,21 +55,31 @@ void MetaDriverFT2232BoundaryScan::setup()
     if(mDeviceNo != -1)
     {
         int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), mDeviceNo);
+        device_dec_id = device_dec_id & 0x0fffffff;
 
         std::stringstream hex_ss;
-        hex_ss<< std::hex << device_dec_id; // int decimal_value
-        std::string device_hex_id (hex_ss.str());
+        hex_ss<< std::hex << device_dec_id;
+        std::string device_hex_id ("0x" + hex_ss.str());
 
-        for(auto idcode_line : mBSDLFileIdCode)
+        findCorrespondingBsdlFile(device_hex_id);
+
+        if(mBSDLName.empty())
         {
-            if(idcode_line.first == device_hex_id)
-            {
-                mBSDLName = idcode_line.second;
-                LOG_F(INFO, "%s", idcode_line.second.c_str());
-            }
+            LOG_F(ERROR, "No BSDL File found for device no : %d, it's idcode is : %s", mDeviceNo,device_hex_id.c_str());
+            exit(1);
         }
     }
-
+    else
+    {
+        if(mIdcode.empty())
+        {
+            LOG_F(ERROR,"No device number or idcode defined in the tree, ... exiting for now");
+            exit(1);
+        }
+        findCorrespondingBsdlFile(mIdcode);
+    }
+   
+    
     std::ifstream bsdl_file(mBSDLName, std::ifstream::binary);
 
     if (bsdl_file.is_open())
@@ -85,6 +95,19 @@ void MetaDriverFT2232BoundaryScan::setup()
     }
 }
 
+void MetaDriverFT2232BoundaryScan::findCorrespondingBsdlFile(std::string idcode)
+{
+    for(auto idcode_line : mBSDLFileIdCode)
+    {
+        LOG_F(ERROR, "%s, \"%s\", \"%s\"", idcode_line.second.c_str(), idcode_line.first.c_str(), idcode.c_str());
+        if(strcmp(idcode_line.first.c_str(),idcode.c_str()) == 0)
+        {
+            LOG_F(ERROR, "YEP");
+            mBSDLName = idcode_line.second;
+        }
+    }
+}
+
 // ============================================================================
 //
 
@@ -92,14 +115,6 @@ void MetaDriverFT2232BoundaryScan::startIo()
 {
     // Kill all reloadable instances
     mMetaplatformInstance->clearReloadableInterfaces(getDriverName() + "_io_list_" + std::to_string(mDeviceNo));
-
-    // If there is a jtagManager loaded, delete it and reset its flag
-    // if (mJtagManagerLoaded)
-    // {
-    //     mJtagManager->deinit();
-    //     mJtagManager.reset();
-    //     mJtagManagerLoaded = false;
-    // }
 
     mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
 
@@ -133,8 +148,7 @@ void MetaDriverFT2232BoundaryScan::startIo()
         meta_driver_io_instance->initialize(getMachineName(), getBrokerName(), getBrokerAddr(), getBrokerPort(), interface_json_copy);
 
 
-        // add the meta driver to the main list
-        // mMetaplatformInstance->addReloadableDriverInstance(meta_driver_io_instance);
+        // add the meta driver list to the main list
         io_list.emplace_back(meta_driver_io_instance);
     }
 
@@ -221,7 +235,8 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     template_json["driver"] = "Scan_Service";
     template_json["settings"]["probe_name"] = "???";
     template_json["settings"]["device_no"] = "???";
-    template_json["settings"]["BSDL"] = "???";
+    template_json["settings"]["bsdl_library"] = "???";
+    template_json["settings"]["idcode"] = "???";
     template_json["settings"]["pin"] = "%r";
     template_json["repeated"] = Json::arrayValue;
 
@@ -246,12 +261,6 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
 
             json["autodetect"].append(autodetect_json);
         }
-        
-        // if(number_of_devices == 0)
-        // {
-        //     json["autodetect"].append(autodetect_json);
-        // }
-
     }
 
     if(number_of_probes == 0)
@@ -280,10 +289,6 @@ void MetaDriverFT2232BoundaryScan::addAllIoPins()
         
         int pin_type = jtagcore_get_pintype(mJtagManager->getJc(), mDeviceNo, pinName.data());
 
-        // if(pinName.find("IO_") != std::string::npos)
-        // {
-        //     mRepeatedJson.append(pinName);
-        // }
         if(pin_type > 0)
         {
             mRepeatedJson.append(pinName);
@@ -299,7 +304,6 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
     {
         for (auto file : boost::filesystem::directory_iterator(bsdl_library))
         {
-            LOG_F(INFO,"%s", file.path().c_str());
             std::ifstream bsdl_file(file.path().c_str(), std::ifstream::binary);
             if(bsdl_file.is_open())
             {
@@ -311,7 +315,7 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
                 hex_ss<< std::hex << bsdl_dec_id;
                 std::string bsdl_hex_id (hex_ss.str());
 
-                mBSDLFileIdCode[bsdl_hex_id] = file.path().c_str();
+                mBSDLFileIdCode["0x" + bsdl_hex_id] = file.path().c_str();
             }
         }
     }

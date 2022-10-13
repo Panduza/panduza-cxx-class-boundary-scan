@@ -187,7 +187,6 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
         VLOG_F(3, "probe name available with id %d : \"%s\"", i, idstring);
         if (strcmp(idstring, good_probe.c_str()) == 0)
         {
-            LOG_F(ERROR, "Probe found!");
             good_id = i;
         }
         i++;
