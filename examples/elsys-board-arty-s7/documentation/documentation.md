@@ -15,11 +15,17 @@
       - [4.1.4. Running the project](#414-running-the-project)
       - [4.1.5. Testing](#415-testing)
     - [4.2. Daisy-chaining, testing with two devices](#42-daisy-chaining-testing-with-two-devices)
+      - [4.2.1. Introduction](#421-introduction)
+      - [4.2.2. Hardware](#422-hardware)
+      - [4.2.3. Wiring](#423-wiring)
+      - [4.2.4. Running the project](#424-running-the-project)
+      - [4.2.5. Testing](#425-testing)
   - [5. Common issues](#5-common-issues)
     - [5.1. "No tree file found"](#51-no-tree-file-found)
     - [5.2 "No probe detected"](#52-no-probe-detected)
     - [5.3. "Probe xxx : not found"](#53-probe-xxx--not-found)
     - [5.4 "No device detected"](#54-no-device-detected)
+    - [5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"](#55-no-bsdl-file-found-for-device-no--x-its-idcode-is--xxxxxxxxxx)
 
 ## 1. Introduction
 
@@ -57,12 +63,12 @@ The panduza platform need one file to work : the **tree.json** file. This file i
             "port": 1883,
             "interfaces": [
                 {
-                    "name": "IO_%r",
+                    "name": "%r",
                     "driver": "Scan_service",
                     "settings": {
                         "probe_name" : "FT2232HL A FT6RR4EEA",
                         "device_no" : 1,
-                        "BSDL" : "xc7s50_csga324.bsdl",
+                        "bsdl_library" : "/etc/panduza/data/bsdl",
                         "pin"  : "%r",
                     },
                     "repeated": [
@@ -145,9 +151,33 @@ The wiring is done as defined below :
 
 To avoid any issue, everything that is needed to run the project is available in the folder example_1_device.
 
+To run the project, please run the command "./start.sh" from the example folder.
+
 #### 4.1.5. Testing
 
+To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the example folder.
+
+For the "test.py" program, python3 is needed. To run the program, use the command "python3 test.py" while the platform is running.
+
+This python program will setup all buttons and switches to inputs and will loop all LEDs to turn on repetitively.
+
 ### 4.2. Daisy-chaining, testing with two devices
+
+#### 4.2.1. Introduction
+
+In this part, two devices will be connected in chain, we call this daisy-chain. The wiring and all the instructions will be presented below.
+
+#### 4.2.2. Hardware
+
+#### 4.2.3. Wiring
+
+#### 4.2.4. Running the project
+
+Please refer to [the previous example](#414-running-the-project) but using the specific folder for this example.
+
+#### 4.2.5. Testing
+
+
 
 ## 5. Common issues
 
@@ -168,3 +198,12 @@ If you are in a Virtual Machine, check that you do have linked the probe to the 
 Verify that the probe name that you are using is the same as the one you
 
 ### 5.4 "No device detected"
+
+If no device is detected, please Verify the JTAG Connection. The device(s) also have to be powered by its microUSB port.
+
+### 5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"
+
+This means that the program couldn't locate a BSDL file that match the idcode of the device x.
+
+In the case the BSDL file wasn't added to the folder, please add it.
+In the other case, please check the Jtag connector.
