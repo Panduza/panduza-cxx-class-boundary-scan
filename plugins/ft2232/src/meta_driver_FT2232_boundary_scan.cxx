@@ -96,6 +96,9 @@ void MetaDriverFT2232BoundaryScan::setup()
     }
 }
 
+// ============================================================================
+//
+
 void MetaDriverFT2232BoundaryScan::findCorrespondingBsdlFile(std::string idcode)
 {
     for(auto idcode_line : mBSDLFileIdCode)
@@ -103,7 +106,6 @@ void MetaDriverFT2232BoundaryScan::findCorrespondingBsdlFile(std::string idcode)
         LOG_F(ERROR, "%s, \"%s\", \"%s\"", idcode_line.second.c_str(), idcode_line.first.c_str(), idcode.c_str());
         if(strcmp(idcode_line.first.c_str(),idcode.c_str()) == 0)
         {
-            LOG_F(ERROR, "YEP");
             mBSDLName = idcode_line.second;
         }
     }
@@ -260,6 +262,9 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
         {
             autodetect_json["settings"]["device_no"] = device_id;
 
+            int test = jtagcore_get_dev_id(jtagManager->getJc(), device_id);
+            autodetect_json["settings"]["idcode"] = convertDecToHex(test);
+
             json["autodetect"].append(autodetect_json);
         }
     }
@@ -312,7 +317,7 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
                 int bsdl_dec_id = jtagcore_get_bsdl_id(mJtagManager->getJc(), file.path().c_str());
                 std::string bsdl_hex_id = convertDecToHex(bsdl_dec_id);
 
-                mBSDLFileIdCode["0x" + bsdl_hex_id] = file.path().c_str();
+                mBSDLFileIdCode[bsdl_hex_id] = file.path().c_str();
             }
         }
     }
@@ -322,20 +327,21 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
     }
 }
 
-void MetaDriverFT2232BoundaryScan::verifyMultipleIdcode(std::string idcode)
+void MetaDriverFT2232BoundaryScan::findAndVerifyIdcodeToDevice(std::string idcode)
 {
     int no_of_devices = jtagcore_get_number_of_devices(mJtagManager->getJc());
     int idcode_count = 0;
 
     for(int device_no = 0; device_no < no_of_devices; device_no++)
     {
-        int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), mDeviceNo);
+        int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), device_no);
         device_dec_id = device_dec_id & 0x0fffffff;
 
         std::string device_hex_id = convertDecToHex(device_dec_id);
 
         if(strcmp(idcode.c_str(), device_hex_id.c_str()) == 0)
         {
+            mDeviceNo = device_no;
             idcode_count++;
         }
     }
@@ -351,9 +357,13 @@ std::string MetaDriverFT2232BoundaryScan::convertDecToHex(int decimal_value)
 {
     std::stringstream hex_ss;
     hex_ss<< std::hex << decimal_value;
-    std::string hex_value ("0x" + hex_ss.str());
+    std::string hex_value (hex_ss.str());
+    if(hex_value.length() == 7)
+    {
+        hex_value = "0" + hex_value;
+    }
 
-    return hex_value;
+    return ("0x" + hex_value);
 }
 
 // ============================================================================

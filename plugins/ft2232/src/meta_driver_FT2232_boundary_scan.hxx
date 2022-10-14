@@ -55,10 +55,10 @@ public:
 
     void findCorrespondingBsdlFile(std::string idcode);
 
-    void verifyMultipleIdcode(std::string mIdcode);
+    void findAndVerifyIdcodeToDevice(std::string idcode);
 
     std::string convertDecToHex(int decimal_value);
-
+    
 private:
     std::string mBSDLName;
     std::string mProbeName;
