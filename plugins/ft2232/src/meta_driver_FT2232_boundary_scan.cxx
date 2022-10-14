@@ -55,6 +55,7 @@ void MetaDriverFT2232BoundaryScan::setup()
     if(mDeviceNo != -1)
     {
         int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), mDeviceNo);
+        LOG_F(ERROR, "%d", device_dec_id);
         device_dec_id = device_dec_id & 0x0fffffff;
 
         std::string device_hex_id = convertDecToHex(device_dec_id);
@@ -75,7 +76,7 @@ void MetaDriverFT2232BoundaryScan::setup()
             exit(1);
         }
 
-        verifyMultipleIdcode(mIdcode);
+        findAndVerifyIdcodeToDevice(mIdcode);
         findCorrespondingBsdlFile(mIdcode);
     }
    
@@ -279,7 +280,6 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
 void MetaDriverFT2232BoundaryScan::addAllIoPins()
 {
     int number_of_pin = jtagcore_get_number_of_pins(mJtagManager->getJc(), mDeviceNo);
-    LOG_F(ERROR, "Nb of pin : %d", number_of_pin);
 
     for(int i = 0; i < number_of_pin; i++)
     {
