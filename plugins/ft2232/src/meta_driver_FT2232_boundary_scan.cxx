@@ -75,6 +75,9 @@ void MetaDriverFT2232BoundaryScan::setup()
             LOG_F(ERROR,"No device number or idcode defined in the tree, ... exiting for now");
             exit(1);
         }
+        
+        std::transform(mIdcode.begin(), mIdcode.end(), mIdcode.begin(),
+        [](unsigned char c){ return std::tolower(c); });
 
         findAndVerifyIdcodeToDevice(mIdcode);
         findCorrespondingBsdlFile(mIdcode);
