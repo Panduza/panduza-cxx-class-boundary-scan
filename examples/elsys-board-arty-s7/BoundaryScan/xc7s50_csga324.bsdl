@@ -742,7 +742,7 @@ attribute INSTRUCTION_PRIVATE of XC7S50_CSGA324 : entity is
 attribute IDCODE_REGISTER of XC7S50_CSGA324 : entity is
 	"XXXX" &	-- version
 	"0011011" &	-- family
-	"000101111" &	-- array size
+	"000101111" &	-- array size 
 	"00001001001" &	-- manufacturer
 	"1";		-- required by 1149.1
 
