@@ -72,6 +72,7 @@ private:
 
     std::string mPinName;
     int mId;
+    int mPinType;
     int mState;
     std::string mDirection;
     int mSavedState;

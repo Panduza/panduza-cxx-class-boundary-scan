@@ -37,14 +37,14 @@ The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNu
 With version is compatible with the daisy chaining. To avoid issue, the interface tree must contains a device value in the settings. It must be presented as defined :
 
 ```sh
-"name": "IO_%r",
+"name": "%r",
 "driver": "Scan_service",
 "settings": {
     "probe_name" : "FT2232HL A FT6RR4EEA",
     "device_no" : x,
-    "BSDL" : "XA7A100T_CSG324.bsdl",
-    "pin"  : "%r",
-    "behaviour" : "static"
+    "idcode": x,
+    "BSDL" : "/etc/panduza/data/BSDL",
+    "pin"  : "%r"
 },
 ```
 
