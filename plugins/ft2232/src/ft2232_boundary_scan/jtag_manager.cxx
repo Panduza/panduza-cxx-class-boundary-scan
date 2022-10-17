@@ -11,7 +11,7 @@ JtagFT2232::JtagFT2232()
     mProbeName = "";
 }
 
-void JtagFT2232::initializeDriver(std::string probe_name, std::string bsdl_name)
+void JtagFT2232::initializeDriver(std::string probe_name)
 {
     LOG_F(1, "Initializing the Driver for the probe : %s", probe_name.c_str());
     mProbeName = probe_name;
@@ -187,7 +187,6 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
         VLOG_F(3, "probe name available with id %d : \"%s\"", i, idstring);
         if (strcmp(idstring, good_probe.c_str()) == 0)
         {
-            LOG_F(ERROR, "Probe found!");
             good_id = i;
         }
         i++;

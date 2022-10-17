@@ -16,7 +16,7 @@ namespace boundary_scan
         std::map<std::string, MetaDriverFactory *> getInformationAndFactory()
         {
             std::map<std::string, MetaDriverFactory *> Factory;
-            Factory["Scan_service"] = new MetaDriverFactoryFT2232BoundaryScan();
+            Factory["FTX232_JTAG_IO"] = new MetaDriverFactoryFT2232BoundaryScan();
             return Factory;
         }
 

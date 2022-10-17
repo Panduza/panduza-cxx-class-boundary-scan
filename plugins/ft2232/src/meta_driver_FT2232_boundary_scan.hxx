@@ -8,8 +8,10 @@
 #include "meta_driver_FT2232_io.hxx"
 #include "meta_driver_group_info.hxx"
 
+#include <boost/filesystem.hpp>
 #include <thread>
 #include <boost/config.hpp>
+#include <sstream>
 
 class Metaplatform;
 class JtagFT2232;
@@ -33,8 +35,8 @@ public:
     /// Return JtagManager Object @return Shared ptr of the Jtag connection
     std::shared_ptr<JtagFT2232> getJtagManager();
 
-    /// Create a Jtag manager and initialize it @param probe_name Name of the probe @param bsdl_name Name of the BSDL file @return Shared ptr of the Jtag connection
-    std::shared_ptr<JtagFT2232> createJtagManager(std::string probe_name, std::string bsdl_name);
+    /// Create a Jtag manager and initialize it @param probe_name Name of the probe @return Shared ptr of the Jtag connection
+    std::shared_ptr<JtagFT2232> createJtagManager(std::string probe_name);
 
     /// Send Info function
     void sendInfo();
@@ -49,16 +51,27 @@ public:
 
     void addAllIoPins();
 
+    void loadBSDLIdCode();
+
+    void findCorrespondingBsdlFile(std::string idcode);
+
+    void findAndVerifyIdcodeToDevice(std::string idcode);
+
+    std::string convertDecToHex(int decimal_value);
+    
 private:
     std::string mBSDLName;
     std::string mProbeName;
     int mDeviceNo;
+    std::string mIdcode;
 
     Metaplatform *mMetaplatformInstance;
 
     // static std::list<std::shared_ptr<JtagFT2232>> JTAG_MANAGERS;
     static std::shared_ptr<JtagFT2232> mJtagManager;
     static bool mJtagManagerLoaded;
+    static std::map<std::string,std::string> mBSDLFileIdCode;
+    static bool mBSDLFileIdCodeLoaded;
 
     Json::Value mInterfaceTree;
     Json::Value mRepeatedJson;
