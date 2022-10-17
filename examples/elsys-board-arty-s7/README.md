@@ -42,9 +42,9 @@ With version is compatible with the daisy chaining. To avoid issue, the interfac
 "settings": {
     "probe_name" : "FT2232HL A FT6RR4EEA",
     "device_no" : x,
-    "BSDL" : "XA7A100T_CSG324.bsdl",
-    "pin"  : "%r",
-    "behaviour" : "static"
+    "idcode": x,
+    "BSDL" : "/etc/panduza/data/BSDL",
+    "pin"  : "%r"
 },
 ```
 
