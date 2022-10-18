@@ -39,7 +39,7 @@ void MetaDriverFT2232BoundaryScan::setup()
     (mInterfaceTree["settings"]["device_no"].isNull()) ? mDeviceNo = -1 : mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
     (mInterfaceTree["settings"]["idcode"].isNull()) ? mIdcode = "" : mIdcode = mInterfaceTree["settings"]["idcode"].asString();
     mProbeName = mInterfaceTree["settings"]["probe_name"].asString();
-    (mInterfaceTree["settings"]["bsdl_directory"].isNull()) ? mBSDLName = "" : mBSDLName = mInterfaceTree["settings"]["bsdl_directory"].asString();
+    (mInterfaceTree["settings"]["bsdl_path"].isNull()) ? mBSDLName = "" : mBSDLName = mInterfaceTree["settings"]["bsdl_path"].asString();
 
     // If there is no Jtag Manager, create it and pass a flag to true
     if (!mJtagManagerLoaded)
@@ -243,7 +243,7 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     template_json["driver"] = "FTX232_JTAG_IO";
     template_json["settings"]["probe_name"] = "???";
     template_json["settings"]["device_no"] = "???";
-    template_json["settings"]["bsdl_library"] = "???";
+    template_json["settings"]["bsdl_library"] = "/etc/panduza/data/BSDL";
     template_json["settings"]["idcode"] = "???";
     template_json["settings"]["pin"] = "%r";
     template_json["repeated"] = Json::arrayValue;
