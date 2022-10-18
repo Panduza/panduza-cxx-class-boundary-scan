@@ -14,11 +14,7 @@ services:
   panduza-platform:
     container_name: panduza-cxx-platform
     image: ghcr.io/panduza/panduza-cxx-platform:latest
-    build:
-      context: .
     network_mode: host
-    # tty: true
-    # stdin_open: true
     privileged: true
     environment:
       - AUTODETECT

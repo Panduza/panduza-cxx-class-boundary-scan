@@ -39,6 +39,7 @@ void MetaDriverFT2232BoundaryScan::setup()
     (mInterfaceTree["settings"]["device_no"].isNull()) ? mDeviceNo = -1 : mDeviceNo = mInterfaceTree["settings"]["device_no"].asInt();
     (mInterfaceTree["settings"]["idcode"].isNull()) ? mIdcode = "" : mIdcode = mInterfaceTree["settings"]["idcode"].asString();
     mProbeName = mInterfaceTree["settings"]["probe_name"].asString();
+    (mInterfaceTree["settings"]["bsdl_path"].isNull()) ? mBSDLName = "" : mBSDLName = mInterfaceTree["settings"]["bsdl_path"].asString();
 
     // If there is no Jtag Manager, create it and pass a flag to true
     if (!mJtagManagerLoaded)
@@ -55,25 +56,25 @@ void MetaDriverFT2232BoundaryScan::setup()
     if(mDeviceNo != -1)
     {
         int device_dec_id = jtagcore_get_dev_id(mJtagManager->getJc(), mDeviceNo);
-        LOG_F(ERROR, "%d", device_dec_id);
         device_dec_id = device_dec_id & 0x0fffffff;
 
         std::string device_hex_id = convertDecToHex(device_dec_id);
 
         findCorrespondingBsdlFile(device_hex_id);
-
         if(mBSDLName.empty())
         {
-            LOG_F(ERROR, "No BSDL File found for device no : %d, it's idcode is : %s", mDeviceNo,device_hex_id.c_str());
-            exit(1);
+            std::string error_message = "No BSDL File found for device no : " + std::to_string(mDeviceNo) + " , it's idcode is : " + device_hex_id;
+            LOG_F(ERROR, error_message.c_str());
+            sendErrorMessageToMqtt(error_message);
         }
     }
     else
     {
         if(mIdcode.empty())
         {
-            LOG_F(ERROR,"No device number or idcode defined in the tree, ... exiting for now");
-            exit(1);
+            std::string error_message = "No device number or idcode defined in the tree, ... exiting for now";
+            LOG_F(ERROR, error_message.c_str());
+            sendErrorMessageToMqtt(error_message);
         }
         
         std::transform(mIdcode.begin(), mIdcode.end(), mIdcode.begin(),
@@ -94,8 +95,9 @@ void MetaDriverFT2232BoundaryScan::setup()
     }
     else
     {
-        LOG_F(ERROR, "No BSDL file found... exiting...");
-        exit(1);
+        std::string error_message = "No BSDL file found... exiting...";
+        LOG_F(ERROR, error_message.c_str());
+        sendErrorMessageToMqtt(error_message);
     }
 }
 
@@ -241,7 +243,7 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     template_json["driver"] = "FTX232_JTAG_IO";
     template_json["settings"]["probe_name"] = "???";
     template_json["settings"]["device_no"] = "???";
-    template_json["settings"]["bsdl_library"] = "???";
+    template_json["settings"]["bsdl_library"] = "/etc/panduza/data/BSDL";
     template_json["settings"]["idcode"] = "???";
     template_json["settings"]["pin"] = "%r";
     template_json["repeated"] = Json::arrayValue;
@@ -326,7 +328,9 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
     }
     else
     {
-        LOG_F(ERROR, "The path given is not a directory");
+        std::string error_message = "The path given is not a directory";
+        LOG_F(ERROR, error_message.c_str());
+        sendErrorMessageToMqtt(error_message);
     }
 }
 
@@ -351,8 +355,8 @@ void MetaDriverFT2232BoundaryScan::findAndVerifyIdcodeToDevice(std::string idcod
 
     if(idcode_count > 1)
     {
-        LOG_F(ERROR, "There is multiple device with the same idcode, please define a device on the tree...");
-        exit(1);
+        std::string error_message = "There is multiple device with the same idcode, please define a device on the tree...";
+        LOG_F(ERROR, error_message.c_str());
     }
 }
 
