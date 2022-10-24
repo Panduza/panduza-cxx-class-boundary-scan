@@ -149,9 +149,10 @@ In this part, two devices will be connected in chain, we call this daisy-chain. 
 For this example, three pieces of hardware is needed.
 
 - A FT2232H chip probe. In our case we are using a custom made probe with a FT2232HL chip.
-  <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="300" alt="probe"/>
+  <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="400" alt="probe"/>
 - Two JTAG compatible device. For this example, we are using a DIGILENT ARTY-S7 and a DIGILENT ARTY-A7
   <img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
+  <img src="https://user-images.githubusercontent.com/37267717/197539226-f5314381-0800-44f4-a19d-73e5667b86ca.jpg" alt="artya7" width="400"/>
 
 ### 4.3. Wiring
 
@@ -159,6 +160,8 @@ The connection between the probe and Devices Under Test (DUT) is done with the h
 The wiring is done as defined below :
 
 <img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
+
+<img src="https://user-images.githubusercontent.com/37267717/197539546-71946b6c-a918-4c85-a491-eae1b1bd1359.png" width="400" style="margin:10px" />
 
 NB: Note that the Jtag connector is the same for both Digilent devices.
 
@@ -192,7 +195,11 @@ There is two way to find your probe name.
 
 - The first one is to find it in the BoundaryScan log available in the log folder.
 
+<img src="https://user-images.githubusercontent.com/37267717/197531990-ef959029-825c-4822-8166-08d4003f8356.png" height="150" alt="log probe name location"/>
+
 - The second one is to use the autodetect feature and get the probe name inside.
+
+<img src="https://user-images.githubusercontent.com/37267717/197539948-929b45c5-8f70-4eee-8bf0-9c6e9a2b2f02.png" width="300" alt="log probe name location"/>
 
 ### 5.4 "No device detected"
 
