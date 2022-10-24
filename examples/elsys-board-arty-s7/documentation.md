@@ -58,7 +58,7 @@ The panduza platform need one file to work : the **tree.json** file. This file i
                     "driver": "FTX232_JTAG_IO",
                     "settings": {
                         "probe_name" : "FT2232HL A FT6RR4EEA",
-                        "device_no" : 1,
+                        "device_no" : 0,
                         "bsdl_library" : "/etc/panduza/data/bsdl",
                         "pin"  : "%r",
                     },
@@ -153,7 +153,7 @@ To run the project, please run the command "./start.sh"
 
 #### 4.5. Testing
 
-To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the example folder.
+To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the test folder.
 
 For the "test.py" program, python3 is needed. To run the program, use the command "python3 test.py" while the platform is running.
 
