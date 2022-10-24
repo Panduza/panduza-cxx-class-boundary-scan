@@ -19,7 +19,8 @@ This projet use a probe and a DUT (Device Under Test)
 To allow the probe to connect to the DUT, the connection is made via JTAG.
 The connection is made as below :
 
-<img src="https://user-images.githubusercontent.com/37267717/189347706-711e7679-fd5f-46aa-90f1-2e2b8b343668.jpg" width="400" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/189347876-f6a7096a-ca11-4add-ae23-10463189eb2f.jpg" width="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/194315033-b5991b4f-36b8-4af4-afc0-53c06ae3b6df.png" height="400" style="margin:10px" />
 
 ## FT2232HL Probe name
 
@@ -36,14 +37,14 @@ The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNu
 With version is compatible with the daisy chaining. To avoid issue, the interface tree must contains a device value in the settings. It must be presented as defined :
 
 ```sh
-"name": "IO_%r",
+"name": "%r",
 "driver": "Scan_service",
 "settings": {
     "probe_name" : "FT2232HL A FT6RR4EEA",
     "device_no" : x,
-    "BSDL" : "XA7A100T_CSG324.bsdl",
-    "pin"  : "%r",
-    "behaviour" : "static"
+    "idcode": x,
+    "BSDL" : "/etc/panduza/data/BSDL",
+    "pin"  : "%r"
 },
 ```
 
@@ -51,7 +52,7 @@ where x is the device position.
 
 Note that the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
 
-<img src="https://user-images.githubusercontent.com/37267717/193233333-03f81d89-c400-4df0-a90e-259ca924e40e.png" width="400" />
+<img src="https://user-images.githubusercontent.com/37267717/194265634-a7072bbf-d548-414b-acc6-af8db4dcb855.png" width="400" />
 
 ## Starting the program
 
