@@ -1,0 +1,209 @@
+# Documentation
+
+- [Documentation](#documentation)
+  - [1. Introduction](#1-introduction)
+  - [2. First Comments and Requirements](#2-first-comments-and-requirements)
+  - [3. Descriptions](#3-descriptions)
+    - [3.1. tree.json](#31-treejson)
+    - [3.2. "group_name"](#32-group_name)
+    - [3.3. AUTODETECT](#33-autodetect)
+  - [4. Examples](#4-examples)
+    - [4.1. Testing with one device](#41-testing-with-one-device)
+      - [4.1.1. Introduction](#411-introduction)
+      - [4.1.2. Hardware](#412-hardware)
+      - [4.1.3. Wiring](#413-wiring)
+      - [4.1.4. Running the project](#414-running-the-project)
+      - [4.1.5. Testing](#415-testing)
+    - [4.2. Daisy-chaining, testing with two devices](#42-daisy-chaining-testing-with-two-devices)
+      - [4.2.1. Introduction](#421-introduction)
+      - [4.2.2. Hardware](#422-hardware)
+      - [4.2.3. Wiring](#423-wiring)
+      - [4.2.4. Running the project](#424-running-the-project)
+      - [4.2.5. Testing](#425-testing)
+  - [5. Common issues](#5-common-issues)
+    - [5.1. "No tree file found"](#51-no-tree-file-found)
+    - [5.2 "No probe detected"](#52-no-probe-detected)
+    - [5.3. "Probe xxx : not found"](#53-probe-xxx--not-found)
+    - [5.4 "No device detected"](#54-no-device-detected)
+    - [5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"](#55-no-bsdl-file-found-for-device-no--x-its-idcode-is--xxxxxxxxxx)
+
+## 1. Introduction
+
+This file will define the different situation the program was developed for.
+
+For each situation, the hardware used, the pinning, the test and the file needed will be defined on their own subpart.
+Folder will also be available to share some program that was used to be able to run the project.
+
+## 2. First Comments and Requirements
+
+Do be able to start the program, a few things will be needed.
+
+- The whole project was developed and tested on **Ubuntu**, which allow an easiest installation of Docker and some dependencies.
+
+- You will need to install Docker and docker-compose, otherwise, it won't work. To start the program, we are pulling images from the platform repo and mosquitto, which need theses libraries. You can install [Docker here](https://docs.docker.com/engine/install/ubuntu/) and [docker-compose here (French link)](https://doc.ubuntu-fr.org/docker-compose).
+
+- One way to send commands to the program was with a software called : **MQTT Explorer**. This will be used in the testing to show some commands and will allows you to test and play a bit with the program.
+To install the software please [click here](http://mqtt-explorer.com/).
+Other way of testing with python will be defined but they will be presented later.
+
+This documentation is done while assuming that you have some knowledge with MQTT.
+
+## 3. Descriptions
+
+### 3.1. tree.json
+
+The panduza platform need one file to work : the **tree.json** file. This file is essential as it contains the configuration and the interfaces that the user wants.
+
+```json
+{
+    "machine": "rpi4_test",
+    "brokers": {
+        "boundaryscanner": {
+            "addr": "localhost",
+            "port": 1883,
+            "interfaces": [
+                {
+                    "name": "%r",
+                    "driver": "Scan_service",
+                    "settings": {
+                        "probe_name" : "FT2232HL A FT6RR4EEA",
+                        "device_no" : 1,
+                        "bsdl_library" : "/etc/panduza/data/bsdl",
+                        "pin"  : "%r",
+                    },
+                    "repeated": [
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
+
+The json extracted above show an example of a json file with the boundary scan. It contains most of the information needed to run the ARTY S7 device that we will define later.
+
+Theses lines are defined as :
+
+- "machine" : A name to the machine that this program is running on. It will separate this machine to the other machine that could connect to the same broker.
+- "brokers" : It will contains the information of the broker and the interfaces that will be connecting to this broker
+- "addr" : This is the address of the MQTT broker
+- "port" : This will define the port of the MQTT broker
+- "interfaces" : It will contains the list of interfaces that will be loaded and connected to the MQTT broker define just above.
+- "name" : name of the interface (in the case of the boundary scan, it must not change as the name is changed dynamically)
+- "drive" : Identify the interface with this name at the start of the program. Each interface/plugin is compared with the driver name to be able to load them.
+- "settings" : contains different settings that is needed to load a plugin.
+- "repeated" : specific for the Boundary Scan. It lists the IO that will be loaded
+
+### 3.2. "group_name"
+
+A setting new setting was creating to allow to personalise the name of an interface in the topic (pza/machine/**interface**/...).
+This will help to define easier topics and personalise the topic with some specific information that the user can understand more.
+
+By default the interface name in the topic is the concatenation of the driver name, the probe name and the device number(in the case of the boundary scan), as the driver can be the same for multiple interfaces.
+To add a custom interface name in the topic, a new setting have to be added in the interface in question :
+
+```json
+"group_name" : xxx
+```
+
+This feature will be use in the example to separate each interface and make the testing easier.
+
+### 3.3. AUTODETECT
+
+To anticipate the implementation to the panduza web interfaces, an autodetect mode is created. When running in autodetect mode, the program will generate every interfaces that can be loaded and add them into a json file in the "platform" folder.
+
+To run the program in autodetect mode, the AUTODETECT environment variable have to be "1". For that, write "AUTODETECT=1" before the start comment :
+
+```sh
+ AUTODETECT=1 ./start.sh
+```
+
+This will pass the variable to the docker image and then will be retrieve by the program. It will then create a file called **cxx.json** that will contains every interfaces available and prepare some part that will be able to be inserted into the tree.
+
+## 4. Examples
+
+### 4.1. Testing with one device
+
+#### 4.1.1. Introduction
+
+On this part, the test was done with one Device Under Test (DUT). It was the first objectives of this project.
+This part will show the wiring with one specific device and describe how to start the project, and some command that will show the program working.
+
+#### 4.1.2. Hardware
+
+The first example will be the same that is present on the example README.
+It will need :
+
+- A FT2232H chip probe. In our case we are using a custom made probe with a FT2232HL chip.
+  <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="300" alt="probe"/>
+- A JTAG compatible device. For this example, we are using a DIGILENT ARTY-S7.
+  <img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
+
+#### 4.1.3. Wiring
+
+The connection between the probe and the Device Under Test (DUT) is done with the help of the ALTERA connector on the probe and the JTAG connector on the DUT.
+The wiring is done as defined below :
+
+<img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/194315033-b5991b4f-36b8-4af4-afc0-53c06ae3b6df.png" height="400" style="margin:10px" />
+
+#### 4.1.4. Running the project
+
+To avoid any issue, everything that is needed to run the project is available in the folder example_1_device.
+
+To run the project, please run the command "./start.sh" from the example folder.
+
+#### 4.1.5. Testing
+
+To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the example folder.
+
+For the "test.py" program, python3 is needed. To run the program, use the command "python3 test.py" while the platform is running.
+
+This python program will setup all buttons and switches to inputs and will loop all LEDs to turn on repetitively.
+
+### 4.2. Daisy-chaining, testing with two devices
+
+#### 4.2.1. Introduction
+
+In this part, two devices will be connected in chain, we call this daisy-chain. The wiring and all the instructions will be presented below.
+
+#### 4.2.2. Hardware
+
+#### 4.2.3. Wiring
+
+#### 4.2.4. Running the project
+
+Please refer to [the previous example](#414-running-the-project) but using the specific folder for this example.
+
+#### 4.2.5. Testing
+
+
+
+## 5. Common issues
+
+If the program exit prematurely, some error can be fix easily, shows as below.
+
+### 5.1. "No tree file found"
+
+Check that the tree file is present in the "**panduza**" folder. The directory from the repo base is : "./examples/elsys-board-arty-s7/panduza" .
+
+### 5.2 "No probe detected"
+
+This error means that there is no probe connected to the machine.
+
+If you are in a Virtual Machine, check that you do have linked the probe to the VM.
+
+### 5.3. "Probe xxx : not found"
+
+Verify that the probe name that you are using is the same as the one you
+
+### 5.4 "No device detected"
+
+If no device is detected, please Verify the JTAG Connection. The device(s) also have to be powered by its microUSB port.
+
+### 5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"
+
+This means that the program couldn't locate a BSDL file that match the idcode of the device x.
+
+In the case the BSDL file wasn't added to the folder, please add it.
+In the other case, please check the Jtag connector.

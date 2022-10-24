@@ -176,6 +176,12 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
     std::string good_probe = "Probe: " + probe_name;
     int nb_of_probes = jtagcore_get_number_of_probes(mJc, 0);
 
+    if (nb_of_probes == 0)
+    {
+        LOG_F(ERROR, "No probes detected");
+        exit(0);
+    }
+
     while (i < nb_of_probes)
     {
         jtagcore_get_probe_name(mJc, PROBE_ID(0, i), tempstring);
@@ -184,9 +190,11 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
         // Check if there is a space at the start and the end of the probe name
         checkSpaceOnProbeLimit(tempstring);
 
-        VLOG_F(3, "probe name available with id %d : \"%s\"", i, idstring);
+        VLOG_F(0, "probe name available with id %d : \"%s\"", i, idstring);
         if (strcmp(idstring, good_probe.c_str()) == 0)
         {
+            LOG_F(3, "Probe found!");
+
             good_id = i;
         }
         i++;
@@ -194,13 +202,7 @@ int JtagFT2232::getAvailableProbes(jtag_core *mJc, std::string probe_name)
 
     if (good_id == -1)
     {
-        LOG_F(ERROR, "Probe %s not found", good_probe.c_str());
-        exit(0);
-    }
-
-    if (nb_of_probes == 0)
-    {
-        LOG_F(ERROR, "No probes detected");
+        LOG_F(ERROR, "%s not found", good_probe.c_str());
         exit(0);
     }
 
