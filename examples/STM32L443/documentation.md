@@ -135,9 +135,9 @@ The first example will be the same that is present on the example README.
 It will need :
 
 - A FT2232H chip probe. In our case we are using a custom made probe with a FT2232HL chip.
-  <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="300" alt="probe"/>
+  <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="400" alt="probe"/>
 - A JTAG compatible device. For this example, we are using a STM32l443 device
-  <img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
+  <img src="https://user-images.githubusercontent.com/37267717/197558580-0bc05d64-4f39-4421-ae15-bc21b2dccc55.png" alt="artys7" width="400"/>
 
 
 #### 4.3. Wiring
@@ -145,8 +145,8 @@ It will need :
 The connection between the probe and the Device Under Test (DUT) is done with the help of the ALTERA connector on the probe and the JTAG connector on the DUT.
 The wiring is done as defined below :
 
-<img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
-<img src="https://user-images.githubusercontent.com/37267717/194315033-b5991b4f-36b8-4af4-afc0-53c06ae3b6df.png" height="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="400" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/197558768-9bd116e8-cfdc-4620-a260-7d7aff85be84.png" height="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/197558753-a113c89f-66a8-4714-aa74-41e0836746a1.png" width="400" style="margin:10px" />
 
 NB : Note that the STM32L443 **DO NOT NEED** to be powered by USB. The VCC is enough for our use.
 
