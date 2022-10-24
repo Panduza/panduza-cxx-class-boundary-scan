@@ -175,7 +175,19 @@ If you are in a Virtual Machine, check that you do have linked the probe to the 
 
 ### 5.3. "Probe xxx : not found"
 
-Verify that the probe name that you are using is the same as the one you
+Verify that the probe name that you are using is the same as the one you have.
+
+In the case you can't use the same probe as the one used in the example (**FT2232HL A FT6RR4EEA**), you can always change the probe name on the tree with the name of your probe.
+
+There is two way to find your probe name.
+
+- The first one is to find it in the BoundaryScan log available in the log folder.
+
+<img src="https://user-images.githubusercontent.com/37267717/197531990-ef959029-825c-4822-8166-08d4003f8356.png" width="300" alt="log probe name location"/>
+
+- The second one is to use the autodetect feature and get the probe name inside.
+
+<img src="https://user-images.githubusercontent.com/37267717/197532639-c0c56429-45dc-4380-9013-e5163b692841.png" width="300" alt="autodetect probe name location"/>
 
 ### 5.4 "No device detected"
 
