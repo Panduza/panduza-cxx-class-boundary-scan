@@ -349,6 +349,7 @@ void MetaDriverFT2232BoundaryScan::findAndVerifyIdcodeToDevice(std::string idcod
         if(strcmp(idcode.c_str(), device_hex_id.c_str()) == 0)
         {
             mDeviceNo = device_no;
+            mInterfaceTree["settings"]["device_no"] = device_no;
             idcode_count++;
         }
     }
