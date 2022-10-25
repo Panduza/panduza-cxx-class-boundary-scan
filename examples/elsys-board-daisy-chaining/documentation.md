@@ -217,3 +217,5 @@ In the other case, please check the Jtag connector.
 
 If you want to test the device (ArtyS7 and ArtyA7) by yourself, here is the pinout of physical GPIO such as button, switch and LEDs.
 The ArtyS7 will have on its picture **Spartan-7**, and the ArtyA7 will have on its picture **Artix-7**.
+<img src="https://user-images.githubusercontent.com/37267717/197722515-4bcbdf94-367f-4061-8c28-957727274a6f.png" width="500" alt="artyS7 pinout"/>
+<img src="https://user-images.githubusercontent.com/37267717/197722510-b9f6ca7b-2229-4fd1-91fe-f5e1b719cf17.png" width="500" alt="ArtyA7 pinout"/>
