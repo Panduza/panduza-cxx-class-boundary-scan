@@ -8,18 +8,19 @@
     - [3.2. Device identification](#32-device-identification)
     - [3.3. "group_name"](#33-group_name)
     - [3.4. AUTODETECT](#34-autodetect)
-  - [4. Examples : STM32L443](#4-examples--stm32l443)
-      - [4.1. Introduction](#41-introduction)
-      - [4.2. Hardware](#42-hardware)
-      - [4.3. Wiring](#43-wiring)
-      - [4.4. Running the project](#44-running-the-project)
-      - [4.5. Testing](#45-testing)
+  - [4. Examples : Nucleo STM32L443](#4-examples--nucleo-stm32l443)
+    - [4.1. Introduction](#41-introduction)
+    - [4.2. Hardware](#42-hardware)
+    - [4.3. Wiring](#43-wiring)
+    - [4.4. Running the project](#44-running-the-project)
+    - [4.5. Testing](#45-testing)
   - [5. Common issues](#5-common-issues)
     - [5.1. "No tree file found"](#51-no-tree-file-found)
     - [5.2 "No probe detected"](#52-no-probe-detected)
     - [5.3. "Probe xxx : not found"](#53-probe-xxx--not-found)
     - [5.4 "No device detected"](#54-no-device-detected)
     - [5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"](#55-no-bsdl-file-found-for-device-no--x-its-idcode-is--xxxxxxxxxx)
+  - [6. Additional Information](#6-additional-information)
 
 ## 1. Introduction
 
@@ -122,25 +123,25 @@ This will pass the variable to the docker image and then will be retrieve by the
 
 This file is created in the folder **platform**.
 
-## 4. Examples : STM32L443
+## 4. Examples : Nucleo STM32L443
 
-#### 4.1. Introduction
+### 4.1. Introduction
 
 On this part, the test was done with one Device Under Test (DUT). It was the first objectives of this project.
 This part will show the wiring with one specific device and describe how to start the project, and some command that will show the program working.
 
-#### 4.2. Hardware
+### 4.2. Hardware
 
 The first example will be the same that is present on the example README.
 It will need :
 
 - A FT2232H chip probe. In our case we are using a custom made probe with a FT2232HL chip.
   <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="400" alt="probe"/>
-- A JTAG compatible device. For this example, we are using a STM32l443 device
+- A JTAG compatible device. For this example, we are using a Nucleo STM32L443 device
   <img src="https://user-images.githubusercontent.com/37267717/197558580-0bc05d64-4f39-4421-ae15-bc21b2dccc55.png" alt="artys7" width="400"/>
 
 
-#### 4.3. Wiring
+### 4.3. Wiring
 
 The connection between the probe and the Device Under Test (DUT) is done with the help of the ALTERA connector on the probe and the JTAG connector on the DUT.
 The wiring is done as defined below :
@@ -148,13 +149,13 @@ The wiring is done as defined below :
 <img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="400" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/197558768-9bd116e8-cfdc-4620-a260-7d7aff85be84.png" height="400" style="margin:10px" />
 <img src="https://user-images.githubusercontent.com/37267717/197558753-a113c89f-66a8-4714-aa74-41e0836746a1.png" width="400" style="margin:10px" />
 
-NB : Note that the STM32L443 **DO NOT NEED** to be powered by USB. The VCC is enough for our use.
+NB : Note that the Nucleo STM32L443 **DO NOT NEED** to be powered by USB. The VCC is enough for our use.
 
-#### 4.4. Running the project
+### 4.4. Running the project
 
 To run the project, please run the command "./start.sh"
 
-#### 4.5. Testing
+### 4.5. Testing
 
 To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the test folder.
 
@@ -198,3 +199,7 @@ This means that the program couldn't locate a BSDL file that match the idcode of
 
 In the case the BSDL file wasn't added to the folder, please add it.
 In the other case, please check the Jtag connector.
+
+## 6. Additional Information
+
+If you want to test the device (Nucleo STM32L443) by yourself, here is the pinout of physical GPIO such as button, switch and LEDs.

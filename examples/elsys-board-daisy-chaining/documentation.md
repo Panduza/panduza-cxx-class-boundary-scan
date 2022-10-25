@@ -20,6 +20,7 @@
     - [5.3. "Probe xxx : not found"](#53-probe-xxx--not-found)
     - [5.4 "No device detected"](#54-no-device-detected)
     - [5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"](#55-no-bsdl-file-found-for-device-no--x-its-idcode-is--xxxxxxxxxx)
+  - [6. Additional Information](#6-additional-information)
 
 ## 1. Introduction
 
@@ -211,3 +212,8 @@ This means that the program couldn't locate a BSDL file that match the idcode of
 
 In the case the BSDL file wasn't added to the folder, please add it.
 In the other case, please check the Jtag connector.
+
+## 6. Additional Information
+
+If you want to test the device (ArtyS7 and ArtyA7) by yourself, here is the pinout of physical GPIO such as button, switch and LEDs.
+The ArtyS7 will have on its picture **Spartan-7**, and the ArtyA7 will have on its picture **Artix-7**.

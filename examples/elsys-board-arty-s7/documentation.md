@@ -9,17 +9,18 @@
     - [3.3. "group_name"](#33-group_name)
     - [3.4. AUTODETECT](#34-autodetect)
   - [4. Examples : Arty s7](#4-examples--arty-s7)
-      - [4.1. Introduction](#41-introduction)
-      - [4.2. Hardware](#42-hardware)
-      - [4.3. Wiring](#43-wiring)
-      - [4.4. Running the project](#44-running-the-project)
-      - [4.5. Testing](#45-testing)
+    - [4.1. Introduction](#41-introduction)
+    - [4.2. Hardware](#42-hardware)
+    - [4.3. Wiring](#43-wiring)
+    - [4.4. Running the project](#44-running-the-project)
+    - [4.5. Testing](#45-testing)
   - [5. Common issues](#5-common-issues)
     - [5.1. "No tree file found"](#51-no-tree-file-found)
     - [5.2 "No probe detected"](#52-no-probe-detected)
     - [5.3. "Probe xxx : not found"](#53-probe-xxx--not-found)
     - [5.4 "No device detected"](#54-no-device-detected)
     - [5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"](#55-no-bsdl-file-found-for-device-no--x-its-idcode-is--xxxxxxxxxx)
+  - [6. Additional Information](#6-additional-information)
 
 ## 1. Introduction
 
@@ -124,12 +125,12 @@ This file is created in the folder **platform**.
 
 ## 4. Examples : Arty s7
 
-#### 4.1. Introduction
+### 4.1. Introduction
 
 On this part, the test was done with one Device Under Test (DUT). It was the first objectives of this project.
 This part will show the wiring with one specific device and describe how to start the project, and some command that will show the program working.
 
-#### 4.2. Hardware
+### 4.2. Hardware
 
 The first example will be the same that is present on the example README.
 It will need :
@@ -139,7 +140,7 @@ It will need :
 - A JTAG compatible device. For this example, we are using a DIGILENT ARTY-S7.
   <img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
 
-#### 4.3. Wiring
+### 4.3. Wiring
 
 The connection between the probe and the Device Under Test (DUT) is done with the help of the ALTERA connector on the probe and the JTAG connector on the DUT.
 The wiring is done as defined below :
@@ -147,11 +148,11 @@ The wiring is done as defined below :
 <img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
 <img src="https://user-images.githubusercontent.com/37267717/194315033-b5991b4f-36b8-4af4-afc0-53c06ae3b6df.png" height="400" style="margin:10px" />
 
-#### 4.4. Running the project
+### 4.4. Running the project
 
 To run the project, please run the command "./start.sh"
 
-#### 4.5. Testing
+### 4.5. Testing
 
 To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the test folder.
 
@@ -199,3 +200,7 @@ This means that the program couldn't locate a BSDL file that match the idcode of
 
 In the case the BSDL file wasn't added to the folder, please add it.
 In the other case, please check the Jtag connector.
+
+## 6. Additional Information
+
+If you want to test the device (ArtyS7) by yourself, here is the pinout of physical GPIO such as button, switch and LEDs.
