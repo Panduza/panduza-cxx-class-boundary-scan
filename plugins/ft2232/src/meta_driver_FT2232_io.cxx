@@ -125,24 +125,14 @@ void MetaDriverFT2232Io::checkInput()
         if (mDirection == "in")
         {
             mJtagMutex.lock();
-            // LOG_F(8, "The pin %s have it read value as : %d", mPin->getName().c_str(), mPin->getRead());
             //	If the pin state hasnt been alrady read, we read it and mark as read
             const int inputState = readInputState();
-            if (mReadState == 0)
-            {
-                setSavedState(inputState);
-                setState(inputState);
-
-                mReadState = 1;
-            }
 
             //	If the saved state and actual state are different, we publish the state
             if ((mState != inputState) && (inputState >= 0))
             {
                 setState(inputState);
                 publishState();
-
-                mReadState = 0;
             }
             mJtagMutex.unlock();
         }
