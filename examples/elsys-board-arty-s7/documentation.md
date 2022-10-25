@@ -204,3 +204,5 @@ In the other case, please check the Jtag connector.
 ## 6. Additional Information
 
 If you want to test the device (ArtyS7) by yourself, here is the pinout of physical GPIO such as button, switch and LEDs.
+
+<img src="https://user-images.githubusercontent.com/37267717/197722269-908df23e-4604-4967-8ee2-3caf5eb9e436.png" width="500" alt="ArtyS7 pinout"/>
