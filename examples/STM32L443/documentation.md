@@ -203,3 +203,5 @@ In the other case, please check the Jtag connector.
 ## 6. Additional Information
 
 If you want to test the device (Nucleo STM32L443) by yourself, here is the pinout of physical GPIO such as button, switch and LEDs.
+
+<img src="https://user-images.githubusercontent.com/37267717/197721775-67b59933-b292-4e14-a084-e7ded3b05b34.png" width="500" alt="Nucleo STM32L443 pinout"/>
