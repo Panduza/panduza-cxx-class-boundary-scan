@@ -7,17 +7,21 @@ def create_interfaces_line(list, group_name):
         io_interfaces[io_name] = "pza/rpi4_test/" + group_name + "/" + io_name
 
 
-artys7_group_name = "artys7"
-artys7_out = ["IO_J16", "IO_H13", "IO_H14", "IO_H18"]
-# "IO_G15", "IO_K16", , "IO_G18", "IO_M5"
+# artys7_group_name = "artys7"
+# artys7_in = ["IO_J16", "IO_H13", "IO_H14", "IO_H18"]
+# # "IO_G15", "IO_K16", , "IO_G18", "IO_M5"
 
-create_interfaces_line(artys7_out, artys7_group_name)
+# create_interfaces_line(artys7_in, artys7_group_name)
 
-artya7_group_name = "artya7"
-artya7_out = ["IO_B9", "IO_B8", "IO_A8", "IO_C11"]
-# "IO_D9", "IO_C9", , "IO_C10", "IO_A10"
+# artya7_group_name = "artya7"
+# artya7_in = ["IO_B9", "IO_B8", "IO_A8", "IO_C11"]
+# # "IO_D9", "IO_C9", , "IO_C10", "IO_A10"
 
-create_interfaces_line(artya7_out, artya7_group_name)
+# create_interfaces_line(artya7_in, artya7_group_name)
+
+stm_group_name = "STM32"
+stm_in = ["PC13"]
+create_interfaces_line(stm_in, stm_group_name)
 
 Core.LoadAliases(
 {
