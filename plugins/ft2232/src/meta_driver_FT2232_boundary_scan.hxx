@@ -72,6 +72,7 @@ private:
     static bool mJtagManagerLoaded;
     static std::map<std::string,std::string> mBSDLFileIdCode;
     static bool mBSDLFileIdCodeLoaded;
+    static bool mLoguruInitialized;
 
     Json::Value mInterfaceTree;
     Json::Value mRepeatedJson;

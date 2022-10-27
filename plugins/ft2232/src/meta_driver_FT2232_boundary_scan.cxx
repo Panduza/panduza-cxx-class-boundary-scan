@@ -12,16 +12,23 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::mJtagManager;
 bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
 std::map<std::string, std::string> MetaDriverFT2232BoundaryScan::mBSDLFileIdCode;
 bool MetaDriverFT2232BoundaryScan::mBSDLFileIdCodeLoaded = false;
+bool MetaDriverFT2232BoundaryScan::mLoguruInitialized = false;
 
 /// Constructor with parent pointer @param meta_platform_interface Meta Platform object
 MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface)
 {
     mMetaplatformInstance = meta_platform_interface;
 
-    // Transfert back the loguru verbose and file logging
-    loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
-    loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
-    loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
+    if (!mLoguruInitialized)
+    {
+        // Transfert back the loguru verbose and file logging
+        loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
+        loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
+        loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
+
+        mLoguruInitialized = true;
+    }
+    
 }
 
 // ============================================================================
@@ -111,6 +118,7 @@ void MetaDriverFT2232BoundaryScan::findCorrespondingBsdlFile(std::string idcode)
         LOG_F(ERROR, "%s, \"%s\", \"%s\"", idcode_line.second.c_str(), idcode_line.first.c_str(), idcode.c_str());
         if(strcmp(idcode_line.first.c_str(),idcode.c_str()) == 0)
         {
+            mInterfaceTree["settings"]["bsdl_path"] = idcode_line.second;
             mBSDLName = idcode_line.second;
         }
     }
@@ -212,6 +220,8 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     payload["probe_id"] = probe_id;
     payload["probe_name"] = probe_name;
     payload["nb_of_devices"] = nb_of_devices;
+    payload["device_no"] = mDeviceNo;
+    payload["bsdl file path"] = mBSDLName;
 
     std::shared_ptr<MetaDriver> meta_driver_group_info = std::make_shared<MetaDriverGroupInfo>(payload);
 
