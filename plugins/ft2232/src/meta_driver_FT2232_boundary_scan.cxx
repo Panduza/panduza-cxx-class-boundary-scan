@@ -54,6 +54,8 @@ void MetaDriverFT2232BoundaryScan::setup()
         mJtagManager = getJtagManager();
         mJtagManagerLoaded = true;
     }
+    mJtagManager->add_devices_to_load();
+
     if (!mBSDLFileIdCodeLoaded)
     {
         loadBSDLIdCode();
@@ -132,7 +134,6 @@ void MetaDriverFT2232BoundaryScan::startIo()
     mMetaplatformInstance->clearReloadableInterfaces(getDriverName() + "_io_list_" + std::to_string(mDeviceNo));
 
     mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
-
     // Create the Group Info meta Driver where it will store the payload of the jtagManager infos...
     createGroupInfoMetaDriver();
 
@@ -346,7 +347,7 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
 void MetaDriverFT2232BoundaryScan::findAndVerifyIdcodeToDevice(std::string idcode)
 {
     int no_of_devices = jtagcore_get_number_of_devices(mJtagManager->getJc());
-    int idcode_count = 0;
+    int idcode_count = -1;
 
     for(int device_no = 0; device_no < no_of_devices; device_no++)
     {
@@ -362,11 +363,18 @@ void MetaDriverFT2232BoundaryScan::findAndVerifyIdcodeToDevice(std::string idcod
             idcode_count++;
         }
     }
+    if(idcode_count < 0)
+    {
+        std::string error_message = "no device found";
+        LOG_F(ERROR, error_message.c_str());
+        sendErrorMessageToMqtt(error_message);
+    }
 
-    if(idcode_count > 1)
+    if(idcode_count >= 1)
     {
         std::string error_message = "There is multiple device with the same idcode, please define a device on the tree...";
         LOG_F(ERROR, error_message.c_str());
+        sendErrorMessageToMqtt(error_message);
     }
 }
 
