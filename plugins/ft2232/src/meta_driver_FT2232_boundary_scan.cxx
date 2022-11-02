@@ -115,7 +115,6 @@ void MetaDriverFT2232BoundaryScan::findCorrespondingBsdlFile(std::string idcode)
 {
     for(auto idcode_line : mBSDLFileIdCode)
     {
-        LOG_F(ERROR, "%s, \"%s\", \"%s\"", idcode_line.second.c_str(), idcode_line.first.c_str(), idcode.c_str());
         if(strcmp(idcode_line.first.c_str(),idcode.c_str()) == 0)
         {
             mInterfaceTree["settings"]["bsdl_path"] = idcode_line.second;
