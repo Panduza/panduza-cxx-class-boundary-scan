@@ -44,15 +44,18 @@ void JtagFT2232::initializeDriver(std::string probe_name)
 
 void JtagFT2232::initializeDevice(std::string probe_name, std::string bsdl_name, int device_no)
 {
-        // Loads the BSDL file
-        jtagcore_loadbsdlfile(mJc, bsdl_name.c_str(), device_no);
+    // Loads the BSDL file
+    jtagcore_loadbsdlfile(mJc, bsdl_name.c_str(), device_no);
 
-        // Enables test mode
-        jtagcore_set_scan_mode(mJc, device_no, JTAG_CORE_EXTEST_SCANMODE);
+    // Enables test mode
+    jtagcore_set_scan_mode(mJc, device_no, JTAG_CORE_EXTEST_SCANMODE);
+    if(device_loaded == 1)
+    {
         jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
-
-        // Prints all the pins on the board (verbosity 6 is needed)
-        printPins(mJc, device_no);
+    }
+    device_loaded++;
+    // Prints all the pins on the board (verbosity 6 is needed)
+    printPins(mJc, device_no);
 }
 
 int JtagFT2232::getProbeId()
