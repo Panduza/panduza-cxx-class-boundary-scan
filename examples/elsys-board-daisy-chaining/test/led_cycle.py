@@ -7,19 +7,19 @@ def create_interfaces_line(list, group_name):
         io_interfaces[io_name] = "pza/rpi4_test/" + group_name + "/" + io_name
 
 
-# artys7_group_name = "artys7"
-# artys7_out = ["IO_E18", "IO_F13", "IO_E13","IO_H15", "IO_J15", "IO_G17", "IO_F15", "IO_E15", "IO_F18", "IO_E14"]
+artys7_group_name = "artys7"
+artys7_out = ["IO_E18", "IO_F13", "IO_E13","IO_H15", "IO_J15", "IO_G17", "IO_F15", "IO_E15", "IO_F18", "IO_E14"]
 
-# create_interfaces_line(artys7_out, artys7_group_name)
+create_interfaces_line(artys7_out, artys7_group_name)
 
-# artya7_group_name = "artya7"
-# artya7_out = ["IO_H5", "IO_J5", "IO_T9", "IO_T10", "IO_G6", "IO_F6", "IO_E1", "IO_G3", "IO_J4", "IO_G4", "IO_J3", "IO_J2", "IO_H4", "IO_K1", "IO_H6", "IO_K2"]
+artya7_group_name = "artya7"
+artya7_out = ["IO_H5", "IO_J5", "IO_T9", "IO_T10", "IO_G6", "IO_F6", "IO_E1", "IO_G3", "IO_J4", "IO_G4", "IO_J3", "IO_J2", "IO_H4", "IO_K1", "IO_H6", "IO_K2"]
 
-# create_interfaces_line(artya7_out, artya7_group_name)
+create_interfaces_line(artya7_out, artya7_group_name)
 
-stm_group_name = "STM32"
-stm_out = ["PA5"]
-create_interfaces_line(stm_out, stm_group_name)
+# stm_group_name = "STM32"
+# stm_out = ["PA5"]
+# create_interfaces_line(stm_out, stm_group_name)
 
 Core.LoadAliases(
 {
