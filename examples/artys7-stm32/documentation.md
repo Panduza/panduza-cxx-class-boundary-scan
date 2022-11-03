@@ -192,6 +192,8 @@ NB: Note that the Jtag connector is the same for both Digilent devices.
 
 To run the project, please run the command "./start.sh"
 
+Please note that the docker-compose will base its build with the latest image.
+
 ### 4.5. Testing
 
 ## 5. Common issues
