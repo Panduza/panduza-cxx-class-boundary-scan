@@ -180,8 +180,9 @@ The connection between the probe and Devices Under Test (DUT) is done with the h
 The wiring is done as defined below :
 
 <img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/199686206-8aaa2f5c-1e1f-4505-8168-34dfe1f2e64f.png" height="300" style="margin:10px" />
 
-<img src="https://user-images.githubusercontent.com/37267717/197539546-71946b6c-a918-4c85-a491-eae1b1bd1359.png" width="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/199685939-812fb853-ffad-4042-8a61-b6a114c880df.png" width="80%" style="margin:10px" />
 
 NB: Note that the Jtag connector is the same for both Digilent devices.
 
