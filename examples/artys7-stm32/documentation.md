@@ -172,7 +172,7 @@ For this example, three pieces of hardware is needed.
   <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="400" alt="probe"/>
 - Two JTAG compatible device. For this example, we are using a DIGILENT ARTY-S7 and a Nucleo STM32L443 (or also called Nucleo-F103RB).
   <img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
-  <img src="https://user-images.githubusercontent.com/37267717/197539226-f5314381-0800-44f4-a19d-73e5667b86ca.jpg" alt="artya7" width="400"/>
+  <img src="https://user-images.githubusercontent.com/37267717/197558580-0bc05d64-4f39-4421-ae15-bc21b2dccc55.png" alt="nucleo stm32" width="400"/>
 
 ### 4.3. Wiring
 
