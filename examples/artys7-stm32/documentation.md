@@ -186,6 +186,7 @@ The wiring is done as defined below :
 NB: Note that the Jtag connector is the same for both Digilent devices.
 
 <span style="color:red">WARNING : Due to some EM parasite, a breadboard is not used in this example.</span>
+<span style="color:red">WARNING 2 : Due to some STM32 specific issue, please wire the two devices in the order defined in the picture above.</span>
 
 ### 4.4. Running the project
 
