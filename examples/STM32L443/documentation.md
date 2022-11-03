@@ -5,34 +5,26 @@
   - [2. First Comments and Requirements](#2-first-comments-and-requirements)
   - [3. Descriptions](#3-descriptions)
     - [3.1. tree.json](#31-treejson)
-    - [3.2. "group_name"](#32-group_name)
-    - [3.3. AUTODETECT](#33-autodetect)
-  - [4. Examples](#4-examples)
-    - [4.1. Testing with one device](#41-testing-with-one-device)
-      - [4.1.1. Introduction](#411-introduction)
-      - [4.1.2. Hardware](#412-hardware)
-      - [4.1.3. Wiring](#413-wiring)
-      - [4.1.4. Running the project](#414-running-the-project)
-      - [4.1.5. Testing](#415-testing)
-    - [4.2. Daisy-chaining, testing with two devices](#42-daisy-chaining-testing-with-two-devices)
-      - [4.2.1. Introduction](#421-introduction)
-      - [4.2.2. Hardware](#422-hardware)
-      - [4.2.3. Wiring](#423-wiring)
-      - [4.2.4. Running the project](#424-running-the-project)
-      - [4.2.5. Testing](#425-testing)
+    - [3.2. Device identification](#32-device-identification)
+    - [3.3. "group_name"](#33-group_name)
+    - [3.4. AUTODETECT](#34-autodetect)
+  - [4. Examples : Nucleo STM32L443](#4-examples--nucleo-stm32l443)
+    - [4.1. Introduction](#41-introduction)
+    - [4.2. Hardware](#42-hardware)
+    - [4.3. Wiring](#43-wiring)
+    - [4.4. Running the project](#44-running-the-project)
+    - [4.5. Testing](#45-testing)
   - [5. Common issues](#5-common-issues)
     - [5.1. "No tree file found"](#51-no-tree-file-found)
     - [5.2 "No probe detected"](#52-no-probe-detected)
     - [5.3. "Probe xxx : not found"](#53-probe-xxx--not-found)
     - [5.4 "No device detected"](#54-no-device-detected)
     - [5.5. "No BSDL File found for device no : x, it's idcode is : xxxxxxxxxx"](#55-no-bsdl-file-found-for-device-no--x-its-idcode-is--xxxxxxxxxx)
+  - [6. Additional Information](#6-additional-information)
 
 ## 1. Introduction
 
-This file will define the different situation the program was developed for.
-
-For each situation, the hardware used, the pinning, the test and the file needed will be defined on their own subpart.
-Folder will also be available to share some program that was used to be able to run the project.
+This file will describe the example of the test a STM32L443 device.
 
 ## 2. First Comments and Requirements
 
@@ -64,10 +56,10 @@ The panduza platform need one file to work : the **tree.json** file. This file i
             "interfaces": [
                 {
                     "name": "%r",
-                    "driver": "Scan_service",
+                    "driver": "FTX232_JTAG_IO",
                     "settings": {
                         "probe_name" : "FT2232HL A FT6RR4EEA",
-                        "device_no" : 1,
+                        "device_no" : 0,
                         "bsdl_library" : "/etc/panduza/data/bsdl",
                         "pin"  : "%r",
                     },
@@ -90,11 +82,20 @@ Theses lines are defined as :
 - "port" : This will define the port of the MQTT broker
 - "interfaces" : It will contains the list of interfaces that will be loaded and connected to the MQTT broker define just above.
 - "name" : name of the interface (in the case of the boundary scan, it must not change as the name is changed dynamically)
-- "drive" : Identify the interface with this name at the start of the program. Each interface/plugin is compared with the driver name to be able to load them.
+- "driver" : Identify the interface with this name at the start of the program. Each interface/plugin is compared with the driver name to be able to load them.
 - "settings" : contains different settings that is needed to load a plugin.
 - "repeated" : specific for the Boundary Scan. It lists the IO that will be loaded
 
-### 3.2. "group_name"
+### 3.2. Device identification
+
+To be able to load the device, up to two parameters in the tree's setting can be defined:
+
+- **device_no** : This parameter is giving to the program the position of the device. The device_no start at 0 for the first device. In the case of this example, the position of the device is **0** .
+- **idcode** : This parameter will give to the program the idcode of the device that we want to load. It must be given as an hexadecimal value for now. In the case of this example the idcode is **0x06435041** .
+
+To be able to run the program, when there is only one device, it need at least one of the two parameter. The two parameters can be given but the device_no is prioritized. So it will react as if the idcode is not defined.
+
+### 3.3. "group_name"
 
 A setting new setting was creating to allow to personalise the name of an interface in the topic (pza/machine/**interface**/...).
 This will help to define easier topics and personalise the topic with some specific information that the user can understand more.
@@ -108,7 +109,7 @@ To add a custom interface name in the topic, a new setting have to be added in t
 
 This feature will be use in the example to separate each interface and make the testing easier.
 
-### 3.3. AUTODETECT
+### 3.4. AUTODETECT
 
 To anticipate the implementation to the panduza web interfaces, an autodetect mode is created. When running in autodetect mode, the program will generate every interfaces that can be loaded and add them into a json file in the "platform" folder.
 
@@ -120,64 +121,43 @@ To run the program in autodetect mode, the AUTODETECT environment variable have 
 
 This will pass the variable to the docker image and then will be retrieve by the program. It will then create a file called **cxx.json** that will contains every interfaces available and prepare some part that will be able to be inserted into the tree.
 
-## 4. Examples
+This file is created in the folder **platform**.
 
-### 4.1. Testing with one device
+## 4. Examples : Nucleo STM32L443
 
-#### 4.1.1. Introduction
+### 4.1. Introduction
 
 On this part, the test was done with one Device Under Test (DUT). It was the first objectives of this project.
 This part will show the wiring with one specific device and describe how to start the project, and some command that will show the program working.
 
-#### 4.1.2. Hardware
+### 4.2. Hardware
 
 The first example will be the same that is present on the example README.
 It will need :
 
 - A FT2232H chip probe. In our case we are using a custom made probe with a FT2232HL chip.
-  <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="300" alt="probe"/>
-- A JTAG compatible device. For this example, we are using a DIGILENT ARTY-S7.
-  <img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
+  <img src="https://user-images.githubusercontent.com/37267717/188599593-9532414c-c7d0-4548-92b6-b0a76b735fec.jpg" width="400" alt="probe"/>
+- A JTAG compatible device. For this example, we are using a Nucleo STM32L443 device
+  <img src="https://user-images.githubusercontent.com/37267717/197558580-0bc05d64-4f39-4421-ae15-bc21b2dccc55.png" alt="artys7" width="400"/>
 
-#### 4.1.3. Wiring
+
+### 4.3. Wiring
 
 The connection between the probe and the Device Under Test (DUT) is done with the help of the ALTERA connector on the probe and the JTAG connector on the DUT.
 The wiring is done as defined below :
 
-<img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
-<img src="https://user-images.githubusercontent.com/37267717/194315033-b5991b4f-36b8-4af4-afc0-53c06ae3b6df.png" height="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="400" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/197558768-9bd116e8-cfdc-4620-a260-7d7aff85be84.png" height="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/197558753-a113c89f-66a8-4714-aa74-41e0836746a1.png" width="400" style="margin:10px" />
 
-#### 4.1.4. Running the project
+NB : Note that the Nucleo STM32L443 **DO NOT NEED** to be powered by USB. The VCC is enough for our use.
 
-To avoid any issue, everything that is needed to run the project is available in the folder example_1_device.
+### 4.4. Running the project
 
-To run the project, please run the command "./start.sh" from the example folder.
+To run the project, please run the command "./start.sh"
 
-#### 4.1.5. Testing
+### 4.5. Testing
 
-To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the example folder.
-
-For the "test.py" program, python3 is needed. To run the program, use the command "python3 test.py" while the platform is running.
-
-This python program will setup all buttons and switches to inputs and will loop all LEDs to turn on repetitively.
-
-### 4.2. Daisy-chaining, testing with two devices
-
-#### 4.2.1. Introduction
-
-In this part, two devices will be connected in chain, we call this daisy-chain. The wiring and all the instructions will be presented below.
-
-#### 4.2.2. Hardware
-
-#### 4.2.3. Wiring
-
-#### 4.2.4. Running the project
-
-Please refer to [the previous example](#414-running-the-project) but using the specific folder for this example.
-
-#### 4.2.5. Testing
-
-
+To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the test folder.
 
 ## 5. Common issues
 
@@ -185,7 +165,7 @@ If the program exit prematurely, some error can be fix easily, shows as below.
 
 ### 5.1. "No tree file found"
 
-Check that the tree file is present in the "**panduza**" folder. The directory from the repo base is : "./examples/elsys-board-arty-s7/panduza" .
+Check that the tree file is present in the "**panduza**" folder. The directory from the repo base is : "./elsys-board-arty-s7/panduza" .
 
 ### 5.2 "No probe detected"
 
@@ -195,7 +175,19 @@ If you are in a Virtual Machine, check that you do have linked the probe to the 
 
 ### 5.3. "Probe xxx : not found"
 
-Verify that the probe name that you are using is the same as the one you
+Verify that the probe name that you are using is the same as the one you have.
+
+In the case you can't use the same probe as the one used in the example (**FT2232HL A FT6RR4EEA**), you can always change the probe name on the tree with the name of your probe.
+
+There is two way to find your probe name.
+
+- The first one is to find it in the BoundaryScan log available in the log folder.
+
+<img src="https://user-images.githubusercontent.com/37267717/197531990-ef959029-825c-4822-8166-08d4003f8356.png" width="300" alt="log probe name location"/>
+
+- The second one is to use the autodetect feature and get the probe name inside.
+
+<img src="https://user-images.githubusercontent.com/37267717/197532639-c0c56429-45dc-4380-9013-e5163b692841.png" width="300" alt="autodetect probe name location"/>
 
 ### 5.4 "No device detected"
 
@@ -207,3 +199,9 @@ This means that the program couldn't locate a BSDL file that match the idcode of
 
 In the case the BSDL file wasn't added to the folder, please add it.
 In the other case, please check the Jtag connector.
+
+## 6. Additional Information
+
+If you want to test the device (Nucleo STM32L443) by yourself, here is the pinout of physical GPIO such as button, switch and LEDs.
+
+<img src="https://user-images.githubusercontent.com/37267717/197721775-67b59933-b292-4e14-a084-e7ded3b05b34.png" width="500" alt="Nucleo STM32L443 pinout"/>

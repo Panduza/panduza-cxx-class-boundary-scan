@@ -12,16 +12,23 @@ std::shared_ptr<JtagFT2232> MetaDriverFT2232BoundaryScan::mJtagManager;
 bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
 std::map<std::string, std::string> MetaDriverFT2232BoundaryScan::mBSDLFileIdCode;
 bool MetaDriverFT2232BoundaryScan::mBSDLFileIdCodeLoaded = false;
+bool MetaDriverFT2232BoundaryScan::mLoguruInitialized = false;
 
 /// Constructor with parent pointer @param meta_platform_interface Meta Platform object
 MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface)
 {
     mMetaplatformInstance = meta_platform_interface;
 
-    // Transfert back the loguru verbose and file logging
-    loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
-    loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
-    loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
+    if (!mLoguruInitialized)
+    {
+        // Transfert back the loguru verbose and file logging
+        loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
+        loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
+        loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
+
+        mLoguruInitialized = true;
+    }
+    
 }
 
 // ============================================================================
@@ -47,6 +54,8 @@ void MetaDriverFT2232BoundaryScan::setup()
         mJtagManager = getJtagManager();
         mJtagManagerLoaded = true;
     }
+    mJtagManager->add_devices_to_load();
+
     if (!mBSDLFileIdCodeLoaded)
     {
         loadBSDLIdCode();
@@ -108,9 +117,9 @@ void MetaDriverFT2232BoundaryScan::findCorrespondingBsdlFile(std::string idcode)
 {
     for(auto idcode_line : mBSDLFileIdCode)
     {
-        LOG_F(ERROR, "%s, \"%s\", \"%s\"", idcode_line.second.c_str(), idcode_line.first.c_str(), idcode.c_str());
         if(strcmp(idcode_line.first.c_str(),idcode.c_str()) == 0)
         {
+            mInterfaceTree["settings"]["bsdl_path"] = idcode_line.second;
             mBSDLName = idcode_line.second;
         }
     }
@@ -125,7 +134,6 @@ void MetaDriverFT2232BoundaryScan::startIo()
     mMetaplatformInstance->clearReloadableInterfaces(getDriverName() + "_io_list_" + std::to_string(mDeviceNo));
 
     mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
-
     // Create the Group Info meta Driver where it will store the payload of the jtagManager infos...
     createGroupInfoMetaDriver();
 
@@ -212,6 +220,8 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     payload["probe_id"] = probe_id;
     payload["probe_name"] = probe_name;
     payload["nb_of_devices"] = nb_of_devices;
+    payload["device_no"] = mDeviceNo;
+    payload["bsdl file path"] = mBSDLName;
 
     std::shared_ptr<MetaDriver> meta_driver_group_info = std::make_shared<MetaDriverGroupInfo>(payload);
 
@@ -337,7 +347,7 @@ void MetaDriverFT2232BoundaryScan::loadBSDLIdCode()
 void MetaDriverFT2232BoundaryScan::findAndVerifyIdcodeToDevice(std::string idcode)
 {
     int no_of_devices = jtagcore_get_number_of_devices(mJtagManager->getJc());
-    int idcode_count = 0;
+    int idcode_count = -1;
 
     for(int device_no = 0; device_no < no_of_devices; device_no++)
     {
@@ -349,14 +359,22 @@ void MetaDriverFT2232BoundaryScan::findAndVerifyIdcodeToDevice(std::string idcod
         if(strcmp(idcode.c_str(), device_hex_id.c_str()) == 0)
         {
             mDeviceNo = device_no;
+            mInterfaceTree["settings"]["device_no"] = device_no;
             idcode_count++;
         }
     }
+    if(idcode_count < 0)
+    {
+        std::string error_message = "no device found";
+        LOG_F(ERROR, error_message.c_str());
+        sendErrorMessageToMqtt(error_message);
+    }
 
-    if(idcode_count > 1)
+    if(idcode_count >= 1)
     {
         std::string error_message = "There is multiple device with the same idcode, please define a device on the tree...";
         LOG_F(ERROR, error_message.c_str());
+        sendErrorMessageToMqtt(error_message);
     }
 }
 

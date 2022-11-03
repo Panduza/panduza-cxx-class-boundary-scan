@@ -1,0 +1,79 @@
+{
+    "machine": "rpi4_test",
+    "brokers": {
+        "boundaryscanner": {
+            "addr": "localhost",
+            "port": 1883,
+            "interfaces": [
+                {
+                    "name": "%r",
+                    "group_name" : "artys7",
+                    "driver": "FTX232_JTAG_IO",
+                    "settings": {
+                        "probe_name" : "FT2232HL A FT6RR4EEA",
+                        "idcode" : "0x0362f093",
+                        "bsdl_library" : "/etc/panduza/data/BSDL",
+                        "pin"  : "%r"
+                    },
+                    "repeated": [
+                        "IO_E18",
+                        "IO_F13",
+                        "IO_E13",
+                        "IO_H15",
+                        "IO_J15",
+                        "IO_G17",
+                        "IO_F15",
+                        "IO_E15",
+                        "IO_F18",
+                        "IO_E14",
+                        "IO_G15",
+                        "IO_K16",
+                        "IO_J16",
+                        "IO_H13",
+                        "IO_H14",
+                        "IO_H18",
+                        "IO_G18",
+                        "IO_M5"
+                    ]
+                },
+                {
+                    "name": "%r",
+                    "group_name" : "artya7",
+                    "driver": "FTX232_JTAG_IO",
+                    "settings": {
+                        "probe_name" : "FT2232HL A FT6RR4EEA",
+                        "idcode" : "0x03631093",
+                        "bsdl_library" : "/etc/panduza/data/BSDL",
+                        "pin"  : "%r"
+                    },
+                    "repeated": [
+                        "IO_H5",
+                        "IO_J5",
+                        "IO_T9",
+                        "IO_T10",
+                        "IO_G6",
+                        "IO_F6",
+                        "IO_E1",
+                        "IO_G3",
+                        "IO_J4",
+                        "IO_G4",
+                        "IO_J3",
+                        "IO_J2",
+                        "IO_H4",
+                        "IO_K1",
+                        "IO_H6",
+                        "IO_K2",
+                        "IO_D9",
+                        "IO_C9",
+                        "IO_B9",
+                        "IO_B8",
+                        "IO_A8",
+                        "IO_C11",
+                        "IO_C10",
+                        "IO_A10"
+                    ]
+                }
+            ]
+        }
+    }
+}
