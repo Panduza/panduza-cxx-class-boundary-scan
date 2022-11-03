@@ -13,7 +13,7 @@ services:
     
   panduza-platform:
     container_name: panduza-cxx-platform
-    # image: ghcr.io/panduza/panduza-cxx-platform:0.0.1
+    image: ghcr.io/panduza/panduza-cxx-platform:latest
     build:
       context: .
     network_mode: host
@@ -25,5 +25,3 @@ services:
       - ./logs:/panduza-cxx-platform/logs
       - ./BoundaryScan:/etc/panduza/data/BSDL
       - ./platform:/etc/panduza/platform
-      - ../../../panduza-cxx-platform:/panduza-cxx-platform
-      - ../../../panduza-cxx-class-boundary-scan:/home/builder/panduza-cxx-class-boundary-scan
