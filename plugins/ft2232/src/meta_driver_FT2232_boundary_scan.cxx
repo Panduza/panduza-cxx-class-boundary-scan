@@ -289,7 +289,7 @@ Json::Value MetaDriverFT2232BoundaryScan::generateAutodetectInfo()
     json["autodetect"] = Json::arrayValue;
     }
 
-    json["name"] = "BoundaryScan";
+    json["name"] = "FTX232_JTAG_IO";
     json["version"] = "1.0";
     json["description"] = "Boundary Scan interface";
     json["template"] = template_json;
