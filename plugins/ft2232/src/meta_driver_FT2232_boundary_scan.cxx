@@ -23,8 +23,8 @@ MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_pl
     {
         // Transfert back the loguru verbose and file logging
         loguru::g_stderr_verbosity = mMetaplatformInstance->mLoguruVerbose;
-        loguru::add_file("../logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
-        loguru::add_file("../logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
+        loguru::add_file("/etc/panduza/logs/Platform.log", loguru::Append, loguru::Verbosity_MAX);
+        loguru::add_file("/etc/panduza/logs/BoundaryScan.log", loguru::Append, loguru::Verbosity_MAX);
 
         mLoguruInitialized = true;
     }
