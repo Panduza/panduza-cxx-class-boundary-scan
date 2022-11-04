@@ -13,19 +13,13 @@ services:
     
   panduza-platform:
     container_name: panduza-cxx-platform
-    image: ghcr.io/panduza/panduza-cxx-platform:0.0.1
+    image: ghcr.io/panduza/panduza-cxx-platform:latest
     network_mode: host
     privileged: true
     environment:
       - AUTODETECT
     volumes:
-      - ./panduza:/etc/panduza/tree
-      - ./logs:/panduza-cxx-platform/logs
-      - ./BoundaryScan:/etc/panduza/data/BSDL
-      - ./platform:/etc/panduza/platform
-
-
-
-
+      - ./:/etc/panduza
+      
 # to send a env variable to docker-compose, you need to write it before the command.
 # eg: AUTODETECT=1 docker-compose up
