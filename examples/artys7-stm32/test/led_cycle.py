@@ -3,26 +3,26 @@ from panduza import *
 
 io_interfaces = {}
 
-def create_interfaces_line(list, group_name):
-    for io_name in list:
-        io_interfaces[io_name] = "pza/rpi4_test/" + group_name + "/" + io_name
-
-
-artys7_group_name = "artys7"
-artys7_out = ["IO_E18", "IO_F13", "IO_E13","IO_H15", "IO_J15", "IO_G17", "IO_F15", "IO_E15", "IO_F18", "IO_E14"]
-create_interfaces_line(artys7_out, artys7_group_name)
-
-stm_group_name = "STM32"
-stm_out = ["PA5"]
-create_interfaces_line(stm_out, stm_group_name)
-
 Core.LoadAliases(
 {
     "broker_1":
     {
         "url": "localhost",
         "port": 1883,
-        "interfaces": io_interfaces
+        "interfaces": 
+        {
+            "IO_E18" : "pza/rpi4_test/artys7/IO_E18",
+            "IO_F13" : "pza/rpi4_test/artys7/IO_F13",
+            "IO_E13" : "pza/rpi4_test/artys7/IO_E13",
+            "IO_H15" : "pza/rpi4_test/artys7/IO_H15",
+            "IO_J15" : "pza/rpi4_test/artys7/IO_J15",
+            "IO_G17" : "pza/rpi4_test/artys7/IO_G17",
+            "IO_F15" : "pza/rpi4_test/artys7/IO_F15",
+            "IO_E15" : "pza/rpi4_test/artys7/IO_E15",
+            "IO_F18" : "pza/rpi4_test/artys7/IO_F18",
+            "IO_E14" : "pza/rpi4_test/artys7/IO_E14",
+            "PA5" : "pza/rpi4_test/STM32/PA5"
+        }
     }
 })
 # print(Core.Aliases.keys())
