@@ -154,11 +154,17 @@ To run the project, please run the command "./start.sh"
 
 ### 4.5. Testing
 
-To test this setup, you can either command each pin from the mqtt explorer software or use the "test.py" program available on the test folder.
+To test this setup, it is possible to use the python code available on the test folder. One will toggle each LED (led_cycle.py) and the other one will set the buttons and switches as an input (inputs.py).
 
-For the "test.py" program, python3 is needed. To run the program, use the command "python3 test.py" while the platform is running.
+To use these two code, you will need two libraries : paho.mqtt and panduza Client.
+To install the libraries needed please use theses two commands :
 
-This python program will setup all buttons and switches to inputs and will loop all LEDs to turn on repetitively.
+```sh
+  pip install paho-mqtt python-magic
+  pip install git+https://github.com/Panduza/panduza-py.git
+```
+
+It is also possible to testing yourself with the help of external software as **MQTT Explorer**.
 
 ## 5. Common issues
 

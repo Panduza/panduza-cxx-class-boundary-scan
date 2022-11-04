@@ -197,6 +197,18 @@ Please note that the docker-compose will base its build with the latest image.
 
 ### 4.5. Testing
 
+To test this setup, it is possible to use the python code available on the test folder. One will toggle each LED (led_cycle.py) and the other one will set the buttons and switches as an input (inputs.py).
+
+To use these two code, you will need two libraries : paho.mqtt and panduza Client.
+To install the libraries needed please use theses two commands :
+
+```sh
+  pip install paho-mqtt python-magic
+  pip install git+https://github.com/Panduza/panduza-py.git
+```
+
+It is also possible to testing yourself with the help of external software as **MQTT Explorer**.
+
 ## 5. Common issues
 
 If the program exit prematurely, some error can be fix easily, shows as below.
