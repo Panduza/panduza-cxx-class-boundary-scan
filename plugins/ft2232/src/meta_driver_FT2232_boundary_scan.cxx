@@ -221,7 +221,9 @@ void MetaDriverFT2232BoundaryScan::createGroupInfoMetaDriver()
     payload["probe_name"] = probe_name;
     payload["nb_of_devices"] = nb_of_devices;
     payload["device_no"] = mDeviceNo;
-    payload["bsdl file path"] = mBSDLName;
+    payload["bsdl_file_path"] = mBSDLName;
+    payload["group_name"] = mInterfaceTree["group_name"];
+    payload["device_idcode"] = mIdcode;
 
     std::shared_ptr<MetaDriver> meta_driver_group_info = std::make_shared<MetaDriverGroupInfo>(payload);
 

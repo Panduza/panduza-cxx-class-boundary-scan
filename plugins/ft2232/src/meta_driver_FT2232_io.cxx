@@ -220,8 +220,8 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
         {
             val = root.get("value", "").asString();
             SubVal = stoi(val);
-            LOG_F(ERROR, "topic = %s, payload = %s", msg->get_topic().c_str(), msg->get_payload().c_str());
-            LOG_F(ERROR, "value : %d", SubVal);
+            LOG_F(3, "topic = %s, payload = %s", msg->get_topic().c_str(), msg->get_payload().c_str());
+            LOG_F(3, "value : %d", SubVal);
             // If the state of the pin is different then the state published in the topic
             if (SubVal != mState)
             {

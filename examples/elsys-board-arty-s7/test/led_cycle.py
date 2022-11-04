@@ -1,4 +1,7 @@
+from time import sleep
 from panduza import *
+
+io_interfaces = {}
 
 Core.LoadAliases(
 {
@@ -6,7 +9,7 @@ Core.LoadAliases(
     {
         "url": "localhost",
         "port": 1883,
-        "interfaces":
+        "interfaces": 
         {
             "IO_E18" : "pza/rpi4_test/artys7/IO_E18",
             "IO_F13" : "pza/rpi4_test/artys7/IO_F13",
@@ -17,23 +20,7 @@ Core.LoadAliases(
             "IO_F15" : "pza/rpi4_test/artys7/IO_F15",
             "IO_E15" : "pza/rpi4_test/artys7/IO_E15",
             "IO_F18" : "pza/rpi4_test/artys7/IO_F18",
-            "IO_E14" : "pza/rpi4_test/artys7/IO_E14",
-            "IO_H5" : "pza/rpi4_test/artya7/IO_H5",
-            "IO_J5" : "pza/rpi4_test/artya7/IO_J5",
-            "IO_T9" : "pza/rpi4_test/artya7/IO_T9",
-            "IO_T10" : "pza/rpi4_test/artya7/IO_T10",
-            "IO_G6" : "pza/rpi4_test/artya7/IO_G6",
-            "IO_F6" : "pza/rpi4_test/artya7/IO_F6",
-            "IO_E1" : "pza/rpi4_test/artya7/IO_E1",
-            "IO_G3" : "pza/rpi4_test/artya7/IO_G3",
-            "IO_J4" : "pza/rpi4_test/artya7/IO_J4",
-            "IO_G4" : "pza/rpi4_test/artya7/IO_G4",
-            "IO_J3" : "pza/rpi4_test/artya7/IO_J3",
-            "IO_J2" : "pza/rpi4_test/artya7/IO_J2",
-            "IO_H4" : "pza/rpi4_test/artya7/IO_H4",
-            "IO_K1" : "pza/rpi4_test/artya7/IO_K1",
-            "IO_H6" : "pza/rpi4_test/artya7/IO_H6",
-            "IO_K2" : "pza/rpi4_test/artya7/IO_K2"
+            "IO_E14" : "pza/rpi4_test/artys7/IO_E14"
         }
     }
 })
