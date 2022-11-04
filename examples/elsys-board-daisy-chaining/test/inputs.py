@@ -22,14 +22,14 @@ Core.LoadAliases(
             "IO_K16" : "pza/rpi4_test/artys7/IO_K16",
             "IO_G18" : "pza/rpi4_test/artys7/IO_G18",
             "IO_M5" : "pza/rpi4_test/artys7/IO_M5",
-            "IO_B9" : "pza/rpi4_test/artys7/IO_B9",
-            "IO_B8" : "pza/rpi4_test/artys7/IO_B8",
-            "IO_A8" : "pza/rpi4_test/artys7/IO_A8",
-            "IO_C11" : "pza/rpi4_test/artys7/IO_C11",
-            "IO_D9" : "pza/rpi4_test/artys7/IO_D9",
-            "IO_C9" : "pza/rpi4_test/artys7/IO_C9",
-            "IO_C10" : "pza/rpi4_test/artys7/IO_C10",
-            "IO_A10" : "pza/rpi4_test/artys7/IO_A10"
+            "IO_B9" : "pza/rpi4_test/artya7/IO_B9",
+            "IO_B8" : "pza/rpi4_test/artya7/IO_B8",
+            "IO_A8" : "pza/rpi4_test/artya7/IO_A8",
+            "IO_C11" : "pza/rpi4_test/artya7/IO_C11",
+            "IO_D9" : "pza/rpi4_test/artya7/IO_D9",
+            "IO_C9" : "pza/rpi4_test/artya7/IO_C9",
+            "IO_C10" : "pza/rpi4_test/artya7/IO_C10",
+            "IO_A10" : "pza/rpi4_test/artya7/IO_A10"
 
         }
     }
