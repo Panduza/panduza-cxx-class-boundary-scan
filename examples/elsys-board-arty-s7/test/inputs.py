@@ -21,16 +21,7 @@ Core.LoadAliases(
             "IO_G15" : "pza/rpi4_test/artys7/IO_G15",
             "IO_K16" : "pza/rpi4_test/artys7/IO_K16",
             "IO_G18" : "pza/rpi4_test/artys7/IO_G18",
-            "IO_M5" : "pza/rpi4_test/artys7/IO_M5",
-            "IO_B9" : "pza/rpi4_test/artys7/IO_B9",
-            "IO_B8" : "pza/rpi4_test/artys7/IO_B8",
-            "IO_A8" : "pza/rpi4_test/artys7/IO_A8",
-            "IO_C11" : "pza/rpi4_test/artys7/IO_C11",
-            "IO_D9" : "pza/rpi4_test/artys7/IO_D9",
-            "IO_C9" : "pza/rpi4_test/artys7/IO_C9",
-            "IO_C10" : "pza/rpi4_test/artys7/IO_C10",
-            "IO_A10" : "pza/rpi4_test/artys7/IO_A10"
-
+            "IO_M5" : "pza/rpi4_test/artys7/IO_M5"
         }
     }
 })
@@ -47,13 +38,11 @@ for io_name in io_keys:
     io_name = Io(alias=io_name)
     io_name.direction.set("in", ensure=True)
 
-
 for topic in Core.Aliases:
     client.subscribe(Core.BaseTopicFromAlias(topic) + "/atts/value")
     client.on_message = on_message
 
 while True:
     continue
-    # io_name = Io(alias="PC13")
-    # print(io_name.value.get())
+
 # print("Every Switch and button are set to input, their states are visible in any mqtt client (eg: MQTT Explorer)")
