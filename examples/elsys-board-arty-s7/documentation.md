@@ -1,6 +1,6 @@
-# Documentation
+# ARTYS-7 Documentation
 
-- [Documentation](#documentation)
+- [ARTYS-7 Documentation](#artys-7-documentation)
   - [1. Introduction](#1-introduction)
   - [2. First Comments and Requirements](#2-first-comments-and-requirements)
   - [3. Descriptions](#3-descriptions)

@@ -1,6 +1,6 @@
-# Documentation
+# ARTYS7-ARTYA7 Daisy Chaining Documentation
 
-- [Documentation](#documentation)
+- [ARTYS7-ARTYA7 Daisy Chaining Documentation](#artys7-artya7-daisy-chaining-documentation)
   - [1. Introduction](#1-introduction)
   - [2. First Comments and Requirements](#2-first-comments-and-requirements)
   - [3. Descriptions](#3-descriptions)

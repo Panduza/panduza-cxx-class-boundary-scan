@@ -1,6 +1,6 @@
-# Documentation
+# ARTYS7-STM32 Daisy Chaining Documentation
 
-- [Documentation](#documentation)
+- [ARTYS7-STM32 Daisy Chaining Documentation](#artys7-stm32-daisy-chaining-documentation)
   - [1. Introduction](#1-introduction)
   - [2. First Comments and Requirements](#2-first-comments-and-requirements)
   - [3. Descriptions](#3-descriptions)
