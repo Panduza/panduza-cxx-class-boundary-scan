@@ -42,3 +42,8 @@ for io_name in io_keys:
 for topic in Core.Aliases:
     client.subscribe(Core.BaseTopicFromAlias(topic) + "/atts/value")
     client.on_message = on_message
+
+while True:
+    continue
+
+# print("Every Switch and button are set to input, their states are visible in any mqtt client (eg: MQTT Explorer)")
