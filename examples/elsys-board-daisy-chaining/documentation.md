@@ -155,6 +155,8 @@ For this example, three pieces of hardware is needed.
   <img src="https://user-images.githubusercontent.com/37267717/188600452-3a18e156-d57f-4ab8-8e3e-116c5a209357.jpg" alt="artys7" width="400"/>
   <img src="https://user-images.githubusercontent.com/37267717/197539226-f5314381-0800-44f4-a19d-73e5667b86ca.jpg" alt="artya7" width="400"/>
 
+NB : the ArtyS7 need its own usb power. It is done with the mini-USB connection.
+
 ### 4.3. Wiring
 
 The connection between the probe and Devices Under Test (DUT) is done with the help of the ALTERA connector on the probe and the JTAG connector on the DUTs.
@@ -162,9 +164,10 @@ The wiring is done as defined below :
 
 <img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
 
-<img src="https://user-images.githubusercontent.com/37267717/197539546-71946b6c-a918-4c85-a491-eae1b1bd1359.png" width="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/200281783-ca285702-e752-4eff-a567-35ca1f42d3a5.png" width="400" style="margin:10px" />
 
-NB: Note that the Jtag connector is the same for both Digilent devices.
+NB : the ArtyS7 need its own usb power. It is done with the mini-USB connection.
+NB2 : Note that the Jtag connector is the same for both Digilent devices.
 
 The last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
 
