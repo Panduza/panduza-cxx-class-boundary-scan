@@ -146,7 +146,9 @@ The connection between the probe and the Device Under Test (DUT) is done with th
 The wiring is done as defined below :
 
 <img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
-<img src="https://user-images.githubusercontent.com/37267717/194315033-b5991b4f-36b8-4af4-afc0-53c06ae3b6df.png" height="400" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/200281383-6e142d24-2d71-49f8-a7b2-b4d1531effc0.png" height="400" style="margin:10px" />
+
+NB : the ArtyS7 need its own usb power. It is done with the mini-USB connection.
 
 ### 4.4. Running the project
 
