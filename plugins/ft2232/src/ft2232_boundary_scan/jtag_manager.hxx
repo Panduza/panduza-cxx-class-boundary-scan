@@ -62,7 +62,7 @@ public:
 
     int getNumberOfDevices(int id_of_probe);
 
-    void add_devices_to_load(){device_to_load++;};
+    void set_devices_to_load(int value){device_to_load = value;};
     
 private:
     int device_to_load = 0;
