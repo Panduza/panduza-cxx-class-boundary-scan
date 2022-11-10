@@ -13,6 +13,7 @@ bool MetaDriverFT2232BoundaryScan::mJtagManagerLoaded = false;
 std::map<std::string, std::string> MetaDriverFT2232BoundaryScan::mBSDLFileIdCode;
 bool MetaDriverFT2232BoundaryScan::mBSDLFileIdCodeLoaded = false;
 bool MetaDriverFT2232BoundaryScan::mLoguruInitialized = false;
+int MetaDriverFT2232BoundaryScan::device_to_load = 0;
 
 /// Constructor with parent pointer @param meta_platform_interface Meta Platform object
 MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_platform_interface)
@@ -28,7 +29,7 @@ MetaDriverFT2232BoundaryScan::MetaDriverFT2232BoundaryScan(Metaplatform *meta_pl
 
         mLoguruInitialized = true;
     }
-    
+    device_to_load++;
 }
 
 // ============================================================================
@@ -54,7 +55,7 @@ void MetaDriverFT2232BoundaryScan::setup()
         mJtagManager = getJtagManager();
         mJtagManagerLoaded = true;
     }
-    mJtagManager->add_devices_to_load();
+    mJtagManager->set_devices_to_load(device_to_load);
 
     if (!mBSDLFileIdCodeLoaded)
     {

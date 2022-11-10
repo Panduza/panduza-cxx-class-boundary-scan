@@ -76,6 +76,8 @@ private:
 
     Json::Value mInterfaceTree;
     Json::Value mRepeatedJson;
+
+    static int device_to_load;
 };
 
 /// Boundary Scan Factory
