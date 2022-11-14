@@ -6,6 +6,18 @@
             "port": 1883,
             "interfaces": [
                 {
+                    "driver" : "FTX232_JTAG_IO",
+                    "group_name" : "cortex",
+                    "name" : "%r",
+                    "repeated" : [],
+                    "settings" : {
+                       "bsdl_library" : "/etc/panduza/data/BSDL",
+                       "idcode" : "0x0ba00477",
+                       "pin" : "%r",
+                       "probe_name" : "FT2232HL A FT6RR4EEA"
+                    }
+                },
+                {
                     "name": "%r",
                     "group_name" : "artys7",
                     "driver": "FTX232_JTAG_IO",
