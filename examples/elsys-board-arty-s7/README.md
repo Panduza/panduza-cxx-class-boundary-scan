@@ -30,29 +30,7 @@ This should be editable with the software FT_Prog.
 
 The other way is to find the name of the probe use and redefine it on the tree. This can be found either on the software FT_Prog or with the command usb-devices on ubuntu.
 
-The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNumber to change. Both "A" and spaces have to be put in the same position
-
-## Daisy Chaining
-
-With version is compatible with the daisy chaining. To avoid issue, the interface tree must contains a device value in the settings. It must be presented as defined :
-
-```sh
-"name": "%r",
-"driver": "Scan_service",
-"settings": {
-    "probe_name" : "FT2232HL A FT6RR4EEA",
-    "device_no" : x,
-    "idcode": x,
-    "BSDL" : "/etc/panduza/data/BSDL",
-    "pin"  : "%r"
-},
-```
-
-where x is the device position.
-
-Note that the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
-
-<img src="https://user-images.githubusercontent.com/37267717/194265634-a7072bbf-d548-414b-acc6-af8db4dcb855.png" width="400" />
+The probe name should be "*Product* A *SerialNumber*A" with Product and SerialNumber to change. Both "A" and spaces have to be put in the same position.
 
 ## Starting the program
 

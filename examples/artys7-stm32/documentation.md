@@ -30,7 +30,7 @@ In this documentation, the setup for the daisy chaining of two devices (Nucleo S
 
 Do be able to start the program, a few things will be needed.
 
-- The whole project was developed and tested on **Ubuntu**, which allow an easiest installation of Docker and some dependencies.
+- The whole project was developed and tested on **Ubuntu 20.04.5 LTS**, which allow an easiest installation of Docker and some dependencies.
 
 - You will need to install Docker and docker-compose, otherwise, it won't work. To start the program, we are pulling images from the platform repo and mosquitto, which need theses libraries. You can install [Docker here](https://docs.docker.com/engine/install/ubuntu/) and [docker-compose here (French link)](https://doc.ubuntu-fr.org/docker-compose).
 
@@ -182,10 +182,11 @@ The wiring is done as defined below :
 <img src="https://user-images.githubusercontent.com/37267717/194314415-33d16a1b-6a08-4aa8-b2a2-8e2fdf85e110.png" height="300" style="margin:10px" /> <img src="https://user-images.githubusercontent.com/37267717/194314425-092855d2-66f2-4edc-b5a2-67ec47ea2bde.png" height="300" style="margin:10px" />
 <img src="https://user-images.githubusercontent.com/37267717/199686206-8aaa2f5c-1e1f-4505-8168-34dfe1f2e64f.png" height="300" style="margin:10px" />
 
-<img src="https://user-images.githubusercontent.com/37267717/199685939-812fb853-ffad-4042-8a61-b6a114c880df.png" width="80%" style="margin:10px" />
+<img src="https://user-images.githubusercontent.com/37267717/199685939-812fb853-ffad-4042-8a61-b6a114c880df.png" width="70%" style="margin:10px" />
 
-NB: Note that the Jtag connector is the same for both Digilent devices.
+In the case of the daisy chaining, the last device is the first one, so the one nearest of the TDO pin of the probe is the Device 0 (see picture below).
 
+<img src="https://user-images.githubusercontent.com/37267717/194265634-a7072bbf-d548-414b-acc6-af8db4dcb855.png" width="400" /><br />
 <span style="color:red">WARNING : Due to some EM parasite, a breadboard is not used in this example.</span>
 <span style="color:red">WARNING 2 : Due to some STM32 specific issue, please wire the two devices in the order defined in the picture above.</span>
 
