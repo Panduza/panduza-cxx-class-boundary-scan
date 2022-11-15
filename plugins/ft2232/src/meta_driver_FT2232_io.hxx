@@ -60,13 +60,14 @@ public:
     /// Edits an Io in the vector @param name : Name of the Io to edit
     void editPin(std::string name);
 
+    bool isStringANumber(const std::string& string);
+
 private:
 
     std::shared_ptr<JtagFT2232> mJtagManager;
     jtag_core *mJc;
     std::string mProbeId;
     int mDeviceNo;
-    bool first_start = false;
 
     //IO VARIABLES
 
