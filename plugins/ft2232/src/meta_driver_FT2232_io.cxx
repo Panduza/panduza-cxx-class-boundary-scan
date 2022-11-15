@@ -56,10 +56,10 @@ void MetaDriverFT2232Io::setup()
 int MetaDriverFT2232Io::readInputState()
 {
     // Return -1 if there is an error
-    if (jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ) < 0)
-    {
-        return -1;
-    }
+    // if (jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ) < 0)
+    // {
+    //     return -1;
+    // }
 
     // Return the actual state
     return jtagcore_get_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_INPUT);
@@ -82,7 +82,7 @@ void MetaDriverFT2232Io::setOutputOn()
     // Set Output to On
     jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OUTPUT, 1);
     jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OE, 1);
-    jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
+    // jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
 }
 
 void MetaDriverFT2232Io::setOutputOff()
@@ -90,7 +90,7 @@ void MetaDriverFT2232Io::setOutputOff()
     // Set Output to Off
     jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OUTPUT, 0);
     jtagcore_set_pin_state(mJc, mDeviceNo, mId, JTAG_CORE_OE, 0);
-    jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
+    // jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
 }
 
 int MetaDriverFT2232Io::publishState()
