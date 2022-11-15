@@ -12,6 +12,7 @@
 #include "../../../../headers/loguru.hxx"
 #include "jtag_core/jtag_core.hxx"
 #include <mutex>
+#include <thread>
 
 /// JTAG Class, responsible of initializing and creating an object to communicate with the board
 class JtagFT2232
@@ -63,8 +64,12 @@ public:
     int getNumberOfDevices(int id_of_probe);
 
     void set_devices_to_load(int value){device_to_load = value;};
+
+    void auto_refresh_push_and_pop();
     
 private:
+    bool auto_refresh_started = false;
+    bool kill_auto_refresh = false;
     int device_to_load = 0;
     int device_loaded = 0;
     /// Member to communicate over JTAG
@@ -74,7 +79,7 @@ private:
     int mProbeId;
 
     std::string mProbeName;
-    
+    std::thread* push_and_pop_auto_refresh;
 };
 
 #endif
