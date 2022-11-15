@@ -11,6 +11,11 @@ JtagFT2232::JtagFT2232()
     mProbeName = "";
 }
 
+JtagFT2232::~JtagFT2232()
+{
+    deinit();
+}
+
 void JtagFT2232::initializeDriver(std::string probe_name)
 {
     LOG_F(1, "Initializing the Driver for the probe : %s", probe_name.c_str());
@@ -29,6 +34,12 @@ void JtagFT2232::initializeDriver(std::string probe_name)
         {
             // Scan and initialize JTAG chain
             jtagcore_scan_and_init_chain(mJc);
+
+            if(!auto_refresh_started)
+            {
+                auto_refresh_started = true;
+                push_and_pop_auto_refresh = new std::thread(&JtagFT2232::auto_refresh_push_and_pop, this);
+            }
         }
 
         // Gets the ID of the board
@@ -252,7 +263,18 @@ int JtagFT2232::getNumberOfDevices(int id_of_probe)
     return jtagcore_get_number_of_devices(mJc);
 }
 
+void JtagFT2232::auto_refresh_push_and_pop()
+{
+    while (!kill_auto_refresh)
+    {
+        jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+}
+
 void JtagFT2232::deinit()
 {
+    kill_auto_refresh = true;
+    push_and_pop_auto_refresh->join();
     jtagcore_deinit(mJc);
 }
