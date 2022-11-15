@@ -216,41 +216,47 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             }
         }
         // If the message contains "value" and IO's direction is output, get the value
-        if (((msg->get_topic().find("value")) != (std::string::npos)) && (mDirection == "out") && (((msg->get_topic().find("cmds")) != (std::string::npos)) || !first_start) )
+        if (((msg->get_topic().find("value")) != (std::string::npos)) && (mDirection == "out"))
         {
             val = root.get("value", "").asString();
-            SubVal = stoi(val);
-            LOG_F(3, "topic = %s, payload = %s", msg->get_topic().c_str(), msg->get_payload().c_str());
-            LOG_F(3, "value : %d", SubVal);
-            // If the state of the pin is different then the state published in the topic
-            if (SubVal != mState)
+            if (isStringANumber(val))
             {
-                // Lock Jtag connection mutex
-                mJtagMutex.lock();
-                // If value = 0/1, edit the object and publish its state
-                if (SubVal == 0)
+                SubVal = stoi(val);
+                LOG_F(3, "topic = %s, payload = %s", msg->get_topic().c_str(), msg->get_payload().c_str());
+                LOG_F(3, "value : %d", SubVal);
+                // If the state of the pin is different then the state published in the topic
+                if (SubVal != mState)
                 {
-                    LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 0);
-                    setOutputOff();
-                    setState(0);
-                    publishState();
-                }
-                else if (SubVal == 1)
-                {
-                    LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 1);
-                    setOutputOn();
-                    setState(1);
-                    publishState();
-                }
-                else
-                {
-                    LOG_F(WARNING, "Expecting 0 or 1 as pin value");
-                }
+                    // Lock Jtag connection mutex
+                    mJtagMutex.lock();
+                    // If value = 0/1, edit the object and publish its state
+                    if (SubVal == 0)
+                    {
+                        LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 0);
+                        setOutputOff();
+                        setState(0);
+                        publishState();
+                    }
+                    else if (SubVal == 1)
+                    {
+                        LOG_F(INFO, "Setting %s to state %d", mPinName.c_str(), 1);
+                        setOutputOn();
+                        setState(1);
+                        publishState();
+                    }
+                    else
+                    {
+                        LOG_F(WARNING, "Expecting 0 or 1 as pin value");
+                    }
 
-                //Unlock Jtag connection Mutex
-                mJtagMutex.unlock();
+                    //Unlock Jtag connection Mutex
+                    mJtagMutex.unlock();
+                }
             }
-            first_start = true;
+            else
+            {
+                LOG_F(WARNING,"The value received is not a integer. Please verify your payload.");
+            }
         }
     }
 }
@@ -266,4 +272,10 @@ void MetaDriverFT2232Io::sendInfo()
 
     // publish the message info to the mqtt server for the pin
     publish(getBaseTopic() + "/info", info, 0, false);
+}
+
+bool MetaDriverFT2232Io::isStringANumber(const std::string& string)
+{
+    return !string.empty() && std::find_if(string.begin(), 
+        string.end(), [](unsigned char c) { return !std::isdigit(c); }) == string.end();
 }
