@@ -21,6 +21,9 @@ public:
     /// Default constructor
     JtagFT2232();
 
+    /// Default destructor
+    ~JtagFT2232();
+
     /// Initialize the driver to connect to the probe @param probe_name Name of the probe used
     void initializeDriver(std::string probe_name);
 
