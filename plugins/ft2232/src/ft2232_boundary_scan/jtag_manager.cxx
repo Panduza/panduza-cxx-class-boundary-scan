@@ -274,7 +274,10 @@ void JtagFT2232::auto_refresh_push_and_pop()
 
 void JtagFT2232::deinit()
 {
-    kill_auto_refresh = true;
-    push_and_pop_auto_refresh->join();
+    if(auto_refresh_started)
+    {
+        kill_auto_refresh = true;
+        push_and_pop_auto_refresh->join();
+    }
     jtagcore_deinit(mJc);
 }
