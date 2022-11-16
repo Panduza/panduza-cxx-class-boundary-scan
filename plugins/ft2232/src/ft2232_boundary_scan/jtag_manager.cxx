@@ -34,12 +34,6 @@ void JtagFT2232::initializeDriver(std::string probe_name)
         {
             // Scan and initialize JTAG chain
             jtagcore_scan_and_init_chain(mJc);
-
-            if(!auto_refresh_started)
-            {
-                auto_refresh_started = true;
-                push_and_pop_auto_refresh = new std::thread(&JtagFT2232::auto_refresh_push_and_pop, this);
-            }
         }
 
         // Gets the ID of the board
@@ -63,6 +57,11 @@ void JtagFT2232::initializeDevice(std::string probe_name, std::string bsdl_name,
     if(device_loaded == device_to_load)
     {
         jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_ONLY);
+        if(!auto_refresh_started)
+            {
+                auto_refresh_started = true;
+                push_and_pop_auto_refresh = new std::thread(&JtagFT2232::auto_refresh_push_and_pop, this);
+            }
     }
     
     // Prints all the pins on the board (verbosity 6 is needed)
@@ -274,7 +273,10 @@ void JtagFT2232::auto_refresh_push_and_pop()
 
 void JtagFT2232::deinit()
 {
-    kill_auto_refresh = true;
-    push_and_pop_auto_refresh->join();
+    if(auto_refresh_started)
+    {
+        kill_auto_refresh = true;
+        push_and_pop_auto_refresh->join();
+    }
     jtagcore_deinit(mJc);
 }
