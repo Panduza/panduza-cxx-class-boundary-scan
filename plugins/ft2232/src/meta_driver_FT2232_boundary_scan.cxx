@@ -134,7 +134,6 @@ void MetaDriverFT2232BoundaryScan::startIo()
     // Kill all reloadable instances
     mMetaplatformInstance->clearReloadableInterfaces(getDriverName() + "_io_list_" + std::to_string(mDeviceNo));
 
-    mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
     // Create the Group Info meta Driver where it will store the payload of the jtagManager infos...
     createGroupInfoMetaDriver();
 
@@ -143,6 +142,7 @@ void MetaDriverFT2232BoundaryScan::startIo()
     const std::string format = "%r";
     const size_t posFormat = mInterfaceTree["name"].asString().find(format);
     
+    mJtagManager->initializeDevice(mProbeName, mBSDLName, mDeviceNo);
     if(mRepeatedJson.isNull() || mRepeatedJson.size() == 0)
     {
         addAllIoPins();
