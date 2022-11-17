@@ -216,7 +216,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
             }
         }
         // If the message contains "value" and IO's direction is output, get the value
-        if (((msg->get_topic().find("value")) != (std::string::npos)) && (mDirection == "out"))
+        if (((msg->get_topic().find("value")) != (std::string::npos)) && (mDirection == "out") && (((msg->get_topic().find("cmds")) != (std::string::npos)) || !first_start) )
         {
             val = root.get("value", "").asString();
             if (isStringANumber(val))
@@ -252,6 +252,7 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
                     //Unlock Jtag connection Mutex
                     mJtagMutex.unlock();
                 }
+                first_start = true;
             }
             else
             {

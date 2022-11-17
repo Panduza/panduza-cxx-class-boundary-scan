@@ -68,6 +68,7 @@ private:
     jtag_core *mJc;
     std::string mProbeId;
     int mDeviceNo;
+    bool first_start = false;
 
     //IO VARIABLES
 
