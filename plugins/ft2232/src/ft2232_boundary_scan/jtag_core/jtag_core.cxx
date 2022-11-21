@@ -769,23 +769,23 @@ int jtagcore_push_and_pop_chain(jtag_core * jc, int mode)
 						}
 
 						// Check the incomming data
-						if(bsdl->number_of_chainbits)
-						{
-							first_bit = jc->devices_list[d].in_boundary_scan[0];
-							bit = 0;
-							while( (bit < bsdl->number_of_chainbits) && (first_bit == jc->devices_list[d].in_boundary_scan[bit]) )
-							{
-								bit++;
-							}
+						// if(bsdl->number_of_chainbits)
+						// {
+						// 	first_bit = jc->devices_list[d].in_boundary_scan[0];
+						// 	bit = 0;
+						// 	while( (bit < bsdl->number_of_chainbits) && (first_bit == jc->devices_list[d].in_boundary_scan[bit]) )
+						// 	{
+						// 		bit++;
+						// 	}
 
-							if( bit == bsdl->number_of_chainbits)
-							{
-								// All bits have the same value.
-								// Program a jtag chain check
-								jtag_chain_check_needed |= 1;
-								jc->IR_filled = 0;
-							}
-						}
+						// 	if( bit == bsdl->number_of_chainbits)
+						// 	{
+						// 		// All bits have the same value.
+						// 		// Program a jtag chain check
+						// 		jtag_chain_check_needed |= 1;
+						// 		jc->IR_filled = 0;
+						// 	}
+						// }
 					}
 					else
 					{
