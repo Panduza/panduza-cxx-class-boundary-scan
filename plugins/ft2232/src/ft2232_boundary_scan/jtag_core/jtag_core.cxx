@@ -783,8 +783,7 @@ int jtagcore_push_and_pop_chain(jtag_core * jc, int mode)
 								// All bits have the same value.
 								// Program a jtag chain check
 								jtag_chain_check_needed |= 1;
-								// TODO : Reimplement the jtag chain check
-								// jc->IR_filled = 0;
+								jc->IR_filled = 0;
 							}
 						}
 					}
