@@ -503,7 +503,7 @@ int jtagcore_get_pin_state(jtag_core * jc, int device, int pin, int type)
 	int disable_state;
 	
 	ret = JTAG_CORE_BAD_PARAMETER;
-	if(mtx3.try_lock()){
+	mtx.lock();
 	if (device < jc->nb_of_devices_in_chain && device < MAX_NB_JTAG_DEVICE)
 	{
 		if (jc->devices_list[device].bsdl)
@@ -596,8 +596,7 @@ int jtagcore_get_pin_state(jtag_core * jc, int device, int pin, int type)
 			}
 		}
 	}
-	mtx3.unlock();
-	}
+	mtx.unlock();
 	return ret;
 }
 
@@ -608,7 +607,7 @@ int jtagcore_set_pin_state(jtag_core * jc, int device, int pin, int type,int sta
 	int disable_state;
 
 	ret = JTAG_CORE_BAD_PARAMETER;
-	if(mtx2.try_lock()){
+	mtx.lock();
 	if (device < jc->nb_of_devices_in_chain && device < MAX_NB_JTAG_DEVICE)
 	{
 		if (jc->devices_list[device].bsdl)
@@ -663,8 +662,7 @@ int jtagcore_set_pin_state(jtag_core * jc, int device, int pin, int type,int sta
 			}
 		}
 	}
-	mtx2.unlock();
-	}
+	mtx.unlock();
 	return ret;
 
 }
@@ -674,6 +672,7 @@ int jtagcore_get_pin_id(jtag_core * jc, int device, char * pinname)
 	jtag_bsdl * bsdl_file;
 	int pin;
 
+	mtx.lock();
 	if (device < jc->nb_of_devices_in_chain && device < MAX_NB_JTAG_DEVICE && pinname)
 	{
 		if (jc->devices_list[device].bsdl)
@@ -686,15 +685,16 @@ int jtagcore_get_pin_id(jtag_core * jc, int device, char * pinname)
 				{
 					if(!strcmp(bsdl_file->pins_list[pin].pinname, pinname))
 					{
+						mtx.unlock();
 						return pin;
 					}
 				}
 			}
-
+			mtx.unlock();
 			return JTAG_CORE_NOT_FOUND;
 		}
 	}
-
+	mtx.unlock();
 	return JTAG_CORE_BAD_PARAMETER;
 }
 
@@ -739,9 +739,9 @@ int jtagcore_push_and_pop_chain(jtag_core * jc, int mode)
 
 	jtag_chain_check_needed = 0;
 	
+	mtx.lock();
 	if (jc)
 	{
-		if(mtx.try_lock()){
 		if (jc->nb_of_devices_in_chain && jc->io_functions.drv_TX_TMS)
 		{
 			//Idle State -> Go to shift-DR
@@ -1002,7 +1002,6 @@ int jtagcore_push_and_pop_chain(jtag_core * jc, int mode)
 			
 			mtx.unlock();
 			return JTAG_CORE_NO_ERROR;
-			}
 		}
 	}
 	mtx.unlock();
@@ -1023,6 +1022,7 @@ jtag_error:
 	jc->io_functions.drv_TXRX_DATA(jc, (unsigned char *)&buf_out, 0, sizeof(buf_out));
 	buf_out[0] = JTAG_STR_DOUT | JTAG_STR_TMS;
 	jc->io_functions.drv_TXRX_DATA(jc, (unsigned char *)&buf_out, 0, 1);
+	mtx.unlock();
 
 	return JTAG_CORE_IO_ERROR;
 }
