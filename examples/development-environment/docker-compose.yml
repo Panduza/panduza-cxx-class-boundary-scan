@@ -1,0 +1,28 @@
+version: '3'  
+ 
+services: 
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - ./mosquitto-data/mosquitto.conf:/mosquitto/config/mosquitto.conf 
+    
+  panduza-platform:
+    container_name: panduza-cxx-platform
+    # image: ghcr.io/panduza/panduza-cxx-platform:latest
+    build:
+      context: .
+    network_mode: host
+    privileged: true
+    tty: true
+    stdin_open: true
+    environment:
+      - AUTODETECT
+    volumes:
+      - ./:/etc/panduza
+      - ../../../panduza-cxx-platform:/panduza-cxx-platform
+      - ../../../panduza-cxx-class-boundary-scan:/home/builder/panduza-cxx-class-boundary-scan
