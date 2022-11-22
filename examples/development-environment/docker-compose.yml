@@ -13,7 +13,9 @@ services:
     
   panduza-platform:
     container_name: panduza-cxx-platform
-    image: ghcr.io/panduza/panduza-cxx-platform:latest
+    # image: ghcr.io/panduza/panduza-cxx-platform:latest
+    build:
+      context: .
     network_mode: host
     privileged: true
     tty: true
@@ -22,6 +24,5 @@ services:
       - AUTODETECT
     volumes:
       - ./:/etc/panduza
-
-# to send a env variable to docker-compose, you need to write it before the command.
-# eg: AUTODETECT=1 docker-compose up
+      - ../../../panduza-cxx-platform:/panduza-cxx-platform
+      - ../../../panduza-cxx-class-boundary-scan:/home/builder/panduza-cxx-class-boundary-scan

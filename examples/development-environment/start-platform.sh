@@ -19,10 +19,13 @@ cmake .. && make install
 
 cd /panduza-cxx-platform/build
 
-rmmod ftdi_sioccc
-rmmod usbserial
+if lsmod | grep ftdi_sio &> /dev/null ; then
+    rmmod ftdi_sio
+fi
+if lsmod | grep usbserial &> /dev/null ; then
+    rmmod usbserial
+fi
 
 ./panduza-cxx-platform
 
-# mkdir /etc/panduza
-# cp /home/builder/panduza-cxx-class-boundary-scan/examples/elsys-board-arty-s7/panduza/tree.json /etc/panduza
+/bin/bash

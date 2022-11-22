@@ -31,9 +31,8 @@ void MetaDriverFT2232Io::setup()
     // Load the pin
     mId = jtagcore_get_pin_id(mJc, mDeviceNo, mPinName.data());
     mPinType = jtagcore_get_pintype(mJc, mDeviceNo, mPinName.data());
-    mState = -1;
-    mSavedState = -1;
-    mReadState = 1;
+    mState = jtagcore_get_pin_state(mJc,mDeviceNo,mId, JTAG_CORE_INPUT);
+    LOG_F(INFO, "%s : %d", mPinName.c_str(), mState);
     mDirection = "unknown";
 
     if(!getInterfaceTree()["group_name"].isNull())
@@ -71,11 +70,6 @@ void MetaDriverFT2232Io::setState(int state)
     mState = state;
 }
 
-void MetaDriverFT2232Io::setSavedState(int save)
-{
-    // Set the saved state of the Io
-    mSavedState = save;
-}
 
 void MetaDriverFT2232Io::setOutputOn()
 {
@@ -125,14 +119,18 @@ void MetaDriverFT2232Io::checkInput()
         if (mDirection == "in")
         {
             mJtagMutex.lock();
-            //	If the pin state hasnt been alrady read, we read it and mark as read
-            const int inputState = readInputState();
+            int inputState = readInputState();
 
-            //	If the saved state and actual state are different, we publish the state
             if ((mState != inputState) && (inputState >= 0))
             {
-                setState(inputState);
-                publishState();
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                int inputState2 = readInputState();
+
+                if (inputState == inputState2)
+                {
+                    setState(inputState);
+                    publishState();
+                }
             }
             mJtagMutex.unlock();
         }
@@ -183,7 +181,6 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
 
                         mDirection = "in";
                         publishDirection();
-                        setState(mSavedState);
                     }
                     else
                     {

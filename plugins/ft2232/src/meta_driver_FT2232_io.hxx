@@ -77,8 +77,6 @@ private:
     int mPinType;
     int mState;
     std::string mDirection;
-    int mSavedState;
-    int mReadState;
 
     Json::Value mStatePayload;
     Json::Value mDirectionPayload;
