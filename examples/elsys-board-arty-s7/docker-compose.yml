@@ -16,6 +16,8 @@ services:
     image: ghcr.io/panduza/panduza-cxx-platform:latest
     network_mode: host
     privileged: true
+    tty: true
+    stdin_open: true
     environment:
       - AUTODETECT
     volumes:
