@@ -6,6 +6,8 @@
 
 #include "jtag_manager.hxx"
 
+#define REFRESH_RATE 5
+
 JtagFT2232::JtagFT2232()
 {
     mProbeName = "";
@@ -267,7 +269,7 @@ void JtagFT2232::auto_refresh_push_and_pop()
     while (!kill_auto_refresh)
     {
         jtagcore_push_and_pop_chain(mJc, JTAG_CORE_WRITE_READ);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(REFRESH_RATE));
     }
 }
 
