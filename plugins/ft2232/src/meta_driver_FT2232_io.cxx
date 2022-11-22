@@ -31,9 +31,8 @@ void MetaDriverFT2232Io::setup()
     // Load the pin
     mId = jtagcore_get_pin_id(mJc, mDeviceNo, mPinName.data());
     mPinType = jtagcore_get_pintype(mJc, mDeviceNo, mPinName.data());
-    mState = -1;
-    mSavedState = -1;
-    mReadState = 1;
+    mState = jtagcore_get_pin_state(mJc,mDeviceNo,mId, JTAG_CORE_INPUT);
+    LOG_F(INFO, "%s : %d", mPinName.c_str(), mState);
     mDirection = "unknown";
 
     if(!getInterfaceTree()["group_name"].isNull())
@@ -71,11 +70,6 @@ void MetaDriverFT2232Io::setState(int state)
     mState = state;
 }
 
-void MetaDriverFT2232Io::setSavedState(int save)
-{
-    // Set the saved state of the Io
-    mSavedState = save;
-}
 
 void MetaDriverFT2232Io::setOutputOn()
 {
@@ -187,7 +181,6 @@ void MetaDriverFT2232Io::message_arrived(mqtt::const_message_ptr msg)
 
                         mDirection = "in";
                         publishDirection();
-                        setState(mSavedState);
                     }
                     else
                     {
