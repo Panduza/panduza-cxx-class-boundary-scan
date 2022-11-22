@@ -1,4 +1,5 @@
 from panduza import *
+from time import sleep
 
 Core.LoadAliases(
 {
@@ -50,4 +51,5 @@ for io_name in io_keys:
 while True:
     for io_name in io_list:
         io_name.value.set(1, ensure=True)
+        sleep(0.1)
         io_name.value.set(0, ensure=True)
