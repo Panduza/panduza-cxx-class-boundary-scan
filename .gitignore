@@ -36,3 +36,5 @@ build
 documentation
 ppaperwork.sh
 ppaperwork.yml
+**/logs/*
+**/platform/*
