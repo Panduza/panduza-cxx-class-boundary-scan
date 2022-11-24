@@ -32,7 +32,7 @@ void MetaDriverFT2232Io::setup()
     mId = jtagcore_get_pin_id(mJc, mDeviceNo, mPinName.data());
     mPinType = jtagcore_get_pintype(mJc, mDeviceNo, mPinName.data());
     mState = jtagcore_get_pin_state(mJc,mDeviceNo,mId, JTAG_CORE_INPUT);
-    LOG_F(INFO, "%s : %d", mPinName.c_str(), mState);
+    // LOG_F(INFO, "%s : %d", mPinName.c_str(), mState);
     mDirection = "unknown";
 
     if(!getInterfaceTree()["group_name"].isNull())
